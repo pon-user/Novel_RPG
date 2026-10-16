@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/><title>定刻進行ノベルRPG｜戦術テスト v0.8</title><style>:root {color-scheme:dark;--base:#0c1221;--surface:#151e30;--surface2:#1c2940;--border:#354257;--muted:#a2b2ce;--cyan:#67d2f1;--gold:#f4c46e;--text:#edf3ff;--green:#7adaab}
+* {box-sizing:border-box}
+html {scroll-behavior:smooth} body {margin:0;background:radial-gradient(ellipse at 20% 0,#263551 0,transparent 38%),var(--base);color:var(--text);font:14px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Hiragino Sans",sans-serif} a{color:var(--cyan)}
+.shell{max-width:1170px;margin:0 auto;padding:18px 17px 90px}.hero{border:1px solid var(--border);border-radius:22px;padding:24px 27px;background:linear-gradient(115deg,#203047,#162237 68%);margin-bottom:20px;box-shadow:0 15px 40px #0003}.kicker{letter-spacing:.16em;font-size:11px;color:var(--cyan);font-weight:800;margin:0 0 8px}.hero h1{font-size:clamp(22px,4.2vw,34px);letter-spacing:-.03em;margin:0 0 7px;line-height:1.3}.hero p{color:var(--muted);margin:0;max-width:790px}.eyebrow{display:inline-block;color:var(--gold);font-size:11px;margin:14px 0 0}
+.layout{display:grid;grid-template-columns:minmax(290px,370px) minmax(0,1fr);gap:18px;align-items:start}.left{display:grid;gap:18px}.right{display:grid;gap:18px}.panel{background:var(--surface);border:1px solid var(--border);border-radius:19px;padding:19px 20px;min-width:0}.section-head{display:flex;justify-content:space-between;align-items:center;gap:9px;margin:0 0 13px}.section-head h2{font-size:17px;margin:0}.section-head>span{color:var(--muted);font-size:11px}.subhead{margin:16px 0 8px;font-weight:700;font-size:13px}.field-label{display:block;color:var(--muted);font-size:12px;margin:10px 0 5px}select,input[type="range"]{width:100%}select{border:1px solid #4b5970;border-radius:10px;background:#0e1728;color:var(--text);font:inherit;padding:10px 9px;min-height:40px;outline:none}select:focus{border-color:var(--cyan);box-shadow:0 0 0 2px #67d2f130}select:disabled{opacity:.58}input[type="range"]{accent-color:var(--cyan)}.tworow{display:grid;grid-template-columns:1fr 1fr;gap:12px}.gem-list{display:flex;flex-wrap:wrap;gap:7px}.gem-chip{cursor:pointer;display:flex;align-items:center;gap:6px;background:#202b3d;border:1px solid var(--border);border-radius:9px;padding:7px 8px;font-size:12px}.gem-chip input,.skill-chip input{accent-color:var(--cyan)}.gem-chip.active{border-color:#9e9c76;background:#343343}.gem-chip.locked{cursor:not-allowed;opacity:.8}.notice{border-left:3px solid var(--gold);background:#f4c46e0e;padding:9px 12px;border-radius:0 10px 10px 0;font-size:12px;color:#d6d7dc;margin-top:15px}.objective{background:#112c38;border:1px solid #326475;border-radius:12px;padding:11px 13px;margin:12px 0}.objective b{display:block;font-size:15px;color:#dcfaff}.objective span{color:var(--muted);font-size:11px}.micro{font-size:11px;color:var(--muted);margin:7px 0 0}.loadout-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.loadout-card{background:var(--surface2);border:1px solid var(--border);border-radius:13px;padding:12px;min-width:0}.loadout-top{display:flex;gap:5px;align-items:center;justify-content:space-between;flex-wrap:wrap}.loadout-top strong{font-size:13px}.loadout-top span{font-size:11px;color:var(--gold)}.skill-chips{display:flex;flex-wrap:wrap;gap:6px}.skill-chip{cursor:pointer;display:inline-flex;gap:4px;align-items:center;background:#192436;border:1px solid var(--border);padding:5px 7px;border-radius:8px;font-size:11px}.skill-chip.selected{border-color:#549fb8;background:#193448}.turn-table{width:100%;min-width:0}.turn-header,.turn-row{display:grid;grid-template-columns:74px repeat(3,minmax(0,1fr));align-items:stretch;gap:8px}.turn-header{font-size:12px;color:var(--muted);padding-bottom:9px}.turn-row{padding:8px 0;border-top:1px solid var(--border)}.turn-label{align-self:center;display:flex;gap:2px;flex-direction:column}.turn-label strong{font-size:15px}.turn-label span{font-size:11px;color:var(--muted)}.turn-cell{min-width:0}.turn-cell select{font-size:12px;padding:7px 6px;min-height:39px}.turn-cell .target-select{min-height:31px;margin-top:4px;color:var(--muted)}.notes{font-size:12px;color:var(--muted)}.warning{background:#f4c46e10;border:1px solid #806a413a;padding:10px 13px;border-radius:12px;font-size:12px;margin-top:12px}.warning ul{margin:7px 0 0;padding-left:18px}.ok{color:var(--green)}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}button{cursor:pointer;font:inherit;border:1px solid #576b86;border-radius:11px;background:#283b52;color:var(--text);padding:11px 14px;min-height:42px;font-weight:700}button:hover{filter:brightness(1.13)}button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}.main-btn{background:linear-gradient(100deg,#3db2d5,#5b9fdc);color:#071727;border:0;font-size:15px}.minor-btn{background:#1d2a3d}.demo-btn{font-size:12px;padding:7px 10px;min-height:33px;border-color:#6e6445}.error{color:#ffbaba;white-space:pre-wrap;font-size:12px;margin-top:9px}.result{border:1px solid #4a6e6b;background:linear-gradient(130deg,#12272e,#132439);padding:20px;border-radius:18px}.result h2{margin:0;font-size:24px}.victory{color:var(--green)}.defeat{color:#f8a49f}.result-summary{color:var(--muted);margin:2px 0 12px}.result-units{display:flex;gap:8px;flex-wrap:wrap}.unit-result{display:flex;flex-direction:column;min-width:96px;background:#24364b;padding:10px;border-radius:9px}.unit-result span{font-weight:750}.unit-result small{color:var(--muted)}.round-log{background:#101d2a;border:1px solid var(--border);border-radius:10px;margin:8px 0}.round-log summary{cursor:pointer;font-weight:700;padding:9px 12px}.round-log summary span{font-weight:400;font-size:11px;color:var(--muted)}.round-log .event{padding:7px 12px;border-top:1px solid #ffffff0c;font-size:12px}.event.enemy{color:#bcd1ed}.event.failure{color:var(--gold)}.footer{color:#8c9cba;font-size:11px;margin-top:22px;text-align:center}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.loadout-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:620px){.shell{padding:10px 10px 80px}.hero{padding:20px 17px}.panel{padding:15px 12px}.loadout-grid{grid-template-columns:1fr}.loadout-card{padding:13px}.turn-header,.turn-row{grid-template-columns:35px repeat(3,minmax(0,1fr));gap:4px}.turn-cell select{font-size:11px;padding:5px 3px}.turn-label strong{font-size:13px}.turn-label span{font-size:9px}.turn-header{font-size:10px}.actions{display:grid;grid-template-columns:1fr 1fr}.actions .main-btn{grid-column:1/-1}.tworow{gap:8px}}
+</style></head><body>
+<main class="shell"><header class="hero"><p class="kicker">TACTICAL PLAYTEST • PROTOTYPE 0.8</p><h1>定刻進行ノベルRPG｜戦闘テスト</h1><p>5ターンの行動を先に予約し、固定行動の敵と戦う試作環境。キャラ・命珠・スキル・装備を変えて、敗北ログから戦術を組み直せます。</p><span class="eyebrow">テスト用：定刻予約・セーブ・物語進行は未実装／戦闘は即時実行</span></header>
+<div class="layout"><aside class="left">
+<section class="panel"><div class="section-head"><h2>01. 戦闘条件</h2><span>まずここから</span></div><label class="field-label" for="setting-stage">試験モード</label><select id="setting-stage"></select><label class="field-label" for="setting-enemy">敵</label><select id="setting-enemy"></select><div class="objective"><span>勝利条件</span><b id="boss-objective"></b></div><div class="tworow"><div><label class="field-label" for="setting-level">キャラLv <b id="level-value"></b></label><input type="range" id="setting-level" min="1" max="50" step="1"/></div><div><label class="field-label" for="setting-skill-level">スキルLv <b id="skill-level-value"></b></label><input type="range" id="setting-skill-level" min="1" max="5" step="1"/></div></div><p class="micro">Lv上限50・成長率HP+10%、攻撃+5%、防御+8%は未承認の試験値。スキルLvは数量効果のみ上昇。</p><div class="subhead">パーティー（主人公＋仲間2人）</div><div class="tworow"><div><label class="field-label" for="ally-one">仲間1</label><select id="ally-one"></select></div><div><label class="field-label" for="ally-two">仲間2</label><select id="ally-two"></select></div></div><div class="subhead">主人公の命珠</div><div id="gems" class="gem-list"></div><label class="field-label" for="primary-gem">メイン命珠</label><select id="primary-gem"></select><div class="notice" id="setup-note"></div></section>
+<section class="panel"><div class="section-head"><h2>02. 持込スキル・装備</h2><span>最大5技／人</span></div><p class="notes">武器技・固有奥義・通常攻撃は5枠に含みません。仲間の得意不得意は意図して残しています。</p><div id="equip-cards" class="loadout-grid" style="grid-template-columns:1fr"></div></section>
+</aside><div class="right">
+<section class="panel"><div class="section-head"><h2>03. 5ターンの作戦</h2><span>1人1手／T</span></div><p class="notes">条件不成立・CD中・行動阻害なら、その手番は行動しません。未来の敵行動は事前表示しません。</p><div id="plan-area"></div><div id="plan-warnings" class="warning"></div><div id="sample-zone"><div class="subhead">序盤ボス：勝利例を参考にする（任意）</div><div id="sample-buttons" class="actions" style="margin-top:6px"><button class="demo-btn" data-witness="hardInterrupt">妨害型の例</button><button class="demo-btn" data-witness="waterDisrupt">弱体化型の例</button><button class="demo-btn" data-witness="shieldWall">防壁型の例</button></div></div><div class="notice" id="enemy-warning"></div><div class="actions"><button id="battle-button" class="main-btn">この作戦で戦闘開始</button><button id="basic-button" class="minor-btn">全部通常攻撃</button><button id="reset-button" class="minor-btn">設定リセット</button></div><div id="run-error" class="error" role="alert"></div></section>
+<section id="result" class="result" hidden><h2 id="result-title"></h2><p id="result-summary" class="result-summary"></p><div id="result-units" class="result-units"></div><div class="section-head" style="margin-top:20px"><h2>戦闘ログ</h2><span>観測したターンのみ表示</span></div><div id="battle-log"></div><button id="save-button" class="minor-btn" style="margin-top:12px">作戦・結果をJSON保存</button><p class="micro">結果を見たら、上の作戦を変更してもう一度戦闘できます。再試行は本編の定刻・育成状態に反映されません。</p></section>
+</div></div><footer class="footer">LOCAL PLAYTEST 0.8 • プライベートの試験用・ゲーム完成版ではありません</footer></main>
+<script type="application/json" id="rpg-catalog">{"schemaVersion":"0.3","rulesVersion":"prototype-combat-0.3","status":"combat-experiment-not-final-spec","requirements":{"futureMinimumLearnableNormalSkillsPerCharacter":10,"hardMaximumLearnableSkillsPerCharacter":null,"prototypeTargetNormalSkillsPerCharacter":6,"prototypeNormalSkillEquipSlots":5,"perCharacterActiveActionPerTurn":1,"standardBattleTurns":5,"prototypeHeroGemSlots":3,"prototypeSkillLevelCap":5},"enums":{"elements":["neutral","fire","water","wood"],"damageCategories":["none","physical","special"],"sourceTypes":["basic","normal","innateActive","innatePassive","weaponActive"],"targetPolicies":["self","ally","enemy","allies","enemies"],"conditionOps":["status_present","charge_at_least","round_at_least","hp_below_pct","blocked_damage_at_least"],"effectOps":["damage","shield","redirect_single","heal","interrupt","apply_status","remove_status","gain_charge","spend_charge","remove_shield","self_damage","passive_modifier"]},"statuses":[{"id":"mark","label":"刻印"},{"id":"weaken_area","label":"範囲威力低下"},{"id":"stun","label":"行動不能"},{"id":"control_immunity","label":"阻害無効"}],"characters":[{"id":"G","name":"守備役（仮）","learnableSkillIds":["g_flame_edge","g_wall","g_guard","g_heal","g_return","g_interrupt"],"basicSkillId":"g_basic","innateActiveId":"g_innate","innatePassiveId":"g_passive","eligibleWeaponIds":["g_sword","g_shield","g_water_spear"]},{"id":"T","name":"支援役（仮）","learnableSkillIds":["t_water_mark","t_dampen","t_cleanse","t_charge","t_release","t_shield_break"],"basicSkillId":"t_basic","innateActiveId":"t_innate","innatePassiveId":"t_passive","eligibleWeaponIds":["t_water_staff","t_purge_wand","t_wood_scroll"]},{"id":"S","name":"攻撃役（仮）","learnableSkillIds":["s_fire","s_water","s_wood","s_finisher","s_charge","s_release"],"basicSkillId":"s_basic","innateActiveId":"s_innate","innatePassiveId":"s_passive","eligibleWeaponIds":["s_fire_blade","s_heavy_blade","s_water_dagger"]},{"id":"H","name":"主人公（仮）","kind":"protagonist","basicSkillId":"h_basic","uniqueWeaponId":"h_unique_weapon","learnableSkillIds":[],"innateActiveId":null,"innatePassiveId":null,"eligibleWeaponIds":["h_unique_weapon"]}],"weapons":[{"id":"g_sword","ownerId":"G","name":"断壁剣","activeSkillId":"g_sword_active","equipmentClass":"weapon"},{"id":"g_shield","ownerId":"G","name":"守成盾","activeSkillId":"g_shield_active","equipmentClass":"weapon"},{"id":"g_water_spear","ownerId":"G","name":"水槍","activeSkillId":"g_water_spear_active","equipmentClass":"weapon"},{"id":"t_water_staff","ownerId":"T","name":"水杖","activeSkillId":"t_water_staff_active","equipmentClass":"weapon"},{"id":"t_purge_wand","ownerId":"T","name":"破結杖","activeSkillId":"t_purge_wand_active","equipmentClass":"weapon"},{"id":"t_wood_scroll","ownerId":"T","name":"木簡","activeSkillId":"t_wood_scroll_active","equipmentClass":"weapon"},{"id":"s_fire_blade","ownerId":"S","name":"焔刀","activeSkillId":"s_fire_blade_active","equipmentClass":"weapon"},{"id":"s_heavy_blade","ownerId":"S","name":"重刃","activeSkillId":"s_heavy_blade_active","equipmentClass":"weapon"},{"id":"s_water_dagger","ownerId":"S","name":"水匕首","activeSkillId":"s_water_dagger_active","equipmentClass":"weapon"},{"id":"h_unique_weapon","ownerId":"H","name":"主人公専用武器（仮）","activeSkillId":"h_weapon_attack","equipmentClass":"weapon","gemSocketCap":3}],"skills":[{"id":"g_basic","ownerId":"G","name":"通常攻撃","sourceType":"basic","activationType":"active","element":"neutral","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":1,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":100}],"tags":[]},{"id":"g_flame_edge","ownerId":"G","name":"火護斬","sourceType":"normal","activationType":"active","element":"fire","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":1,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":110}],"tags":[]},{"id":"g_wall","ownerId":"G","name":"全体防壁","sourceType":"normal","activationType":"active","element":"neutral","damageCategory":"none","targetPolicy":"allies","cooldownRounds":3,"usesPerBattle":null,"conditions":[],"effects":[{"op":"shield","amount":100,"durationTurns":2}],"tags":[]},{"id":"g_guard","ownerId":"G","name":"身代わりの構え","sourceType":"normal","activationType":"active","element":"neutral","damageCategory":"none","targetPolicy":"ally","cooldownRounds":3,"usesPerBattle":null,"conditions":[],"effects":[{"op":"redirect_single","durationTurns":2}],"tags":[]},{"id":"g_heal","ownerId":"G","name":"堅陣回復","sourceType":"normal","activationType":"active","element":"neutral","damageCategory":"none","targetPolicy":"ally","cooldownRounds":2,"usesPerBattle":null,"conditions":[],"effects":[{"op":"heal","amount":70}],"tags":[]},{"id":"g_return","ownerId":"G","name":"返礼の刃","sourceType":"normal","activationType":"active","element":"neutral","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":2,"usesPerBattle":null,"conditions":[{"op":"blocked_damage_at_least","subject":"self","amount":50}],"effects":[{"op":"damage","powerPct":160}],"tags":[]},{"id":"g_interrupt","ownerId":"G","name":"崩撃","sourceType":"normal","activationType":"active","element":"neutral","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":3,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":60},{"op":"interrupt","category":"stun","count":1}],"tags":[]},{"id":"t_basic","ownerId":"T","name":"通常攻撃","sourceType":"basic","activationType":"active","element":"neutral","damageCategory":"special","targetPolicy":"enemy","cooldownRounds":1,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":100}],"tags":[]},{"id":"t_water_mark","ownerId":"T","name":"水印","sourceType":"normal","activationType":"active","element":"water","damageCategory":"special","targetPolicy":"enemy","cooldownRounds":2,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":65},{"op":"apply_status","statusId":"mark","durationTurns":2}],"tags":[]},{"id":"t_dampen","ownerId":"T","name":"詠唱乱し","sourceType":"normal","activationType":"active","element":"neutral","damageCategory":"none","targetPolicy":"enemy","cooldownRounds":3,"usesPerBattle":null,"conditions":[],"effects":[{"op":"apply_status","statusId":"weaken_area","durationTurns":2}],"tags":[]},{"id":"t_cleanse","ownerId":"T","name":"祓いの調べ","sourceType":"normal","activationType":"active","element":"neutral","damageCategory":"none","targetPolicy":"ally","cooldownRounds":2,"usesPerBattle":null,"conditions":[],"effects":[{"op":"remove_status","statusId":"stun"}],"tags":[]},{"id":"t_charge","ownerId":"T","name":"先読み蓄積","sourceType":"normal","activationType":"active","element":"neutral","damageCategory":"none","targetPolicy":"self","cooldownRounds":2,"usesPerBattle":null,"conditions":[],"effects":[{"op":"gain_charge","amount":1}],"tags":[]},{"id":"t_release","ownerId":"T","name":"演算解放","sourceType":"normal","activationType":"active","element":"water","damageCategory":"special","targetPolicy":"enemy","cooldownRounds":2,"usesPerBattle":null,"conditions":[{"op":"charge_at_least","subject":"self","amount":1}],"effects":[{"op":"spend_charge","amount":1},{"op":"damage","powerPct":185}],"tags":[]},{"id":"t_shield_break","ownerId":"T","name":"結界穿ち","sourceType":"normal","activationType":"active","element":"wood","damageCategory":"special","targetPolicy":"enemy","cooldownRounds":2,"usesPerBattle":null,"conditions":[],"effects":[{"op":"remove_shield","amount":160},{"op":"damage","powerPct":55}],"tags":[]},{"id":"s_basic","ownerId":"S","name":"通常攻撃","sourceType":"basic","activationType":"active","element":"neutral","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":1,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":100}],"tags":[]},{"id":"s_fire","ownerId":"S","name":"焔突","sourceType":"normal","activationType":"active","element":"fire","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":1,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":120}],"tags":[]},{"id":"s_water","ownerId":"S","name":"水走り","sourceType":"normal","activationType":"active","element":"water","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":1,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":110}],"tags":[]},{"id":"s_wood","ownerId":"S","name":"木裂","sourceType":"normal","activationType":"active","element":"wood","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":1,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":115}],"tags":[]},{"id":"s_finisher","ownerId":"S","name":"刻印追撃","sourceType":"normal","activationType":"active","element":"neutral","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":2,"usesPerBattle":null,"conditions":[{"op":"status_present","subject":"target","statusId":"mark"}],"effects":[{"op":"damage","powerPct":235},{"op":"remove_status","statusId":"mark"}],"tags":[]},{"id":"s_charge","ownerId":"S","name":"溜め","sourceType":"normal","activationType":"active","element":"neutral","damageCategory":"none","targetPolicy":"self","cooldownRounds":2,"usesPerBattle":null,"conditions":[],"effects":[{"op":"gain_charge","amount":1}],"tags":[]},{"id":"s_release","ownerId":"S","name":"解放一閃","sourceType":"normal","activationType":"active","element":"neutral","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":2,"usesPerBattle":null,"conditions":[{"op":"charge_at_least","subject":"self","amount":1}],"effects":[{"op":"spend_charge","amount":1},{"op":"damage","powerPct":230}],"tags":[]},{"id":"g_sword_active","ownerId":"G","name":"武器崩し","sourceType":"weaponActive","activationType":"active","element":"neutral","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":2,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":135}],"tags":[]},{"id":"g_shield_active","ownerId":"G","name":"防壁拡張","sourceType":"weaponActive","activationType":"active","element":"neutral","damageCategory":"none","targetPolicy":"allies","cooldownRounds":2,"usesPerBattle":null,"conditions":[],"effects":[{"op":"shield","amount":135,"durationTurns":1}],"tags":[]},{"id":"g_water_spear_active","ownerId":"G","name":"水槍突き","sourceType":"weaponActive","activationType":"active","element":"water","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":2,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":120}],"tags":[]},{"id":"t_water_staff_active","ownerId":"T","name":"水圧弾","sourceType":"weaponActive","activationType":"active","element":"water","damageCategory":"special","targetPolicy":"enemy","cooldownRounds":2,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":140}],"tags":[]},{"id":"t_purge_wand_active","ownerId":"T","name":"結界解除","sourceType":"weaponActive","activationType":"active","element":"neutral","damageCategory":"none","targetPolicy":"enemy","cooldownRounds":2,"usesPerBattle":null,"conditions":[],"effects":[{"op":"remove_shield","amount":200}],"tags":[]},{"id":"t_wood_scroll_active","ownerId":"T","name":"木の呪弾","sourceType":"weaponActive","activationType":"active","element":"wood","damageCategory":"special","targetPolicy":"enemy","cooldownRounds":2,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":130}],"tags":[]},{"id":"s_fire_blade_active","ownerId":"S","name":"火走り","sourceType":"weaponActive","activationType":"active","element":"fire","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":2,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":140}],"tags":[]},{"id":"s_heavy_blade_active","ownerId":"S","name":"重撃","sourceType":"weaponActive","activationType":"active","element":"neutral","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":2,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":165}],"tags":[]},{"id":"s_water_dagger_active","ownerId":"S","name":"水刺","sourceType":"weaponActive","activationType":"active","element":"water","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":2,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":130}],"tags":[]},{"id":"g_innate","ownerId":"G","name":"最後の城壁","sourceType":"innateActive","activationType":"active","element":"neutral","damageCategory":"none","targetPolicy":"allies","cooldownRounds":0,"usesPerBattle":1,"conditions":[],"effects":[{"op":"shield","amount":170,"durationTurns":2}],"tags":[]},{"id":"t_innate","ownerId":"T","name":"一手先の記憶","sourceType":"innateActive","activationType":"active","element":"neutral","damageCategory":"none","targetPolicy":"ally","cooldownRounds":0,"usesPerBattle":1,"conditions":[],"effects":[{"op":"apply_status","statusId":"control_immunity","durationTurns":2}],"tags":[]},{"id":"s_innate","ownerId":"S","name":"決意の代価","sourceType":"innateActive","activationType":"active","element":"neutral","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":0,"usesPerBattle":1,"conditions":[],"effects":[{"op":"self_damage","amount":35},{"op":"damage","powerPct":245}],"tags":[]},{"id":"g_passive","ownerId":"G","name":"防壁の心得","sourceType":"innatePassive","activationType":"passive","element":"neutral","damageCategory":"none","targetPolicy":"self","cooldownRounds":0,"usesPerBattle":null,"conditions":[],"effects":[{"op":"passive_modifier","trigger":"on_shield","stat":"shieldAmount","amount":15}],"tags":[]},{"id":"t_passive","ownerId":"T","name":"印の保持","sourceType":"innatePassive","activationType":"passive","element":"neutral","damageCategory":"none","targetPolicy":"self","cooldownRounds":0,"usesPerBattle":null,"conditions":[],"effects":[{"op":"passive_modifier","trigger":"on_apply_mark","stat":"statusDuration","amount":1}],"tags":[]},{"id":"s_passive","ownerId":"S","name":"刻印狩り","sourceType":"innatePassive","activationType":"passive","element":"neutral","damageCategory":"none","targetPolicy":"self","cooldownRounds":0,"usesPerBattle":null,"conditions":[],"effects":[{"op":"passive_modifier","trigger":"on_damage_marked","stat":"damagePct","amount":15}],"tags":[]},{"id":"h_basic","ownerId":"H","name":"h_basic","sourceType":"basic","activationType":"active","element":"neutral","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":1,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":100}],"tags":[]},{"id":"h_weapon_attack","ownerId":"H","name":"h_weapon_attack","sourceType":"weaponActive","activationType":"active","element":"neutral","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":1,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":110}],"tags":[]},{"id":"h_g_shield","ownerId":"H","name":"守壁","sourceType":"normal","activationType":"active","element":"neutral","damageCategory":"none","targetPolicy":"allies","cooldownRounds":3,"usesPerBattle":null,"conditions":[],"effects":[{"op":"shield","amount":80,"durationTurns":2}],"tags":[],"gemId":"gem_guard"},{"id":"h_g_guard","ownerId":"H","name":"庇護","sourceType":"normal","activationType":"active","element":"neutral","damageCategory":"none","targetPolicy":"ally","cooldownRounds":3,"usesPerBattle":null,"conditions":[],"effects":[{"op":"redirect_single","durationTurns":2}],"tags":[],"gemId":"gem_guard"},{"id":"h_g_strike","ownerId":"H","name":"守勢斬","sourceType":"normal","activationType":"active","element":"neutral","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":2,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":135}],"tags":[],"gemId":"gem_guard"},{"id":"h_g_recover","ownerId":"H","name":"守りの回復","sourceType":"normal","activationType":"active","element":"neutral","damageCategory":"none","targetPolicy":"ally","cooldownRounds":2,"usesPerBattle":null,"conditions":[],"effects":[{"op":"heal","amount":80}],"tags":[],"gemId":"gem_guard"},{"id":"h_g_ultimate","ownerId":"H","name":"決死の防壁","sourceType":"innateActive","activationType":"active","element":"neutral","damageCategory":"none","targetPolicy":"allies","cooldownRounds":0,"usesPerBattle":1,"conditions":[],"effects":[{"op":"shield","amount":150,"durationTurns":2}],"tags":[],"gemId":"gem_guard"},{"id":"h_g_passive","ownerId":"H","name":"盾の熟練","sourceType":"innatePassive","activationType":"passive","element":"neutral","damageCategory":"physical","targetPolicy":"self","cooldownRounds":1,"usesPerBattle":null,"conditions":[],"effects":[{"op":"passive_modifier","trigger":"on_shield","stat":"shieldAmount","amount":12}],"tags":[],"gemId":"gem_guard"},{"id":"h_t_water","ownerId":"H","name":"水術弾","sourceType":"normal","activationType":"active","element":"water","damageCategory":"special","targetPolicy":"enemy","cooldownRounds":1,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":130}],"tags":[],"gemId":"gem_tide"},{"id":"h_t_mark","ownerId":"H","name":"水律刻印","sourceType":"normal","activationType":"active","element":"water","damageCategory":"none","targetPolicy":"enemy","cooldownRounds":1,"usesPerBattle":null,"conditions":[],"effects":[{"op":"apply_status","statusId":"mark","durationTurns":2}],"tags":[],"gemId":"gem_tide"},{"id":"h_t_dampen","ownerId":"H","name":"浸食呪","sourceType":"normal","activationType":"active","element":"water","damageCategory":"none","targetPolicy":"enemy","cooldownRounds":3,"usesPerBattle":null,"conditions":[],"effects":[{"op":"apply_status","statusId":"weaken_area","durationTurns":2}],"tags":[],"gemId":"gem_tide"},{"id":"h_t_charge","ownerId":"H","name":"水脈蓄積","sourceType":"normal","activationType":"active","element":"water","damageCategory":"none","targetPolicy":"self","cooldownRounds":1,"usesPerBattle":null,"conditions":[],"effects":[{"op":"gain_charge","amount":1}],"tags":[],"gemId":"gem_tide"},{"id":"h_t_ultimate","ownerId":"H","name":"絶縁の帳","sourceType":"innateActive","activationType":"active","element":"neutral","damageCategory":"none","targetPolicy":"ally","cooldownRounds":0,"usesPerBattle":1,"conditions":[],"effects":[{"op":"apply_status","statusId":"control_immunity","durationTurns":2}],"tags":[],"gemId":"gem_tide"},{"id":"h_t_passive","ownerId":"H","name":"永続の印","sourceType":"innatePassive","activationType":"passive","element":"neutral","damageCategory":"physical","targetPolicy":"self","cooldownRounds":1,"usesPerBattle":null,"conditions":[],"effects":[{"op":"passive_modifier","trigger":"on_apply_mark","stat":"statusDuration","amount":1}],"tags":[],"gemId":"gem_tide"},{"id":"h_f_fire","ownerId":"H","name":"炎の斬撃","sourceType":"normal","activationType":"active","element":"fire","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":1,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":130}],"tags":[],"gemId":"gem_flame"},{"id":"h_f_combo","ownerId":"H","name":"追火","sourceType":"normal","activationType":"active","element":"fire","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":2,"usesPerBattle":null,"conditions":[{"op":"status_present","subject":"target","statusId":"mark"}],"effects":[{"op":"damage","powerPct":215},{"op":"remove_status","statusId":"mark"}],"tags":[],"gemId":"gem_flame"},{"id":"h_f_burst","ownerId":"H","name":"焔の捨身","sourceType":"normal","activationType":"active","element":"fire","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":3,"usesPerBattle":null,"conditions":[],"effects":[{"op":"self_damage","amount":35},{"op":"damage","powerPct":245}],"tags":[],"gemId":"gem_flame"},{"id":"h_f_interrupt","ownerId":"H","name":"火断","sourceType":"normal","activationType":"active","element":"fire","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":3,"usesPerBattle":null,"conditions":[],"effects":[{"op":"damage","powerPct":45},{"op":"interrupt","category":"stun","count":1}],"tags":[],"gemId":"gem_flame"},{"id":"h_f_ultimate","ownerId":"H","name":"決戦の火","sourceType":"innateActive","activationType":"active","element":"fire","damageCategory":"physical","targetPolicy":"enemy","cooldownRounds":0,"usesPerBattle":1,"conditions":[],"effects":[{"op":"damage","powerPct":285}],"tags":[],"gemId":"gem_flame"},{"id":"h_f_passive","ownerId":"H","name":"残火の狩り","sourceType":"innatePassive","activationType":"passive","element":"neutral","damageCategory":"physical","targetPolicy":"self","cooldownRounds":1,"usesPerBattle":null,"conditions":[],"effects":[{"op":"passive_modifier","trigger":"on_damage_marked","stat":"damagePct","amount":12}],"tags":[],"gemId":"gem_flame"}],"sampleBuild":{"party":[{"characterId":"G","normalSkillIds":["g_wall","g_interrupt"],"weaponId":"g_sword"},{"characterId":"T","normalSkillIds":["t_water_mark","t_dampen"],"weaponId":"t_purge_wand"},{"characterId":"S","normalSkillIds":["s_finisher","s_charge"],"weaponId":"s_fire_blade"}]},"samplePlan":{"turns":[{"round":1,"actions":{"G":"g_wall","T":"t_water_mark","S":"s_charge"}},{"round":2,"actions":{"G":"g_interrupt","T":"t_dampen","S":"s_finisher"}},{"round":3,"actions":{"G":"g_sword_active","T":"t_purge_wand_active","S":"s_fire_blade_active"}},{"round":4,"actions":{"G":"g_basic","T":"t_basic","S":"s_basic"}},{"round":5,"actions":{"G":"g_innate","T":"t_innate","S":"s_innate"}}]},"classGems":[{"id":"gem_guard","name":"守備の宝玉（仮）","grantedNormalSkillIds":["h_g_shield","h_g_guard","h_g_strike","h_g_recover"],"signatureActiveSkillId":"h_g_ultimate","mainPassiveSkillId":"h_g_passive","source":"storyUnique"},{"id":"gem_tide","name":"水律の宝玉（仮）","grantedNormalSkillIds":["h_t_water","h_t_mark","h_t_dampen","h_t_charge"],"signatureActiveSkillId":"h_t_ultimate","mainPassiveSkillId":"h_t_passive","source":"storyUnique"},{"id":"gem_flame","name":"焔撃の宝玉（仮）","grantedNormalSkillIds":["h_f_fire","h_f_combo","h_f_burst","h_f_interrupt"],"signatureActiveSkillId":"h_f_ultimate","mainPassiveSkillId":"h_f_passive","source":"storyUnique"}],"heroSystem":{"heroCharacterId":"H","exclusiveWeaponId":"h_unique_weapon","socketCap":3,"initialUnlockedSlots":1,"initialOwnedGemIds":["gem_guard"],"gemOwnership":"storyEventOnly","mainGemRule":"exactly_one_socketed_gem_is_primary","secondaryGemRule":"normal_skills_only","equippedNormalSkillCap":5,"skillXPSources":["canonical_story_event"],"skillLevel":{"cap":5,"requiredTotalXP":[0,3,8,16,30],"perLevelEffectBonusPct":2,"maxEffectBonusPct":8,"scalableEffectOps":["damage","heal","shield"],"excluded":["immunity","interrupt","cooldown","duration","target","usesPerBattle"]}},"sampleHeroProgress":{"ownedGemIds":["gem_guard","gem_tide","gem_flame"],"unlockedSlots":3,"learnedSkillIds":["h_g_shield","h_g_guard","h_g_strike","h_g_recover","h_t_water","h_t_mark","h_t_dampen","h_t_charge","h_f_fire","h_f_combo","h_f_burst","h_f_interrupt"],"skillProgress":{},"awardedStoryEvents":[]},"sampleHeroLoadout":{"characterId":"H","weaponId":"h_unique_weapon","socketedGemIds":["gem_guard","gem_tide","gem_flame"],"primaryGemId":"gem_guard","normalSkillIds":["h_g_shield","h_g_guard","h_t_water","h_t_mark","h_f_fire"]},"sampleHeroFiveTurnPlan":[{"round":1,"skillId":"h_g_shield"},{"round":2,"skillId":"h_t_water"},{"round":3,"skillId":"h_t_mark"},{"round":4,"skillId":"h_f_fire"},{"round":5,"skillId":"h_g_ultimate"}],"sampleBattleStats":{"H":{"hp":240,"atk":120,"physicalDefense":30,"specialDefense":30,"spd":105,"element":"neutral"},"G":{"hp":270,"atk":90,"physicalDefense":55,"specialDefense":45,"spd":80,"element":"water"},"T":{"hp":205,"atk":98,"physicalDefense":30,"specialDefense":45,"spd":118,"element":"water"},"S":{"hp":198,"atk":125,"physicalDefense":25,"specialDefense":25,"spd":100,"element":"fire"}},"encounters":[{"id":"echo_mage","objective":{"type":"DEFEAT_ALL_BY_ROUND"},"enemies":[{"id":"echo_mage_unit","hp":680,"atk":140,"spd":110,"element":"wood","physicalDefense":45,"specialDefense":35,"immunities":[],"schedule":[{"round":1,"op":"prepare"},{"round":2,"op":"area","powerPct":165,"element":"fire","damageCategory":"special"},{"round":3,"op":"interrupt","targetPriority":["H","T","G","S"]},{"round":4,"op":"area","powerPct":145,"element":"fire","damageCategory":"special"},{"round":5,"op":"attack","powerPct":155,"element":"wood","damageCategory":"physical","targetPriority":["T","H","G","S"]}]}]},{"id":"immune_sentinel","objective":{"type":"SURVIVE_THROUGH_ROUND"},"enemies":[{"id":"immune_sentinel_unit","hp":740,"atk":156,"spd":112,"element":"fire","physicalDefense":45,"specialDefense":35,"immunities":["stun"],"schedule":[{"round":1,"op":"attack","powerPct":130,"element":"fire","damageCategory":"physical","targetPriority":["T","H","G","S"]},{"round":2,"op":"prepare"},{"round":3,"op":"area","powerPct":150,"element":"fire","damageCategory":"special"},{"round":4,"op":"attack","powerPct":140,"element":"fire","damageCategory":"physical","targetPriority":["H","T","G","S"]},{"round":5,"op":"area","powerPct":150,"element":"fire","damageCategory":"special"}]}]},{"id":"warded_relay","objective":{"type":"DEFEAT_ALL_BY_ROUND"},"enemies":[{"id":"warded_relay_unit","hp":740,"atk":123,"spd":115,"element":"water","physicalDefense":45,"specialDefense":35,"immunities":[],"schedule":[{"round":1,"op":"apply_shield","amount":165,"durationTurns":3},{"round":2,"op":"interrupt","targetPriority":["H","T","G","S"]},{"round":3,"op":"area","powerPct":155,"element":"water","damageCategory":"special"},{"round":4,"op":"attack","powerPct":120,"element":"water","damageCategory":"physical","targetPriority":["H","T","G","S"]},{"round":5,"op":"area","powerPct":155,"element":"water","damageCategory":"special"}]}]}]}</script><script type="application/json" id="rpg-witnesses">{"hardInterrupt":{"idx":29,"plan":[{"round":1,"actions":{"H":"h_weapon_attack","G":"g_interrupt","T":"t_innate"}},{"round":2,"actions":{"H":"h_basic","G":"g_flame_edge","T":"t_water_mark"}},{"round":3,"actions":{"H":"h_g_recover","G":"g_sword_active","T":"t_basic"}},{"round":4,"actions":{"H":"h_weapon_attack","G":"g_interrupt","T":"t_wood_scroll_active"}},{"round":5,"actions":{"H":"h_weapon_attack","G":"g_basic","T":"t_water_mark"}}],"remainingHP":62,"round":5},"waterDisrupt":{"idx":33,"plan":[{"round":1,"actions":{"H":"h_basic","G":"g_flame_edge","T":"t_dampen"}},{"round":2,"actions":{"H":"h_basic","G":"g_flame_edge","T":"t_water_mark"}},{"round":3,"actions":{"H":"h_weapon_attack","G":"g_flame_edge","T":"t_water_mark"}},{"round":4,"actions":{"H":"h_g_strike","G":"g_basic","T":"t_dampen"}},{"round":5,"actions":{"H":"h_weapon_attack","G":"g_sword_active","T":"t_basic"}}],"remainingHP":69,"round":5},"shieldWall":{"idx":38,"plan":[{"round":1,"actions":{"H":"h_basic","G":"g_wall","T":"t_wood_scroll_active"}},{"round":2,"actions":{"H":"h_g_recover","G":"g_flame_edge","T":"t_shield_break"}},{"round":3,"actions":{"H":"h_basic","G":"g_basic","T":"t_innate"}},{"round":4,"actions":{"H":"h_g_strike","G":"g_wall","T":"t_basic"}},{"round":5,"actions":{"H":"h_basic","G":"g_flame_edge","T":"t_basic"}}],"remainingHP":54,"round":5}}</script>
+<script type="module">
+/**
+ * Experimental deterministic 5-turn RPG battle engine, v0.3.
+ * Pure in-memory resolution: no persistence, scheduler, network, secrets, or actual UI.
+ * Skill definitions are data; only declared, allowlisted effect/condition opcodes run.
+ */
+const assert=(condition,message='assert_failed')=>{if(!condition)throw Error(message);};
+
+const EFFECTS = new Set(['damage','shield','heal','interrupt','apply_status','remove_status','gain_charge','spend_charge','remove_shield','self_damage','redirect_single','passive_modifier']);
+const CONDITIONS = new Set(['status_present','charge_at_least','round_at_least','hp_below_pct','blocked_damage_at_least']);
+const ELEMENTS = new Set(['neutral','fire','water','wood']);
+const CATEGORIES = new Set(['none','physical','special']);
+const OBJECTIVES = new Set(['DEFEAT_ALL_BY_ROUND','SURVIVE_THROUGH_ROUND','PROTECT_TARGET_THROUGH_ROUND']);
+const DAMAGE_EFFECTS = new Set(['damage','heal','shield']);
+const TURNS = 5;
+const ELEM_BONUS = {fire:'wood',wood:'water',water:'fire'};
+const logEntry = (state, type, data) => state.events.push({round:state.round, type,...data});
+const indexBy = (items) => new Map(items.map(x => [x.id,x]));
+const int = (n, name) => { if(!Number.isSafeInteger(n) || n < 0) throw Error(`invalid_nonnegative_integer:${name}`); return n; };
+const unique = (x) => new Set(x).size === x.length;
+const sortIds = ids => [...ids].sort();
+const copy = structuredClone;
+const targetsAlive = state => [...state.enemyOrder].map(id=>state.units[id]).filter(u=>u.hp>0);
+const alliesAlive = state => [...state.partyOrder].map(id=>state.units[id]).filter(u=>u.hp>0);
+
+function skillLevelFromXP(xp, config) {
+  int(xp,'skill_xp'); const levels=config.requiredTotalXP;
+  assert(Array.isArray(levels)&&levels.length>0,'missing_skill_levels');
+  return levels.reduce((level,threshold,i)=>xp>=threshold?i+1:level,1);
+}
+function skillScale(base,level,config) {
+  int(base,'effect_base');
+  assert(Number.isInteger(level)&&level>=1&&level<=config.cap,'invalid_skill_level');
+  return Math.floor(base*(100+(level-1)*config.perLevelEffectBonusPct)/100);
+}
+function resampleReference(catalog) {
+  assert(catalog&&Array.isArray(catalog.skills)&&Array.isArray(catalog.characters)&&Array.isArray(catalog.weapons),'catalog_missing');
+  for(const s of catalog.skills){
+    assert(ELEMENTS.has(s.element)&&CATEGORIES.has(s.damageCategory),`bad_skill_type:${s.id}`);
+    assert(['basic','normal','innateActive','innatePassive','weaponActive'].includes(s.sourceType),`bad_source:${s.id}`);
+    assert(['active','passive'].includes(s.activationType),`bad_activation:${s.id}`);
+    for(const fx of s.effects){assert(EFFECTS.has(fx.op),`unknown_effect:${s.id}:${fx.op}`);}
+    for(const cond of s.conditions){assert(CONDITIONS.has(cond.op),`unknown_condition:${s.id}:${cond.op}`);}
+  }
+  return {skills:indexBy(catalog.skills),characters:indexBy(catalog.characters),weapons:indexBy(catalog.weapons),gems:indexBy(catalog.classGems||[])};
+}
+function partySkills(entry, progress, catalog, maps){
+  const {skills,characters,weapons,gems}=maps;
+  const ch=characters.get(entry.characterId);
+  if(!ch) throw Error(`unknown_character:${entry.characterId}`);
+  const weapon=weapons.get(entry.weaponId);
+  if(!weapon||!ch.eligibleWeaponIds.includes(weapon.id))throw Error(`weapon_not_allowed:${ch.id}`);
+  if(!Array.isArray(entry.normalSkillIds)||entry.normalSkillIds.length>5||!unique(entry.normalSkillIds))throw Error(`invalid_normal_slots:${ch.id}`);
+  const enabled=new Set([ch.basicSkillId,weapon.activeSkillId]);
+  let passive=null;
+  if(ch.kind==='protagonist'){
+    if(ch.id!==catalog.heroSystem.heroCharacterId||weapon.id!==catalog.heroSystem.exclusiveWeaponId)throw Error('protagonist_weapon_required');
+    if(!Array.isArray(entry.socketedGemIds)||!entry.socketedGemIds.length||!unique(entry.socketedGemIds)||entry.socketedGemIds.length>Math.min(progress.unlockedSlots,weapon.gemSocketCap))throw Error('invalid_hero_gems');
+    for(const id of entry.socketedGemIds){if(!progress.ownedGemIds.includes(id)||!gems.has(id))throw Error('gem_not_owned');}
+    if(!entry.socketedGemIds.includes(entry.primaryGemId))throw Error('main_gem_not_socketed');
+    const available=new Set(entry.socketedGemIds.flatMap(id=>gems.get(id).grantedNormalSkillIds));
+    for(const id of entry.normalSkillIds)if(!available.has(id)||!progress.learnedSkillIds.includes(id))throw Error(`hero_skill_not_available:${id}`);
+    const main=gems.get(entry.primaryGemId);
+    enabled.add(main.signatureActiveSkillId);
+    passive=main.mainPassiveSkillId;
+  }else{
+    if(entry.socketedGemIds||entry.primaryGemId)throw Error('nonhero_has_gems');
+    for(const id of entry.normalSkillIds)if(!ch.learnableSkillIds.includes(id)||!progress.learnedSkillIds.includes(id))throw Error(`skill_not_learned:${id}`);
+    if(ch.innateActiveId)enabled.add(ch.innateActiveId);
+    passive=ch.innatePassiveId;
+  }
+  for(const id of entry.normalSkillIds)enabled.add(id);
+  for(const id of enabled){const s=skills.get(id);if(!s||s.activationType!=='active')throw Error(`invalid_action_skill:${id}`);}
+  if(passive){const s=skills.get(passive);if(!s||s.activationType!=='passive')throw Error(`invalid_passive:${passive}`);}
+  return {enabled,passive};
+}
+function validateBattleInput(catalog, encounter, input){
+  const maps=resampleReference(catalog);
+  if(!OBJECTIVES.has(encounter.objective.type))throw Error('unknown_objective');
+  if(!Array.isArray(encounter.enemies)||encounter.enemies.length===0||!unique(encounter.enemies.map(x=>x.id)))throw Error('invalid_enemies');
+  if(!Array.isArray(input.party)||input.party.length===0||input.party.length>3||!unique(input.party.map(x=>x.characterId)))throw Error('invalid_party');
+  if(!Array.isArray(input.plan)||input.plan.length!==TURNS||input.plan.some((v,i)=>v.round!==i+1))throw Error('invalid_five_turn_plan');
+  const permissions=new Map();
+  for(const e of input.party){
+    const progress=input.progress[e.characterId];
+    if(!progress)throw Error('missing_progress');
+    permissions.set(e.characterId,partySkills(e,progress,catalog,maps));
+    for(const k of ['hp','atk','physicalDefense','specialDefense','spd'])int(input.stats[e.characterId]?.[k],`stats_${e.characterId}_${k}`);
+  }
+  if(encounter.enemies.some(e=>input.party.some(p=>p.characterId===e.id)))throw Error('party_enemy_id_collision');
+  for(const enemy of encounter.enemies){
+    for(const k of ['hp','atk','physicalDefense','specialDefense','spd'])int(enemy[k],`enemy_${enemy.id}_${k}`);
+    if(!ELEMENTS.has(enemy.element))throw Error('invalid_enemy_element');
+    if(!Array.isArray(enemy.schedule)||enemy.schedule.length!==TURNS||enemy.schedule.some((v,i)=>v.round!==i+1))throw Error('invalid_enemy_schedule');
+    for(const order of enemy.schedule)if(!['prepare','attack','area','apply_shield','apply_status','interrupt','wait'].includes(order.op))throw Error(`bad_enemy_action:${order.op}`);
+  }
+  for(const row of input.plan){
+    for(const e of input.party){
+      const pick=row.actions?.[e.characterId];
+      const id=typeof pick==='string'?pick:pick?.skillId;
+      if(typeof id!=='string'||!permissions.get(e.characterId).enabled.has(id))throw Error(`unavailable_turn_skill:${e.characterId}:${id}`);
+      if(pick&&typeof pick==='object'&&pick.targetId!==undefined&&typeof pick.targetId!=='string')throw Error('invalid_target_id');
+    }
+  }
+  return {maps,permissions};
+}
+function elementMultiplier(attackerElement,defenderElement){
+  if(attackerElement==='neutral'||defenderElement==='neutral'||attackerElement===defenderElement)return [1,1];
+  if(ELEM_BONUS[attackerElement]===defenderElement)return [3,2];
+  if(ELEM_BONUS[defenderElement]===attackerElement)return [3,4];
+  return [1,1];
+}
+function computeDamage({atk,powerPct,defense,element='neutral',targetElement='neutral',level=1,skillLevelConfig=null,bonusPct=0}){
+  [atk,powerPct,defense].forEach((x,i)=>int(x,['atk','powerPct','defense'][i]));
+  const [en,ed]=elementMultiplier(element,targetElement);
+  const growth=skillLevelConfig?100+(level-1)*skillLevelConfig.perLevelEffectBonusPct:100;
+  const num=atk*powerPct*100*en*growth*(100+bonusPct);
+  const den=100*(100+defense)*ed*100*100;
+  if(!Number.isSafeInteger(num)||!Number.isSafeInteger(den))throw Error('damage_integer_overflow');
+  return Math.max(0,Math.floor(num/den));
+}
+function currentStatuses(unit,state){return unit.statuses.filter(x=>x.expiresAt>=state.round);}
+function hasStatus(unit,id,state){return currentStatuses(unit,state).some(x=>x.id===id);}
+function passiveMods(unit,state){
+  const s=state.skills.get(unit.passive);
+  return s?.effects.filter(x=>x.op==='passive_modifier')||[];
+}
+function passiveAmt(unit,trigger,stat,state){return passiveMods(unit,state).filter(x=>x.trigger===trigger&&x.stat===stat).reduce((acc,x)=>acc+x.amount,0);}
+function resolveTargets(state,source,policy,preferredId){
+  const allies=source.team==='player'?alliesAlive(state):targetsAlive(state);
+  const opponents=source.team==='player'?targetsAlive(state):alliesAlive(state);
+  if(policy==='self')return [source];
+  if(policy==='allies')return allies;
+  if(policy==='enemies')return opponents;
+  if(policy==='enemy') {
+    const choice=preferredId?opponents.find(x=>x.id===preferredId):opponents[0];return choice?[choice]:[];
+  }
+  if(policy==='ally') {
+    const choice=preferredId?allies.find(x=>x.id===preferredId):(allies.find(x=>x.hp<x.maxHp)||allies[0]);return choice?[choice]:[];
+  }
+  throw Error(`unknown_target_policy:${policy}`);
+}
+function subjectUnit(cond,source,targets){return cond.subject==='target'?targets[0]:source;}
+function conditionFailure(skill,source,targets,state){
+  for(const c of skill.conditions){
+    const subject=subjectUnit(c,source,targets);
+    if(!subject)return 'no_target';
+    const ok=c.op==='status_present'?hasStatus(subject,c.statusId,state)
+      :c.op==='charge_at_least'?subject.charge >= c.amount
+      :c.op==='round_at_least'?state.round >= c.round
+      :c.op==='hp_below_pct'?subject.hp*100<=subject.maxHp*c.pct
+      :c.op==='blocked_damage_at_least'?source.prevRoundShieldBlocked>=c.amount
+      :false;
+    if(!ok)return `condition_${c.op}`;
+  }
+  return null;
+}
+function putStatus(unit,id,duration,state){int(duration,'status_duration');unit.statuses=unit.statuses.filter(s=>s.id!==id||s.expiresAt<state.round);unit.statuses.push({id,expiresAt:state.round+Math.max(1,duration)-1});logEntry(state,'status',{target:unit.id,statusId:id,duration});}
+function inflictDamage(state,source,target,amount,info={}){
+  const before=target.hp;
+  const shieldUsed=Math.min(target.shield,amount);
+  let remaining=shieldUsed;
+  for(const layer of target.shieldLayers){const taken=Math.min(remaining,layer.amount);layer.amount-=taken;remaining-=taken;if(!remaining)break;}
+  target.shieldLayers=target.shieldLayers.filter(layer=>layer.amount>0);
+  target.shield-=shieldUsed;
+  const hpLoss=Math.min(target.hp,Math.max(0,amount-shieldUsed));
+  target.hp-=hpLoss;
+  if(target.shieldBlockedCurrent!==undefined)target.shieldBlockedCurrent+=shieldUsed;
+  logEntry(state,'damage',{from:source.id,to:target.id,amount,hpLoss,shieldUsed,remainingHp:target.hp,remainingShield:target.shield,...info});
+  return before-target.hp;
+}
+function resolveSkill(state,unit,skill,level,targets){
+  const srcScale=(base,op)=>DAMAGE_EFFECTS.has(op)?skillScale(base,level,state.levelConfig):base;
+  for(const fx of skill.effects){
+    if(fx.op==='passive_modifier')continue;
+    if(fx.op==='damage'){
+      for(const target of targets){if(target.hp<=0)continue;
+        const defense=skill.damageCategory==='physical'?target.physicalDefense:skill.damageCategory==='special'?target.specialDefense:0;
+        const bonus=hasStatus(target,'mark',state)?passiveAmt(unit,'on_damage_marked','damagePct',state):0;
+        const amount=computeDamage({atk:unit.atk,powerPct:fx.powerPct,defense,element:skill.element,targetElement:target.element,level,skillLevelConfig:state.levelConfig,bonusPct:bonus});
+        inflictDamage(state,unit,target,amount,{skillId:skill.id,element:skill.element});
+      }
+    }else if(fx.op==='shield'){
+      for(const target of targets){if(target.hp<=0)continue;
+        const amount=srcScale(fx.amount,'shield')+passiveAmt(unit,'on_shield','shieldAmount',state);
+        target.shield+=amount;target.shieldLayers.push({amount,expiresAt:state.round+Math.max(1,fx.durationTurns||1)-1});
+        logEntry(state,'shield',{from:unit.id,to:target.id,skillId:skill.id,amount,total:target.shield});
+      }
+    }else if(fx.op==='heal'){
+      for(const target of targets){if(target.hp<=0)continue;
+        const amount=Math.min(srcScale(fx.amount,'heal'),target.maxHp-target.hp);target.hp+=amount;
+        logEntry(state,'heal',{from:unit.id,to:target.id,skillId:skill.id,amount});
+      }
+    }else if(fx.op==='self_damage'){
+      const amount=Math.min(unit.hp,fx.amount);unit.hp-=amount;logEntry(state,'self_damage',{unit:unit.id,amount});
+      if(unit.hp===0){logEntry(state,'actor_fell_before_remaining_effects',{unit:unit.id,skillId:skill.id});break;}
+    }else if(fx.op==='apply_status'){
+      for(const target of targets)if(target.hp>0){
+        if(fx.statusId==='stun'){
+          if(target.immunities.includes('stun')||hasStatus(target,'control_immunity',state))logEntry(state,'immune',{unit:target.id,statusId:'stun'});
+          else {target.pendingInterrupt+=1;logEntry(state,'interrupt_applied',{from:unit.id,to:target.id,skillId:skill.id});}
+        }else{
+          let dur=fx.durationTurns??fx.durationRounds??1;
+          if(fx.statusId==='mark')dur+=passiveAmt(unit,'on_apply_mark','statusDuration',state);
+          putStatus(target,fx.statusId,dur,state);
+        }
+      }
+    }else if(fx.op==='interrupt'){
+      for(const target of targets)if(target.hp>0){
+        if(target.immunities.includes('stun')||hasStatus(target,'control_immunity',state)) logEntry(state,'immune',{unit:target.id,statusId:'stun',from:unit.id});
+        else {target.pendingInterrupt+=(fx.count||1);logEntry(state,'interrupt_applied',{from:unit.id,to:target.id,skillId:skill.id});}
+      }
+    }else if(fx.op==='remove_status'){
+      for(const target of targets){target.statuses=target.statuses.filter(x=>x.id!==fx.statusId);if(fx.statusId==='stun')target.pendingInterrupt=0;logEntry(state,'status_removed',{unit:target.id,statusId:fx.statusId});}
+    }else if(fx.op==='gain_charge'){
+      unit.charge+=fx.amount;logEntry(state,'charge',{unit:unit.id,total:unit.charge});
+    }else if(fx.op==='spend_charge'){
+      unit.charge=Math.max(0,unit.charge-fx.amount);logEntry(state,'charge',{unit:unit.id,total:unit.charge});
+    }else if(fx.op==='remove_shield'){
+      for(const target of targets){const amount=Math.min(target.shield,fx.amount);let toRemove=amount;for(const layer of target.shieldLayers){const d=Math.min(toRemove,layer.amount);layer.amount-=d;toRemove-=d;if(!toRemove)break;}target.shieldLayers=target.shieldLayers.filter(x=>x.amount>0);target.shield-=amount;logEntry(state,'shield_removed',{unit:target.id,amount});}
+    }else if(fx.op==='redirect_single'){
+      // Control originates on the target but redirects enemy single-target attacks to the caster.
+      for(const target of targets){target.protector={unitId:unit.id,expiresAt:state.round+(fx.durationTurns||1)-1};logEntry(state,'protect',{protector:unit.id,target:target.id});}
+    }else throw Error(`unimplemented_effect:${fx.op}`);
+  }
+}
+function executePartyAction(state,unit,pick){
+  const skillId=typeof pick==='string'?pick:pick.skillId;
+  const preferredTarget=typeof pick==='string'?null:(pick.targetId||null);
+  const s=state.skills.get(skillId);
+  const count=unit.usedSkills[skillId]||0;
+  if(unit.pendingInterrupt>0){unit.pendingInterrupt--;logEntry(state,'action_failed',{unit:unit.id,skillId,reason:'blocked_by_control'});return;}
+  if((unit.readyAt[skillId]||1)>state.round){logEntry(state,'action_failed',{unit:unit.id,skillId,reason:'cooldown'});return;}
+  if(s.usesPerBattle!==null&&s.usesPerBattle!==undefined&&count>=s.usesPerBattle){logEntry(state,'action_failed',{unit:unit.id,skillId,reason:'uses_exhausted'});return;}
+  const targets=resolveTargets(state,unit,s.targetPolicy,preferredTarget);
+  if(targets.length===0){logEntry(state,'action_failed',{unit:unit.id,skillId,reason:'no_target'});return;}
+  const fail=conditionFailure(s,unit,targets,state);
+  if(fail){logEntry(state,'action_failed',{unit:unit.id,skillId,reason:fail});return;}
+  unit.usedSkills[skillId]=count+1;
+  unit.readyAt[skillId]=state.round+Math.max(1,s.cooldownRounds);
+  const level=s.sourceType==='normal'?skillLevelFromXP(state.skillProgress[unit.id]?.[skillId]?.xp||0,state.levelConfig):1;
+  logEntry(state,'action',{unit:unit.id,skillId,level,targets:targets.map(x=>x.id)});
+  resolveSkill(state,unit,s,level,targets);
+}
+function enemyAction(state,unit,order){
+  if(unit.pendingInterrupt>0){unit.pendingInterrupt--;logEntry(state,'enemy_action_blocked',{unit:unit.id,attempted:order.op,reason:'blocked_by_control'});return;}
+  logEntry(state,'enemy_action',{unit:unit.id,op:order.op});
+  if(order.op==='prepare'||order.op==='wait')return;
+  if(order.op==='apply_shield') {unit.shield+=(order.amount||0);unit.shieldLayers.push({amount:order.amount||0,expiresAt:state.round+Math.max(1,order.durationTurns||1)-1});logEntry(state,'shield',{from:unit.id,to:unit.id,amount:order.amount, total:unit.shield});return;}
+  if(order.op==='apply_status') {putStatus(unit,order.statusId,order.durationTurns||1,state);return;}
+  const living=alliesAlive(state);
+  if(!living.length)return;
+  // Fixed target preference. Do not react strategically to builds.
+  let target=living.find(x=>x.id===order.targetId)|| (order.targetPriority||[]).map(id=>living.find(x=>x.id===id)).find(Boolean)||living[0];
+  if(order.op==='interrupt'){
+    if(target.immunities.includes('stun')||hasStatus(target,'control_immunity',state))logEntry(state,'immune',{unit:target.id,statusId:'stun'});
+    else{target.pendingInterrupt+=1;logEntry(state,'interrupt_applied',{from:unit.id,to:target.id});}
+    return;
+  }
+  if(order.op==='attack'||order.op==='area'){
+    const victims=order.op==='area'?living:[target];
+    for(let victim of victims){
+      if(victim.hp<=0)continue;
+      if(order.op==='attack'&&victim.protector&&victim.protector.expiresAt>=state.round){const p=state.units[victim.protector.unitId];if(p?.hp>0){logEntry(state,'redirect',{from:victim.id,to:p.id});victim=p;}}
+      const defense=order.damageCategory==='special'?victim.specialDefense:victim.physicalDefense;
+      let raw=computeDamage({atk:unit.atk,powerPct:order.powerPct||100,defense,element:order.element||'neutral',targetElement:victim.element});
+      if(order.op==='area'&&hasStatus(unit,'weaken_area',state))raw=Math.floor(raw*45/100);
+      inflictDamage(state,unit,victim,raw,{skillId:`enemy_${order.op}`});
+    }
+    return;
+  }
+}
+function objectiveState(state,objective,finalTurn){
+  const enemyAlive=targetsAlive(state).length>0;
+  const partyAlive=alliesAlive(state).length>0;
+  const victim=objective.targetId?state.units[objective.targetId]:null;
+  if(objective.type==='DEFEAT_ALL_BY_ROUND'){
+    if(!enemyAlive)return 'victory';
+    if(!partyAlive)return 'defeat';
+    return finalTurn?'timeout':null;
+  }
+  if(objective.type==='SURVIVE_THROUGH_ROUND'){
+    if(!partyAlive)return 'defeat';
+    return finalTurn?'victory':null;
+  }
+  if(objective.type==='PROTECT_TARGET_THROUGH_ROUND'){
+    if(!victim||victim.hp<=0)return 'defeat';
+    return finalTurn?'victory':null;
+  }
+  throw Error('unknown_objective');
+}
+function runBattle(catalog,encounter,input){
+  const {maps,permissions}=validateBattleInput(catalog,encounter,input);
+  const state={round:0,events:[],units:{},partyOrder:input.party.map(x=>x.characterId),enemyOrder:encounter.enemies.map(x=>x.id),skills:maps.skills,levelConfig:catalog.heroSystem.skillLevel,skillProgress:input.progressBySkill||{}};
+  for(const p of input.party){const s=input.stats[p.characterId],access=permissions.get(p.characterId);
+    state.units[p.characterId]={id:p.characterId,team:'player',maxHp:s.hp,hp:s.hp,atk:s.atk,physicalDefense:s.physicalDefense,specialDefense:s.specialDefense,spd:s.spd,element:s.element||'neutral',shield:0,shieldLayers:[],charge:0,statuses:[],immunities:[...(s.immunities||[])],pendingInterrupt:0,usedSkills:{},readyAt:{},shieldBlockedCurrent:0,prevRoundShieldBlocked:0,protector:null,passive:access.passive};
+  }
+  for(const e of encounter.enemies){state.units[e.id]={...copy(e),team:'enemy',maxHp:e.hp,shield:0,shieldLayers:[],charge:0,statuses:[],immunities:[...(e.immunities||[])],pendingInterrupt:0,usedSkills:{},readyAt:{},shieldBlockedCurrent:0,prevRoundShieldBlocked:0,protector:null,passive:null};}
+  let result=null;
+  for(let round=1;round<=TURNS;round++){
+    state.round=round;
+    for(const u of Object.values(state.units)){
+      u.statuses=currentStatuses(u,state);
+      u.shieldLayers=u.shieldLayers.filter(x=>x.expiresAt>=round);u.shield=u.shieldLayers.reduce((a,x)=>a+x.amount,0);
+      u.prevRoundShieldBlocked=u.shieldBlockedCurrent;
+      u.shieldBlockedCurrent=0;
+    }
+    const row=input.plan[round-1];
+    const ready=Object.values(state.units).filter(x=>x.hp>0).sort((a,b)=>b.spd-a.spd||a.id.localeCompare(b.id));
+    for(const unit of ready){
+      if(unit.hp<=0)continue;
+      if(unit.team==='player')executePartyAction(state,unit,row.actions[unit.id]);
+      else enemyAction(state,unit,encounter.enemies.find(x=>x.id===unit.id).schedule[round-1]);
+      result=objectiveState(state,encounter.objective,false);
+      if(result)break;
+    }
+    if(!result)result=objectiveState(state,encounter.objective,round===TURNS);
+    if(result)break;
+  }
+  if(!result)throw Error('battle_did_not_resolve');
+  const units=Object.fromEntries(Object.entries(state.units).map(([id,u])=>[id,{hp:u.hp,shield:u.shield,charge:u.charge,usedSkills:copy(u.usedSkills)}]));
+  return {schemaVersion:'combat-result-v0.3',rulesVersion:catalog.rulesVersion,encounterId:encounter.id,objectiveType:encounter.objective.type,outcome:result,completionRound:state.round,units,events:state.events};
+}
+function awardStoryXP(catalog,ledger,event,battleResult){
+  // Ledger must be a per-player persisted transaction in a real app. This is an in-memory proof.
+  const next=copy(ledger);
+  if(event.source!=='canonical_story_event'||event.canonicalResolution!==true)return {awarded:false,reason:'not_story',ledger:next};
+  if(next.awardedEventIds.includes(event.eventId))return {awarded:false,reason:'already_awarded',ledger:next};
+  const skills=indexBy(catalog.skills);
+  const actions=new Set(battleResult.events.filter(x=>x.type==='action'&&skills.get(x.skillId)?.sourceType==='normal').map(x=>`${x.unit}|${x.skillId}`));
+  for(const pair of actions){const [unit,skillId]=pair.split('|');next.skillXP[unit]??={};next.skillXP[unit][skillId]=Math.min(catalog.heroSystem.skillLevel.requiredTotalXP.at(-1),(next.skillXP[unit][skillId]||0)+1);}
+  next.awardedEventIds.push(event.eventId);
+  return {awarded:true,ledger:next,skillsAwarded:[...actions].sort()};
+}
+
+/**
+ * RPG character-level 0.6: purely deterministic player-side stat derivation.
+ * Provisional cap 50; growth across Lv1..cap is deliberately small.
+ * Does NOT mutate C, engine, encounter, or past BattleResult.
+ * No level-driven enemy scaling, no XP/grind system, and no new ability unlocks.
+ */
+
+
+
+const CHARACTER_LEVEL_POLICY_V06=Object.freeze({
+  version:'character-level-v0.6',
+  cap:50,
+  maxBonusPct:Object.freeze({hp:15,atk:8,physicalDefense:10,specialDefense:10}),
+  nonScaling:['spd','element','immunities'],
+  rounding:'floor_each_final_stat',
+});
+function ensureInt(n,name,min,max=Number.MAX_SAFE_INTEGER){
+  if(!Number.isSafeInteger(n)||n<min||n>max)throw Error(`invalid_${name}:${n}`);
+}
+function validateLevelPolicy(policy=CHARACTER_LEVEL_POLICY_V06){
+ ensureInt(policy.cap,'level_cap',2,1000);
+ if(!policy.maxBonusPct||typeof policy.maxBonusPct!=='object')throw Error('bad_level_bonus');
+ for(const k of ['hp','atk','physicalDefense','specialDefense'])ensureInt(policy.maxBonusPct[k],`bonus_${k}`,0,100);
+ return policy;
+}
+function deriveCharacterStats(baseStats,characterLevel,policy=CHARACTER_LEVEL_POLICY_V06){
+ validateLevelPolicy(policy);ensureInt(characterLevel,'character_level',1,policy.cap);
+ if(!baseStats||typeof baseStats!=='object')throw Error('missing_base_stats');
+ const res=structuredClone(baseStats);
+ const num=BigInt(characterLevel-1),den=BigInt(policy.cap-1);
+ for(const [stat,bonus] of Object.entries(policy.maxBonusPct)){
+   const value=baseStats[stat];ensureInt(value,`base_${stat}`,0);
+   const grown=(BigInt(value)*(100n*den+BigInt(bonus)*num))/(100n*den);
+   if(grown>BigInt(Number.MAX_SAFE_INTEGER))throw Error('level_stat_overflow');
+   res[stat]=Number(grown);
+ }
+ ensureInt(baseStats.spd,'base_spd',0);
+ // SPF/element/immunities and all other supplied non-scaling fields remain unchanged.
+ return res;
+}
+/** Strict level isolation: no external already-scaled stats input, fresh canonical stats each run. */
+function prepareLeveledBattle(catalog,encounter,input,{baseStats,levels,policy=CHARACTER_LEVEL_POLICY_V06}={}){
+ validateLevelPolicy(policy);
+ if(!baseStats||!levels)throw Error('level_snapshot_requires_base_stats_and_levels');
+ const ids=input.party.map(p=>p.characterId);
+ if(ids.length!==new Set(ids).size)throw Error('duplicated_party');
+ const lkeys=Object.keys(levels).sort(),idsSorted=[...ids].sort();
+ if(JSON.stringify(lkeys)!==JSON.stringify(idsSorted))throw Error('level_party_mismatch');
+ const stats={};
+ for(const id of ids){
+   if(!Object.hasOwn(baseStats,id))throw Error(`missing_base_character:${id}`);
+   stats[id]=deriveCharacterStats(baseStats[id],levels[id],policy);
+ }
+ const computed={...structuredClone(input),stats};
+ validateBattleInput(catalog,encounter,computed);
+ const snapshot={characterLevels:structuredClone(levels),characterLevelRulesVersion:policy.version,
+  characterLevelCap:policy.cap,stats:structuredClone(stats),skillProgress:structuredClone(input.progressBySkill||{}),
+  encounterId:encounter.id,encounterRulesVersion:catalog.rulesVersion};
+ return {input:computed,snapshot};
+}
+function runLeveledBattle(catalog,encounter,input,options){
+ const {input:prepared,snapshot}=prepareLeveledBattle(catalog,encounter,input,options);
+ const battle=runBattle(catalog,encounter,prepared);
+ return {...battle,characterLevelSnapshot:snapshot};
+}
+
+// Browser-only v0.8 prototype controller. Battle rules are imported above in the
+// generated HTML, unchanged from v0.3 except assert replacement for the browser.
+const C = JSON.parse(document.getElementById('rpg-catalog').textContent);
+const EXAMPLES = JSON.parse(document.getElementById('rpg-witnesses').textContent);
+const skillById = Object.fromEntries(C.skills.map(x => [x.id, x]));
+const characterById = Object.fromEntries(C.characters.map(x=>[x.id,x]));
+const weaponById = Object.fromEntries(C.weapons.map(x=>[x.id,x]));
+const gemById = Object.fromEntries(C.classGems.map(x=>[x.id,x]));
+const gentle={...CHARACTER_LEVEL_POLICY_V06,version:'v0.8-gentle-proposal',maxBonusPct:{hp:10,atk:5,physicalDefense:8,specialDefense:8}};
+const earlySkills={H:['h_g_strike','h_g_shield','h_g_recover','h_g_guard'],G:['g_flame_edge','g_interrupt','g_wall','g_heal'],T:['t_water_mark','t_dampen','t_shield_break','t_cleanse']};
+const earlyWeapons={H:'h_unique_weapon',G:'g_sword',T:'t_wood_scroll'};
+const earlyEnemy=structuredClone(C.encounters.find(x=>x.id==='echo_mage'));
+earlyEnemy.id='chapter1_probe_early';earlyEnemy.enemies[0].hp=900;earlyEnemy.enemies[0].atk=160;
+const encounterById=Object.fromEntries([earlyEnemy,...C.encounters].map(x=>[x.id,x]));
+const enemyNames={chapter1_probe_early:'序盤・高速術師（調整案）',echo_mage:'高速術師（旧試作）',immune_sentinel:'行動阻害無効の番兵',warded_relay:'防壁の番人'};
+const DISPLAY_NAMES={h_basic:'通常攻撃',h_weapon_attack:'専用武器攻撃'};
+const nameOf=id=>DISPLAY_NAMES[id]||skillById[id]?.name || characterById[id]?.name || enemyNames[id] || id;
+const htmlSafe=v=>String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
+const $=s=>document.querySelector(s);
+const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
+const partyIds=()=>['H',state.ally1,state.ally2];
+const isEarly=()=>state.stage==='early';
+function makeInitial(stage='early'){
+ const early=stage==='early';const ally1='G',ally2='T';
+ const st={stage,enemy:early?'chapter1_probe_early':'echo_mage',ally1,ally2,lv:1,skillLv:1,gems:early?['gem_guard']:['gem_guard','gem_tide','gem_flame'],primaryGem:'gem_guard',weapons:{H:'h_unique_weapon',G:'g_sword',T:'t_wood_scroll',S:'s_fire_blade'},equipped:{},plan:{},targets:{},lastResult:null};
+ st.equipped.H=early?[...earlySkills.H]:['h_g_shield','h_g_guard','h_t_water','h_t_mark','h_f_fire'];
+ st.equipped.G=early?[...earlySkills.G]:[...characterById.G.learnableSkillIds.slice(0,5)];
+ st.equipped.T=early?[...earlySkills.T]:[...characterById.T.learnableSkillIds.slice(0,5)];
+ st.equipped.S=[...characterById.S.learnableSkillIds.slice(0,5)];
+ for(let t=1;t<=5;t++){st.plan[t]={H:'h_basic',G:'g_basic',T:'t_basic',S:'s_basic'};st.targets[t]={};}
+ return st;
+}
+let state=makeInitial();
+function availableNormalSkills(id){
+ if(id==='H')return [...new Set(state.gems.flatMap(g=>gemById[g].grantedNormalSkillIds))];
+ return isEarly()?earlySkills[id]||[]:characterById[id].learnableSkillIds;
+}
+function actionSkillIds(id){
+ const ch=characterById[id],weapon=weaponById[state.weapons[id]];
+ const inherent=id==='H'?gemById[state.primaryGem].signatureActiveSkillId:ch.innateActiveId;
+ return [ch.basicSkillId,...(state.equipped[id]||[]),weapon.activeSkillId,inherent];
+}
+function repair(){
+ for(const id of partyIds()){
+  const valid=new Set(availableNormalSkills(id));state.equipped[id]=(state.equipped[id]||[]).filter(x=>valid.has(x)).slice(0,5);
+ }
+ for(let t=1;t<=5;t++)for(const id of partyIds())if(!actionSkillIds(id).includes(state.plan[t][id])){
+  state.plan[t][id]=characterById[id].basicSkillId;delete state.targets[t][id];
+ }
+}
+function sectionTitle(s,sub){return `<div class="section-head"><h2>${s}</h2>${sub?`<span>${sub}</span>`:''}</div>`;}
+function choiceHtml(value,label,selected){return `<option value="${htmlSafe(value)}" ${selected===value?'selected':''}>${htmlSafe(label)}</option>`;}
+function renderSetup(){
+ $('#sample-zone').hidden=!isEarly();
+ const enemyList=isEarly()?[earlyEnemy]:C.encounters;
+ $('#setting-stage').innerHTML=choiceHtml('early','序盤（宝玉1個・技制限）',state.stage)+choiceHtml('free','自由検証（全宝玉・技）',state.stage);
+ $('#setting-enemy').innerHTML=enemyList.map(e=>choiceHtml(e.id,enemyNames[e.id]||e.id,state.enemy)).join('');
+ $('#setting-level').value=state.lv;$('#level-value').textContent=`Lv.${state.lv}`;
+ $('#setting-skill-level').value=state.skillLv;$('#skill-level-value').textContent=`Lv.${state.skillLv}`;
+ const memberOptions=['G','T','S'];
+ $('#ally-one').disabled=isEarly();$('#ally-two').disabled=isEarly();
+ $('#ally-one').innerHTML=memberOptions.map(id=>choiceHtml(id,characterById[id].name,state.ally1)).join('');
+ $('#ally-two').innerHTML=memberOptions.map(id=>choiceHtml(id,characterById[id].name,state.ally2)).join('');
+ $('#gems').innerHTML=C.classGems.map(g=>`<label class="gem-chip ${state.gems.includes(g.id)?'active':''} ${isEarly()?'locked':''}"><input type="checkbox" data-gem="${g.id}" ${state.gems.includes(g.id)?'checked':''} ${isEarly()?'disabled':''}/><span>${htmlSafe(g.name)}</span></label>`).join('');
+ $('#primary-gem').disabled=isEarly();$('#primary-gem').innerHTML=state.gems.map(id=>choiceHtml(id,gemById[id].name,state.primaryGem)).join('');
+ $('#setup-note').textContent=isEarly()?'序盤は宝玉1個・仲間2人・各4通常技に限定。既存の試験条件を再現します。':'自由検証では宝玉を最大3個組み合わせ、編成と装備を変えられます。';
+ $('#boss-objective').textContent=(encounterById[state.enemy].objective.type==='SURVIVE_THROUGH_ROUND'?'5ターン終了まで生存':encounterById[state.enemy].objective.type==='PROTECT_TARGET_THROUGH_ROUND'?'対象を5ターン守る':'5ターン以内に撃破');
+ $('#enemy-warning').textContent='敵の未来の行動表は非表示です。初回戦闘後は、実際に到達したターンのログだけ確認できます。';
+}
+function renderEquip(){
+ $('#equip-cards').innerHTML=partyIds().map(id=>{
+ const ch=characterById[id],choices=availableNormalSkills(id),selected=state.equipped[id]||[],weapons=ch.eligibleWeaponIds;
+ const chips=choices.map(sk=>`<label class="skill-chip ${selected.includes(sk)?'selected':''}"><input type="checkbox" data-equip="${id}" data-skill="${sk}" ${selected.includes(sk)?'checked':''}><span>${htmlSafe(nameOf(sk))}</span></label>`).join('');
+ return `<div class="loadout-card"><div class="loadout-top"><strong>${htmlSafe(ch.name)}</strong><span>${selected.length}/5 スキル</span></div><label class="field-label">武器</label><select data-weapon="${id}">${weapons.map(w=>choiceHtml(w,weaponById[w].name,state.weapons[id])).join('')}</select><div class="field-label" style="margin-top:12px">持ち込む通常スキル（最大5）</div><div class="skill-chips">${chips}</div>${id==='H'?`<p class="micro">主人公の奥義・パッシブはメイン宝玉によって変化。</p>`:''}</div>`;
+ }).join('');
+}
+function renderPlan(){
+ repair();
+ const ids=partyIds();
+ let table='<div class="turn-table"><div class="turn-header"><span>ターン</span>'+ids.map(id=>`<span>${htmlSafe(characterById[id].name)}</span>`).join('')+'</div>';
+ for(let t=1;t<=5;t++){
+  table+=`<div class="turn-row"><div class="turn-label"><strong>${t}T</strong><span>${t===1?'開始':t===5?'最終':'予約'}</span></div>`;
+  for(const id of ids){
+   const choices=actionSkillIds(id),cur=state.plan[t][id];
+   table+=`<div class="turn-cell"><select data-turn="${t}" data-actor="${id}" aria-label="${t}T ${id} の技">${choices.map(sk=>choiceHtml(sk,`${nameOf(sk)}${skillById[sk].usesPerBattle===1?' [1回]':''}`,cur)).join('')}</select>`;
+   const skill=skillById[cur];
+   if(skill?.targetPolicy==='ally')table+=`<select data-target-turn="${t}" data-target-actor="${id}" class="target-select" aria-label="対象の味方">${choiceHtml('','対象：自動',state.targets[t][id]||'')}${ids.map(v=>choiceHtml(v,characterById[v].name,state.targets[t][id]||'')).join('')}</select>`;
+   table+='</div>';
+  }
+  table+='</div>';
+ }
+ table+='</div>';$('#plan-area').innerHTML=table;
+ renderWarnings();
+}
+function renderWarnings(){
+ const warnings=[];
+ for(const id of partyIds()){
+  const used={};
+  for(let t=1;t<=5;t++){
+   const skill=skillById[state.plan[t][id]];
+   if(!skill)continue;
+   if(skill.usesPerBattle===1&&used[skill.id]!==undefined)warnings.push(`${t}T ${nameOf(id)}：「${skill.name}」は1戦闘1回限り。`);
+   if(used[skill.id]&&t-used[skill.id].last<Math.max(1,skill.cooldownRounds))warnings.push(`${t}T ${nameOf(id)}：「${skill.name}」はCD中の見込み。`);
+   used[skill.id]={last:t};
+   if(skill.conditions.some(c=>c.op==='charge_at_least')){
+    const hasCharge=Array.from({length:t-1},(_,j)=>state.plan[j+1][id]).some(x=>skillById[x].effects.some(e=>e.op==='gain_charge'));
+    if(!hasCharge)warnings.push(`${t}T ${nameOf(id)}：「${skill.name}」に必要なチャージ予定がありません。`);
+   }
+  }
+ }
+ $('#plan-warnings').innerHTML=warnings.length?`<strong>予約の事前警告（敵の未公開情報は使わない）</strong><ul>${[...new Set(warnings)].map(x=>`<li>${htmlSafe(x)}</li>`).join('')}</ul>`:'<span class="ok">味方の予約から確実に分かるCD・使用回数違反は見つかっていません。</span>';
+}
+function renderAll(){repair();renderSetup();renderEquip();renderPlan();}
+function textForEvent(e){
+ const actor=id=>characterById[id]?.name ||(id===encounterById[state.enemy]?.enemies[0]?.id?'敵':id);
+ const skill=id=>nameOf(id);
+ const reason={blocked_by_control:'行動阻害',cooldown:'クールタイム中',uses_exhausted:'使用回数制限',no_target:'対象なし',status_present:'状態条件未達',charge_at_least:'チャージ不足',blocked_damage_at_least:'防壁条件未達',round_at_least:'ターン条件未達',hp_below_pct:'HP条件未達'};
+ switch(e.type){
+ case 'action':return `${actor(e.unit)} → ${skill(e.skillId)}${e.targets?.length?`（対象：${e.targets.map(actor).join('・')}）`:''}`;
+ case 'action_failed':return `${actor(e.unit)}：${skill(e.skillId)} 不発（${reason[e.reason]||e.reason}）。この手番は行動なし。`;
+ case 'enemy_action':return `敵の行動：${{prepare:'力を溜める',attack:'単体攻撃',area:'全体攻撃',apply_shield:'防壁',interrupt:'行動阻害',apply_status:'状態付与',wait:'待機'}[e.op]||e.op}`;
+ case 'enemy_action_blocked':return '敵の行動を阻害した！';
+ case 'damage':return `${actor(e.to)}：${e.hpLoss}ダメージ（防壁吸収${e.shieldUsed}、残HP ${e.remainingHp}）`;
+ case 'shield':return `${actor(e.to)}：防壁+${e.amount}`;
+ case 'shield_removed':return `${actor(e.unit)}：防壁を${e.amount}削除`;
+ case 'heal':return `${actor(e.to)}：HPを${e.amount}回復`;
+ case 'immune':return `${actor(e.unit)}：行動阻害を無効化`;
+ case 'interrupt_applied':return `${actor(e.to)}：次の行動を妨害される状態になった`;
+ case 'status':return `${actor(e.target)}：${e.statusId}（${e.duration}ターン）`;
+ case 'status_removed':return `${actor(e.unit)}：${e.statusId}を解除`;
+ case 'charge':return `${actor(e.unit)}：チャージ数 ${e.total}`;
+ case 'protect':return `${actor(e.protector)}が${actor(e.target)}を護衛`;
+ case 'redirect':return `${actor(e.from)}への攻撃を${actor(e.to)}が肩代わり`;
+ case 'self_damage':return `${actor(e.unit)}：反動${e.amount}`;
+ default:return `${e.type} ${JSON.stringify(e).slice(0,140)}`;
+ }
+}
+function renderResult(result){
+ $('#result').hidden=false;
+ const win=result.outcome==='victory';
+ $('#result-title').textContent=win?'勝利・目標達成':result.outcome==='timeout'?'時間切れ・目標未達':'敗北・目標未達';
+ $('#result-title').className=win?'victory':'defeat';
+ $('#result-summary').textContent=`${result.completionRound}Tで決着｜${enemyNames[state.enemy]}｜Lv.${state.lv}・スキルLv.${state.skillLv}`;
+ $('#result-units').innerHTML=Object.entries(result.units).map(([id,u])=>`<div class="unit-result"><strong>${htmlSafe(characterById[id]?.name||'敵')}</strong><span>HP ${u.hp}</span><small>防壁 ${u.shield}</small></div>`).join('');
+ const rounds=Object.groupBy(result.events,x=>x.round);
+ $('#battle-log').innerHTML=Object.entries(rounds).map(([t,events])=>`<details class="round-log" open><summary>${t}ターン目 <span>${events.length}件</span></summary><div>${events.map(x=>`<div class="event ${x.type==='action_failed'||x.type==='enemy_action_blocked'?'failure':x.type==='enemy_action'?'enemy':''}">${htmlSafe(textForEvent(x))}</div>`).join('')}</div></details>`).join('');
+ $('#result').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function battle(){
+ $('#run-error').textContent='';
+ try{
+  repair();
+  const ids=partyIds(),party=ids.map(id=>({characterId:id,weaponId:state.weapons[id],normalSkillIds:[...state.equipped[id]],...(id==='H'?{socketedGemIds:[...state.gems],primaryGemId:state.primaryGem}:{})}));
+  const progress={};for(const id of ids)progress[id]=id==='H'?{ownedGemIds:isEarly()?['gem_guard']:C.classGems.map(x=>x.id),unlockedSlots:isEarly()?1:3,learnedSkillIds:availableNormalSkills('H')}:{learnedSkillIds:availableNormalSkills(id)};
+  const plan=Array.from({length:5},(_,i)=>({round:i+1,actions:Object.fromEntries(ids.map(id=>[id,state.targets[i+1][id]?{skillId:state.plan[i+1][id],targetId:state.targets[i+1][id]}:state.plan[i+1][id]]))}));
+  const xp=state.skillLv===1?0:C.heroSystem.skillLevel.requiredTotalXP[state.skillLv-1];
+  const progressBySkill=Object.fromEntries(ids.map(id=>[id,Object.fromEntries(state.equipped[id].map(skill=>[skill,{xp}]))]));
+  const encounter=structuredClone(encounterById[state.enemy]);
+  const result=runLeveledBattle(C,encounter,{party,progress,plan,progressBySkill},{baseStats:C.sampleBattleStats,levels:Object.fromEntries(ids.map(id=>[id,state.lv])),policy:gentle});
+  state.lastResult=result;renderResult(result);
+ }catch(e){$('#run-error').textContent=`戦闘を実行できません：${e.message}`;console.error(e);}
+}
+function loadWitness(family){
+ if(!isEarly())return;
+ const witness=EXAMPLES[family];if(!witness){$('#run-error').textContent='この例はまだありません';return;}
+ for(const row of witness.plan){for(const [id,skill] of Object.entries(row.actions))state.plan[row.round][id]=skill;state.targets[row.round]={};}
+ renderPlan();$('#run-error').textContent='';
+ $('#plan-area').scrollIntoView({behavior:'smooth',block:'center'});
+}
+function changeStage(st){state=makeInitial(st);$('#result').hidden=true;renderAll();}
+$('#setting-stage').addEventListener('change',e=>changeStage(e.target.value));
+$('#setting-enemy').addEventListener('change',e=>{state.enemy=e.target.value;$('#result').hidden=true;renderSetup();});
+$('#setting-level').addEventListener('input',e=>{state.lv=Number(e.target.value);$('#level-value').textContent=`Lv.${state.lv}`;});
+$('#setting-skill-level').addEventListener('input',e=>{state.skillLv=Number(e.target.value);$('#skill-level-value').textContent=`Lv.${state.skillLv}`;});
+$('#ally-one').addEventListener('change',e=>{state.ally1=e.target.value;if(state.ally1===state.ally2)state.ally2=['G','T','S'].find(x=>x!==state.ally1);renderAll();});
+$('#ally-two').addEventListener('change',e=>{state.ally2=e.target.value;if(state.ally1===state.ally2)state.ally1=['G','T','S'].find(x=>x!==state.ally2);renderAll();});
+$('#gems').addEventListener('change',e=>{const box=e.target.closest('[data-gem]');if(!box)return;const gem=box.dataset.gem;if(e.target.checked){if(state.gems.length>=3){e.target.checked=false;return;}state.gems.push(gem);}else{if(state.gems.length===1){e.target.checked=true;return;}state.gems=state.gems.filter(g=>g!==gem);}if(!state.gems.includes(state.primaryGem))state.primaryGem=state.gems[0];renderAll();});
+$('#primary-gem').addEventListener('change',e=>{state.primaryGem=e.target.value;renderPlan();});
+$('#equip-cards').addEventListener('change',e=>{
+ const weapon=e.target.closest('[data-weapon]');if(weapon){state.weapons[weapon.dataset.weapon]=weapon.value;renderAll();return;}
+ const field=e.target.closest('[data-equip]');if(!field)return;
+ const id=field.dataset.equip,skill=field.dataset.skill;const set=new Set(state.equipped[id]);
+ if(field.checked){if(set.size>=5){$('#run-error').textContent='通常スキルは最大5個です。別のスキルを外してください。';field.checked=false;return;}set.add(skill);}else set.delete(skill);
+ state.equipped[id]=[...set];$('#run-error').textContent='';renderAll();
+});
+$('#plan-area').addEventListener('change',e=>{
+ const turn=e.target.closest('[data-turn]');if(turn){const t=Number(turn.dataset.turn),id=turn.dataset.actor;state.plan[t][id]=turn.value;delete state.targets[t][id];renderPlan();return;}
+ const target=e.target.closest('[data-target-turn]');if(target){const t=Number(target.dataset.targetTurn),id=target.dataset.targetActor;if(target.value)state.targets[t][id]=target.value;else delete state.targets[t][id];}
+});
+$('#battle-button').addEventListener('click',battle);
+$('#basic-button').addEventListener('click',()=>{for(let t=1;t<=5;t++)for(const id of partyIds()){state.plan[t][id]=characterById[id].basicSkillId;delete state.targets[t][id];}renderPlan();});
+$('#sample-buttons').addEventListener('click',e=>{const x=e.target.closest('[data-witness]');if(x)loadWitness(x.dataset.witness);});
+$('#reset-button').addEventListener('click',()=>changeStage(state.stage));
+$('#save-button').addEventListener('click',()=>{
+ if(!state.lastResult)return;
+ const receipt={testVersion:'v0.8',stage:state.stage,enemy:state.enemy,level:state.lv,skillLevel:state.skillLv,party:partyIds(),gems:state.gems,mainGem:state.primaryGem,weapons:state.weapons,equipped:state.equipped,plan:state.plan,targets:state.targets,result:state.lastResult};
+ const blob=new Blob([JSON.stringify(receipt,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download=`rpg_playtest_${state.enemy}_Lv${state.lv}.json`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+renderAll();
+document.body.dataset.appReady='true';
+
+
+</script></body></html>
