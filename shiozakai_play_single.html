@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#101825"/>
+<meta name="description" content="潮境の命珠 — 仮ストーリーと5ラウンド戦闘を遊べるノベルRPGプロトタイプ"/>
+<title>潮境の命珠 | ノベルRPG プロトタイプ</title>
+<style>
+:root{--bg:#0c141e;--sidebar:#101b29;--panel:#192535;--panel2:#1e2d3e;--line:#314255;--muted:#99aebf;--text:#edf3f6;--gold:#e6bd80;--mint:#91d6c6;--red:#ed948d;--blue:#9ec7f7;--radius:16px;--shadow:0 18px 45px #020b1475;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",system-ui,sans-serif;color:var(--text)}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;min-height:100vh;background:radial-gradient(ellipse 65% 45% at 88% 0%,#23394d73,transparent 67%),var(--bg);font-size:14px}button,select,input{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:3px}h1,h2,h3,p{margin:0}h1,h2,h3{font-family:"Yu Mincho","Hiragino Mincho ProN",serif}a{color:var(--mint)}
+.app-shell{display:grid;grid-template-columns:244px minmax(0,1fr);min-height:100vh;max-width:1650px;margin:auto}.sidebar{background:#111d2bcf;border-right:1px solid #ffffff19;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;padding:32px 18px;z-index:10}.brand{display:flex;align-items:center;gap:11px;padding:0 11px 42px}.brand-mark{font-size:40px;color:var(--gold);text-shadow:0 0 30px #e6bd8050}.brand strong{display:block;letter-spacing:2px;font-family:"Yu Mincho",serif;font-size:19px;font-weight:600}.brand small{display:block;color:#8a9caa;font-size:8px;letter-spacing:1.7px;margin-top:5px}.nav{display:grid;gap:7px}.nav-link{border:1px solid transparent;text-align:left;display:flex;align-items:center;gap:14px;border-radius:10px;padding:15px 17px;color:#aabcc9;background:transparent;font-weight:600;transition:.15s}.nav-link span{font-size:20px;width:23px;text-align:center;color:#a5b9c7}.nav-link.active,.nav-link:hover{background:#31435680;color:#fff;border-color:#52657b78}.nav-link.active:before{content:"";height:20px;width:3px;border-radius:3px;background:var(--gold);position:absolute;left:18px}.nav-link.active{padding-left:22px}.sidebar-note{margin-top:auto;padding:20px 12px;border-top:1px solid #ffffff1e;color:#c0d0d6;line-height:1.9;font-size:12px}.dot{display:inline-block;width:8px;height:8px;background:#78ceb1;border-radius:50%;margin-right:6px;box-shadow:0 0 11px #86deb2}.subtle{color:#8398a8}.main-column{display:flex;flex-direction:column;min-width:0}.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:26px clamp(24px,4vw,58px);border-bottom:1px solid #ffffff10;min-height:106px}.breadcrumb{display:grid;gap:6px}.breadcrumb span,.eyebrow{color:var(--gold);letter-spacing:3px;text-transform:uppercase;font-size:10px;font-weight:800}.breadcrumb strong{font-family:"Yu Mincho",serif;font-size:19px;font-weight:500}.topbar-right{display:flex;gap:8px;align-items:center}.tiny-tag{font-size:10px;letter-spacing:.3px;border:1px solid #64758b80;border-radius:999px;color:#a7b9c6;padding:6px 10px}.icon-btn{background:transparent;border:1px solid #56677e99;border-radius:9px;color:#b1c6d2;height:34px;width:34px}.main-view{width:100%;max-width:1300px;padding:30px clamp(24px,4vw,58px) 70px;margin:auto;flex:1}.footer{padding:12px 30px 24px;text-align:center;color:#738696;font-size:10px;letter-spacing:1px;line-height:1.8}
+.card{background:linear-gradient(150deg,#1c2a3bd9,#172231ed);border:1px solid #46566b65;border-radius:var(--radius);box-shadow:0 9px 30px #010a122e}.panel{padding:24px}.section-title{font-family:"Yu Mincho",serif;font-size:25px;font-weight:500;line-height:1.5}.section-intro{color:var(--muted);font-size:13px;line-height:1.9;margin-top:8px}.section-head{margin-bottom:22px;display:flex;align-items:end;justify-content:space-between;gap:16px}.divider{height:1px;background:#ffffff19;margin:16px 0}.muted{color:var(--muted)}.small{font-size:12px}.micro{font-size:10px}.gold{color:var(--gold)}.green{color:var(--mint)}.warn{color:var(--red)}.chip{display:inline-flex;align-items:center;gap:6px;background:#a1c0db17;border:1px solid #a4c2d035;padding:6px 10px;border-radius:999px;color:#bed0da;font-size:10px;font-weight:650}.chip.goldchip{color:var(--gold);background:#d9b07913;border-color:#ddbd8250}.chip.mintchip{color:var(--mint);background:#75d3c312;border-color:#75d3c350}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 19px;border-radius:9px;border:1px solid #71859a72;background:#27394d;color:#eff4f7;font-weight:700;letter-spacing:.3px;white-space:nowrap;transition:.15s;text-decoration:none}.btn:hover{filter:brightness(1.13);transform:translateY(-1px)}.btn.primary{background:linear-gradient(135deg,#e3bc80,#cda66b);color:#172131;border-color:#e4bd83;box-shadow:0 5px 20px #cda66b25}.btn.ghost{background:transparent;color:#b9cad6}.btn.tiny{font-size:11px;padding:7px 10px}.btn.block{width:100%}.btn.danger{border-color:#cc81818e;color:#f1b3a6}.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.field{display:grid;gap:6px}.field label{color:#bfcdd7;font-size:11px}.select{background:#111f2d;border:1px solid #53667b8c;color:#e6f0f4;padding:11px 12px;border-radius:8px;width:100%;min-width:0;appearance:auto}.select option{background:#142232;color:#ecf4f7}.notice{color:#b2c5d2;background:#263a4d8c;border:1px solid #5d728553;padding:12px 16px;border-radius:10px;line-height:1.7;font-size:12px}
+/* novel */
+.hero{position:relative;overflow:hidden;border:1px solid #829eb253;border-radius:20px;min-height:370px;background:radial-gradient(circle at 72% 32%,#c4b89f3d,transparent 14%),linear-gradient(145deg,#29445b 0%,#243d52 29%,#182c3e 58%,#131f2d 100%);box-shadow:var(--shadow);display:flex;align-items:flex-end}.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(165deg,transparent 42%,#182e43 43%,transparent 44%,transparent 56%,#0e1d2d 57%),repeating-linear-gradient(178deg,#b1b7c408 0px,#b1b7c408 1px,transparent 3px,transparent 20px);opacity:.72}.hero:after{content:"";position:absolute;bottom:0;left:0;right:0;height:38%;background:linear-gradient(transparent,#0c1729e8)}.hero-ornament{position:absolute;right:9%;top:12%;font-size:170px;font-weight:100;color:#c3d6df24;font-family:serif;transform:rotate(8deg);line-height:1}.hero-content{position:relative;z-index:1;padding:42px 42px 35px;max-width:690px}.hero h1{font-weight:500;font-size:clamp(31px,5vw,53px);letter-spacing:5px;margin:10px 0 14px;line-height:1.35;text-shadow:0 6px 30px #0006}.hero p{color:#d5e0e9;line-height:2;font-size:13px;max-width:510px}.hero .actions{margin-top:24px}.story-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(245px,.8fr);gap:18px;margin-top:20px}.story-panel{padding:28px;min-height:242px}.story-text{font-family:"Yu Mincho",serif;font-size:17px;line-height:2.15;letter-spacing:.7px;white-space:pre-line;margin:16px 0 23px;color:#e5edf2}.story-voice{color:var(--gold);font-size:12px;letter-spacing:2px}.story-choices{display:grid;gap:9px}.story-choice{width:100%;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:15px;padding:14px 18px;border:1px solid #556a80a0;background:#24394e8c;color:#ecf2f7;border-radius:9px}.story-choice:hover{border-color:var(--gold);background:#344b62}.quest-item{display:flex;align-items:start;gap:12px;padding:12px 0;border-bottom:1px solid #ffffff14}.quest-index{color:var(--gold);font-family:serif;font-size:21px;min-width:22px}.quest-item strong{font-size:12px}.quest-item p{color:var(--muted);font-size:11px;line-height:1.7;margin-top:6px}.quest-item.active strong{color:#f2d5a7}.quest-item.done .quest-index{color:var(--mint)}
+/* characters */
+.party-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0}.character-card{background:#1a2b3b;border:1px solid #3a5166;border-radius:13px;padding:16px;position:relative;min-width:0;transition:.15s}.character-card.selected{border-color:#d7ae7b98;box-shadow:inset 0 0 0 1px #d7ae7b33}.character-card:hover{border-color:#809cae}.character-card .ch-meta{font-size:10px;color:#c9b28a;letter-spacing:.6px;margin:5px 0 9px}.character-card h3{font-family:"Yu Mincho",serif;font-weight:600;font-size:18px;margin-top:8px}.character-card p{font-size:11px;line-height:1.7;color:var(--muted);margin:7px 0}.character-card .pick{margin-top:12px;min-height:34px;width:100%}.portrait{height:146px;display:flex;align-items:center;justify-content:center;position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 50% 26%,var(--character-haze),transparent 68%),linear-gradient(150deg,#34556a8c,#192f41 70%);border-radius:8px;border:1px solid #ffffff1c}.portrait .orb{height:86px;width:86px;border-radius:50%;background:linear-gradient(150deg,#fff9,#fff1);opacity:.17;position:absolute;top:18px;right:-18px;filter:blur(4px)}.portrait .sigil{font-family:serif;font-size:95px;position:absolute;color:var(--character-haze);opacity:.24;top:5px;left:0;line-height:1}.portrait .head{position:absolute;width:54px;height:65px;background:#ddc7b4;border-radius:45% 45% 48% 48%;top:37px;left:calc(50% - 27px);box-shadow:0 1px 6px #161c2555}.portrait .hair{position:absolute;z-index:2;width:70px;height:61px;border-radius:48% 48% 20% 30%;top:28px;left:calc(50% - 35px);background:var(--character-hair);clip-path:polygon(0 0,100% 0,100% 46%,82% 32%,70% 62%,55% 32%,35% 64%,25% 40%,0 70%)}.portrait .coat{position:absolute;bottom:-15px;width:115px;height:77px;border-radius:40% 40% 0 0;background:linear-gradient(100deg,var(--character-coat),#243545);box-shadow:0 -10px 0 -6px #f2e9dc2c}.portrait.hero-portrait .hair{background:#d6e3ef}.portrait.hero-portrait .coat{background:#365774}.portrait.bear .head{width:70px;height:69px;left:calc(50% - 35px);top:27px;background:#92735d;border-radius:45%}.portrait.bear .hair{width:84px;height:75px;top:17px;left:calc(50% - 42px);background:#80624f;clip-path:ellipse(49% 42%)}.portrait.bear .head:before,.portrait.bear .head:after{content:"";position:absolute;width:19px;height:19px;background:#97785c;border:5px solid #7b5f4b;top:-5px;border-radius:50%}.portrait.bear .head:before{left:-7px}.portrait.bear .head:after{right:-7px}.portrait.long-hair .hair{height:120px;clip-path:polygon(7% 0,93% 0,100% 98%,72% 98%,61% 35%,50% 16%,37% 34%,25% 98%,0 98%)}.portrait .portrait-placeholder{position:absolute;bottom:8px;right:8px;padding:3px 6px;border-radius:5px;background:#081725ad;font-size:9px;color:#c8d5df}.portrait img{width:100%;height:100%;object-fit:contain;position:absolute;z-index:4;background:#1a2c3d}.portrait img[hidden]{display:none}.role-banner{display:flex;align-items:center;justify-content:space-between;gap:10px}.role-banner strong{font-size:12px}.selection-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.member-slot{padding:15px;border:1px solid #526b7d69;border-radius:13px;background:#1c2e40;display:grid;gap:8px}.member-head{display:flex;align-items:center;gap:11px}.member-head .portrait{width:77px;height:83px;flex-shrink:0}.member-head .portrait .head{transform:scale(.65);transform-origin:center top;top:25px}.member-head .portrait .hair{transform:scale(.7);transform-origin:center top;top:17px}.member-head .portrait .coat{transform:scale(.8);transform-origin:center bottom}.member-head h3{font-family:"Yu Mincho",serif;font-size:16px}.stat-line{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.stat-pill{border:1px solid #ffffff13;background:#0d1e2b85;border-radius:5px;padding:5px 7px;color:#afc3ce;font-size:10px}.stat-pill strong{display:block;color:#f0f2f6;font-size:12px}.equipment-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.equipment-row .field label{font-size:9px}
+/* battle planning */
+.battle-header{display:grid;grid-template-columns:1fr 1fr;gap:16px}.enemy-preview{display:grid;gap:9px;padding:16px;max-height:275px;overflow:auto}.enemy-mini{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 4px;border-bottom:1px solid #ffffff19}.enemy-mini strong{font-size:12px}.enemy-mini small{color:#a9bcc7}.round-tabs{display:flex;gap:8px;overflow-x:auto;margin:22px 0 14px;padding-bottom:3px}.round-tab{background:#213145;color:#b6c6d0;border:1px solid #55697b;padding:13px 17px;border-radius:9px;flex:1;white-space:nowrap;min-width:64px}.round-tab.active{border-color:var(--gold);background:#3c3940;color:#efd5af}.plan-grid{display:grid;gap:11px}.plan-row{display:grid;grid-template-columns:180px minmax(0,1fr) minmax(125px,.6fr);align-items:center;gap:12px;padding:12px 15px;border:1px solid #4c627693;border-radius:12px;background:#1c2e4090}.plan-character{display:flex;align-items:center;gap:10px}.plan-character .token{width:37px;height:37px;border-radius:9px;display:grid;place-items:center;background:#344659;border:1px solid #7384965e;color:var(--gold);font-size:17px}.plan-character span{font-size:11px;color:var(--muted)}.plan-character strong{display:block;font-size:13px;margin-top:3px}.skill-description{margin-top:9px;color:#9db2c2;font-size:11px;line-height:1.7}.battle-actions{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:21px}
+/* results */
+.result-banner{padding:27px;text-align:center;border:1px solid #b0c4d354;border-radius:18px;background:radial-gradient(ellipse at 50% -50%,#b0d8bf3a,transparent 80%),#1d2e3f}.result-banner.lost{background:radial-gradient(ellipse at 50% -50%,#e1847b32,transparent 80%),#1d2e3f}.result-banner h2{font-size:44px;color:var(--gold);letter-spacing:5px;margin:12px 0}.result-banner p{color:#c4d3dd;line-height:1.8}.battle-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}.metric{padding:16px;text-align:center;background:#1e3040;border:1px solid #4f63735c;border-radius:10px}.metric strong{display:block;font-size:21px;color:#f1f6f8}.metric span{font-size:10px;color:#9fbbc9}.state-panes{display:grid;grid-template-columns:1fr 1fr;gap:13px}.state-panel{padding:17px}.state-panel h3{font-size:15px;margin-bottom:13px}.hp-line{display:grid;gap:5px;margin-bottom:13px}.hp-top{display:flex;justify-content:space-between;font-size:11px}.hp-meter{height:7px;background:#37495a;border-radius:99px;overflow:hidden}.hp-meter span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#619b8a,#93d5ba);transition:width .2s}.hp-meter.enemy span{background:linear-gradient(90deg,#c77770,#e9a18f)}.logs{height:330px;overflow:auto;background:#101f2de0;border:1px solid #344c5f;border-radius:12px;padding:14px 18px;font-size:11px;line-height:1.9}.log-line{padding:2px 0;color:#b6c7d0}.log-line.round{color:var(--gold);font-weight:800;padding-top:9px;font-size:12px}.log-line.damage{color:#cadbe7}.log-line.heal,.log-line.guard,.log-line.counter{color:#9bd0c5}.log-line.warning,.log-line.poison{color:#efaa9b}.log-line.immune{color:#f0d39d}.info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.info-row{display:flex;justify-content:space-between;border-bottom:1px solid #ffffff14;padding:10px 0;gap:10px;font-size:12px}.codish{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px}
+.toast{opacity:0;visibility:hidden;position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(110px);background:#26374b;border:1px solid #a6c4cd80;border-radius:11px;padding:13px 19px;color:white;box-shadow:var(--shadow);font-size:12px;z-index:99;max-width:min(90vw,500px);transition:transform .25s}.toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+@media(max-width:1080px){.app-shell{grid-template-columns:200px minmax(0,1fr)}.sidebar{padding:26px 10px}.brand strong{font-size:16px}.main-view{padding:24px 22px 60px}.topbar{padding:20px 22px}.party-summary{grid-template-columns:repeat(2,1fr)}.selection-grid{grid-template-columns:repeat(2,1fr)}.plan-row{grid-template-columns:140px 1fr 130px}}
+@media(max-width:760px){.app-shell{display:block;padding-bottom:70px}.sidebar{height:66px;position:fixed;bottom:0;top:auto;left:0;right:0;padding:4px 6px;background:#101c2af5;border-top:1px solid #5b6d8059;border-right:none;z-index:40;display:block}.brand,.sidebar-note{display:none}.nav{grid-template-columns:repeat(5,1fr);gap:1px;height:100%}.nav-link{display:grid;gap:1px;justify-items:center;align-content:center;text-align:center;font-size:9px;padding:5px 1px;border:0;border-radius:7px;white-space:nowrap;line-height:1.4}.nav-link span{font-size:21px;width:auto}.nav-link.active{padding:5px 1px}.nav-link.active:before{display:none}.topbar{min-height:72px;padding:13px 17px}.topbar-right .tiny-tag:nth-child(2){display:none}.breadcrumb span{letter-spacing:1.6px;font-size:8px}.breadcrumb strong{font-size:16px}.main-view{padding:18px 15px 44px}.hero{min-height:354px}.hero-content{padding:28px 24px}.hero h1{font-size:35px}.story-layout,.battle-header,.state-panes{grid-template-columns:1fr}.hero-ornament{font-size:130px;right:2%}.selection-grid{grid-template-columns:1fr}.party-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.character-card{padding:12px}.portrait{height:125px}.plan-row{grid-template-columns:1fr 1fr;gap:9px}.plan-character{grid-column:1/-1}.plan-character .token{height:29px;width:29px}.battle-stats{grid-template-columns:repeat(2,1fr)}.info-grid{grid-template-columns:1fr}.topbar-right{gap:5px}.section-title{font-size:23px}.footer{padding-bottom:20px}}
+@media(max-width:390px){.equipment-row{grid-template-columns:1fr 1fr}.chip{font-size:9px;padding:5px 7px}.party-summary{gap:7px}.character-card h3{font-size:16px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+</style>
+</head>
+<body>
+<div id="app" class="app-shell">
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">◈</span><div><strong>潮境の命珠</strong><small>SHIOZAKAI · PROTOTYPE 01</small></div></div>
+    <nav class="nav" aria-label="メインメニュー">
+      <button data-nav="story" class="nav-link active"><span>◈</span> 物語を読む</button>
+      <button data-nav="party" class="nav-link"><span>♧</span> 編成と装備</button>
+      <button data-nav="battle" class="nav-link"><span>⚔</span> 戦闘準備</button>
+      <button data-nav="library" class="nav-link"><span>▤</span> 敵図鑑・試験</button>
+      <button data-nav="about" class="nav-link"><span>☷</span> この試作について</button>
+    </nav>
+    <div class="sidebar-note"><span class="dot"></span> 4体編成 / 最大5R<br><span class="subtle">物語は仮題・仮設定</span></div>
+  </aside>
+  <div class="main-column">
+    <header class="topbar">
+      <div class="breadcrumb"><span>INTERACTIVE NOVEL RPG</span><strong id="topbar-title">物語</strong></div>
+      <div class="topbar-right"><span class="tiny-tag">Lv. 1</span><span class="tiny-tag">R4：③S9 / ④C13</span><button id="reset-btn" class="icon-btn" title="データを初期化" aria-label="プレイデータを初期化">↺</button></div>
+    </header>
+    <main id="main-view" class="main-view" aria-live="polite"></main>
+    <footer class="footer">DEMO BUILD 0.1 · 物語・キャラ名・立ち絵は仮 / 戦闘ロジックは試作エンジンのブラウザ移植版</footer>
+  </div>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script>
+/* Source: game-data.json. Only E03 S9 and E04 C13 enabled. */
+window.GAME_DATA = {"version":"0.1.0","source":"2026-10-18 4-party v11 baseline, R3 enemy trial, only E03 S9 and E04 C13 enabled","status":"playable browser port of provisional Python trial engine; not certified 1:1","level":1,"rounds":5,"characters":{"H":{"hp":300,"patk":100,"matk":100,"pdef":100,"mdef":100,"spd":100},"02":{"hp":420,"patk":95,"matk":40,"pdef":180,"mdef":65,"spd":105},"03":{"hp":300,"patk":65,"matk":115,"pdef":90,"mdef":105,"spd":130},"04":{"hp":240,"patk":40,"matk":130,"pdef":65,"mdef":85,"spd":110},"05":{"hp":275,"patk":60,"matk":115,"pdef":85,"mdef":110,"spd":140},"06":{"hp":265,"patk":130,"matk":40,"pdef":90,"mdef":70,"spd":120},"07":{"hp":390,"patk":55,"matk":100,"pdef":75,"mdef":180,"spd":108}},"heroGems":{"balanced":{"hp":300,"patk":100,"matk":100,"pdef":100,"mdef":100,"spd":100},"flame":{"hp":230,"patk":165,"matk":65,"pdef":70,"mdef":85,"spd":115},"tide":{"hp":270,"patk":65,"matk":125,"pdef":85,"mdef":130,"spd":125}},"skills":{"H.basic":{"id":"H.basic","owner":"H","code":"basic","label":"基本攻撃","type":"damage","uses":999,"power":100,"kind":"physical","elem":"neutral"},"H.01":{"id":"H.01","owner":"H","code":"01","label":"吸収撃","type":"damage","uses":1,"power":140,"kind":"physical","elem":"neutral","lifesteal":0.5},"H.03":{"id":"H.03","owner":"H","code":"03","label":"全体鼓舞","type":"buff","uses":1,"scope":"allies","stats":["patk","matk","pdef","mdef","spd"],"pct":0.1,"duration":3},"H.04":{"id":"H.04","owner":"H","code":"04","label":"自分防壁","type":"barrier","uses":1,"value":115,"scope":"self","duration":3},"H.06":{"id":"H.06","owner":"H","code":"06","label":"火魔法","type":"damage","uses":1,"power":145,"kind":"magic","elem":"fire"},"H.ult":{"id":"H.ult","owner":"H","code":"ult","label":"全体物理奥義","type":"damage","uses":1,"power":165,"kind":"physical","elem":"neutral","scope":"enemies"},"H.02":{"id":"H.02","owner":"H","code":"02","label":"庇う","type":"cover","uses":1,"duration":3},"H.05":{"id":"H.05","owner":"H","code":"05","label":"毒","type":"status","uses":1,"status":"poison","duration":3},"H.07":{"id":"H.07","owner":"H","code":"07","label":"攻撃低下","type":"debuff","uses":1,"stats":["patk","matk"],"pct":-0.15,"duration":3},"H.08":{"id":"H.08","owner":"H","code":"08","label":"水魔法全体","type":"damage","uses":1,"power":125,"kind":"magic","elem":"water","scope":"enemies"},"H.09":{"id":"H.09","owner":"H","code":"09","label":"行動阻害","type":"interrupt","uses":1},"H.10":{"id":"H.10","owner":"H","code":"10","label":"物理防御無視","type":"damage","uses":1,"power":175,"kind":"physical","elem":"neutral","ignore":0.25},"H.f01":{"id":"H.f01","owner":"H","code":"f01","label":"火斬","type":"damage","uses":1,"power":130,"kind":"physical","elem":"fire"},"H.f02":{"id":"H.f02","owner":"H","code":"f02","label":"刻印","type":"status","uses":1,"status":"mark","duration":3},"H.f03":{"id":"H.f03","owner":"H","code":"f03","label":"物攻上昇","type":"buff","uses":1,"scope":"self","stats":["patk"],"pct":0.25,"duration":3},"H.f04":{"id":"H.f04","owner":"H","code":"f04","label":"火連撃","type":"damage","uses":1,"power":90,"hits":2,"kind":"physical","elem":"fire"},"H.f05":{"id":"H.f05","owner":"H","code":"f05","label":"自傷火撃","type":"damage","uses":1,"power":220,"kind":"physical","elem":"fire","selfcost":0.2},"H.f06":{"id":"H.f06","owner":"H","code":"f06","label":"全体火撃","type":"damage","uses":1,"power":105,"kind":"physical","elem":"fire","scope":"enemies"},"H.f07":{"id":"H.f07","owner":"H","code":"f07","label":"物防低下","type":"debuff","uses":1,"stats":["pdef"],"pct":-0.2,"duration":3},"H.f08":{"id":"H.f08","owner":"H","code":"f08","label":"被ダメ増加","type":"status","uses":1,"status":"vulnerable","duration":2},"H.f09":{"id":"H.f09","owner":"H","code":"f09","label":"無属性物理","type":"damage","uses":1,"power":145,"kind":"physical","elem":"neutral"},"H.f10":{"id":"H.f10","owner":"H","code":"f10","label":"全攻撃上昇","type":"buff","uses":1,"scope":"self","stats":["patk","matk"],"pct":0.15,"duration":2},"H.fult":{"id":"H.fult","owner":"H","code":"fult","label":"炎奥義","type":"damage","uses":1,"power":150,"kind":"physical","elem":"fire","scope":"enemies"},"H.t01":{"id":"H.t01","owner":"H","code":"t01","label":"水魔法","type":"damage","uses":1,"power":130,"kind":"magic","elem":"water"},"H.t02":{"id":"H.t02","owner":"H","code":"t02","label":"行動阻害","type":"interrupt","uses":1},"H.t03":{"id":"H.t03","owner":"H","code":"t03","label":"阻害予防","type":"immune_control","uses":1,"scope":"ally","duration":3},"H.t04":{"id":"H.t04","owner":"H","code":"t04","label":"毒","type":"status","uses":1,"status":"poison","duration":3},"H.t05":{"id":"H.t05","owner":"H","code":"t05","label":"水魔法全体","type":"damage","uses":1,"power":105,"kind":"magic","elem":"water","scope":"enemies"},"H.t06":{"id":"H.t06","owner":"H","code":"t06","label":"攻撃低下","type":"debuff","uses":1,"stats":["patk","matk"],"pct":-0.2,"duration":3},"H.t07":{"id":"H.t07","owner":"H","code":"t07","label":"魔防強化","type":"buff","uses":1,"scope":"allies","stats":["mdef"],"pct":0.25,"duration":3},"H.t08":{"id":"H.t08","owner":"H","code":"t08","label":"強化解除","type":"dispel","uses":1},"H.t09":{"id":"H.t09","owner":"H","code":"t09","label":"毒追撃","type":"damage","uses":1,"power":160,"kind":"magic","elem":"water","bonus_poison":60},"H.t10":{"id":"H.t10","owner":"H","code":"t10","label":"全体阻害予防","type":"immune_control","uses":1,"scope":"allies","duration":3},"H.tult":{"id":"H.tult","owner":"H","code":"tult","label":"水の奥義","type":"damage","uses":1,"power":130,"kind":"magic","elem":"water","scope":"enemies","debuff_stats":["spd"],"debuff_pct":-0.15,"debuff_duration":2},"02.basic":{"id":"02.basic","owner":"02","code":"basic","label":"基本攻撃","type":"damage","uses":999,"power":100,"kind":"physical","elem":"neutral"},"02.01":{"id":"02.01","owner":"02","code":"01","label":"挑発","type":"taunt","uses":1,"duration":3},"02.02":{"id":"02.02","owner":"02","code":"02","label":"庇護","type":"cover","uses":1,"duration":3},"02.03":{"id":"02.03","owner":"02","code":"03","label":"自己防壁","type":"barrier","uses":1,"scope":"self","value":125,"duration":3},"02.04":{"id":"02.04","owner":"02","code":"04","label":"守護反撃","type":"damage","uses":1,"power":155,"kind":"physical","elem":"neutral"},"02.05":{"id":"02.05","owner":"02","code":"05","label":"鉄壁","type":"buff","uses":1,"scope":"allies","stats":["pdef"],"pct":0.25,"duration":3},"02.06":{"id":"02.06","owner":"02","code":"06","label":"破砕","type":"debuff","uses":1,"stats":["pdef"],"pct":-0.2,"duration":3},"02.07":{"id":"02.07","owner":"02","code":"07","label":"盾砕き","type":"dispel","uses":1},"02.08":{"id":"02.08","owner":"02","code":"08","label":"守りの連鎖","type":"barrier","uses":1,"scope":"ally","value":115,"duration":3},"02.09":{"id":"02.09","owner":"02","code":"09","label":"不退転","type":"barrier","uses":1,"scope":"self","value":210,"duration":3,"when_lowhp":0.5},"02.10":{"id":"02.10","owner":"02","code":"10","label":"護りの一撃","type":"damage","uses":1,"power":160,"kind":"physical","elem":"neutral","self_buff_pdef":0.15},"02.ult":{"id":"02.ult","owner":"02","code":"ult","label":"不落の陣","type":"barrier","uses":1,"scope":"allies","value":155,"duration":3},"03.basic":{"id":"03.basic","owner":"03","code":"basic","label":"基本攻撃","type":"damage","uses":999,"power":100,"kind":"magic","elem":"neutral"},"03.01":{"id":"03.01","owner":"03","code":"01","label":"物攻鼓舞","type":"buff","uses":1,"scope":"ally","stats":["patk"],"pct":0.45,"duration":3},"03.02":{"id":"03.02","owner":"03","code":"02","label":"魔力増幅","type":"buff","uses":1,"scope":"ally","stats":["matk"],"pct":0.45,"duration":3},"03.03":{"id":"03.03","owner":"03","code":"03","label":"衰弱","type":"debuff","uses":1,"stats":["patk","matk"],"pct":-0.25,"duration":4},"03.04":{"id":"03.04","owner":"03","code":"04","label":"応急治療","type":"heal","uses":1,"scope":"ally","value":105},"03.05":{"id":"03.05","owner":"03","code":"05","label":"加速","type":"buff","uses":1,"scope":"allies","stats":["spd"],"pct":0.15,"duration":3},"03.06":{"id":"03.06","owner":"03","code":"06","label":"物防綻び","type":"debuff","uses":1,"stats":["pdef"],"pct":-0.25,"duration":3},"03.07":{"id":"03.07","owner":"03","code":"07","label":"魔力崩し","type":"debuff","uses":1,"stats":["mdef"],"pct":-0.25,"duration":3},"03.08":{"id":"03.08","owner":"03","code":"08","label":"足止め","type":"interrupt","uses":1},"03.09":{"id":"03.09","owner":"03","code":"09","label":"浄化","type":"cleanse","uses":1,"scope":"ally"},"03.10":{"id":"03.10","owner":"03","code":"10","label":"集中支援","type":"buff","uses":1,"scope":"ally","stats":["patk","matk"],"pct":0.25,"duration":3},"03.ult":{"id":"03.ult","owner":"03","code":"ult","label":"戦術掌握","type":"buff","uses":1,"scope":"allies","stats":["patk","matk"],"pct":0.35,"duration":3},"04.basic":{"id":"04.basic","owner":"04","code":"basic","label":"基本攻撃","type":"damage","uses":999,"power":100,"kind":"magic","elem":"neutral"},"04.01":{"id":"04.01","owner":"04","code":"01","label":"炎弾","type":"damage","uses":1,"power":140,"kind":"magic","elem":"fire"},"04.02":{"id":"04.02","owner":"04","code":"02","label":"炎陣","type":"damage","uses":1,"power":125,"kind":"magic","elem":"fire","scope":"enemies"},"04.03":{"id":"04.03","owner":"04","code":"03","label":"詠唱強化","type":"buff","uses":1,"scope":"self","stats":["matk"],"pct":0.25,"duration":3},"04.04":{"id":"04.04","owner":"04","code":"04","label":"魔力衝撃","type":"damage","uses":1,"power":155,"kind":"magic","elem":"neutral"},"04.05":{"id":"04.05","owner":"04","code":"05","label":"連続炎弾","type":"damage","uses":1,"power":95,"hits":2,"kind":"magic","elem":"fire"},"04.06":{"id":"04.06","owner":"04","code":"06","label":"魔防崩し","type":"debuff","uses":1,"stats":["mdef"],"pct":-0.25,"duration":3},"04.07":{"id":"04.07","owner":"04","code":"07","label":"魔力貫通","type":"damage","uses":1,"power":160,"kind":"magic","elem":"neutral","ignore":0.3},"04.08":{"id":"04.08","owner":"04","code":"08","label":"焦熱波","type":"damage","uses":1,"power":155,"kind":"magic","elem":"fire","scope":"enemies"},"04.09":{"id":"04.09","owner":"04","code":"09","label":"魔力集中","type":"buff","uses":1,"scope":"self","stats":["matk"],"pct":0.4,"duration":3},"04.10":{"id":"04.10","owner":"04","code":"10","label":"爆炎","type":"damage","uses":1,"power":225,"kind":"magic","elem":"fire"},"04.ult":{"id":"04.ult","owner":"04","code":"ult","label":"終焉の炎","type":"damage","uses":1,"power":205,"kind":"magic","elem":"fire","scope":"enemies"},"05.basic":{"id":"05.basic","owner":"05","code":"basic","label":"基本攻撃","type":"damage","uses":999,"power":100,"kind":"magic","elem":"neutral"},"05.01":{"id":"05.01","owner":"05","code":"01","label":"毒刃","type":"status","uses":1,"status":"poison","duration":3},"05.02":{"id":"05.02","owner":"05","code":"02","label":"衰弱毒","type":"debuff","uses":1,"stats":["patk","matk"],"pct":-0.25,"duration":4},"05.03":{"id":"05.03","owner":"05","code":"03","label":"拘束","type":"interrupt","uses":1},"05.04":{"id":"05.04","owner":"05","code":"04","label":"水撃","type":"damage","uses":1,"power":145,"kind":"magic","elem":"water"},"05.05":{"id":"05.05","owner":"05","code":"05","label":"鈍化","type":"debuff","uses":1,"stats":["spd"],"pct":-0.2,"duration":3},"05.06":{"id":"05.06","owner":"05","code":"06","label":"腐食","type":"debuff","uses":1,"stats":["pdef","mdef"],"pct":-0.2,"duration":3},"05.07":{"id":"05.07","owner":"05","code":"07","label":"毒の連鎖","type":"damage","uses":1,"power":175,"kind":"magic","elem":"water","bonus_poison":70},"05.08":{"id":"05.08","owner":"05","code":"08","label":"解呪","type":"dispel","uses":1},"05.09":{"id":"05.09","owner":"05","code":"09","label":"毒拡散","type":"status","uses":1,"status":"poison","duration":3,"scope":"enemies"},"05.10":{"id":"05.10","owner":"05","code":"10","label":"毒蝕","type":"damage","uses":1,"power":185,"kind":"magic","elem":"water","bonus_poison":70},"05.ult":{"id":"05.ult","owner":"05","code":"ult","label":"侵蝕の領域","type":"damage","uses":1,"power":140,"kind":"magic","elem":"water","scope":"enemies","debuff_stats":["patk","matk"],"debuff_pct":-0.25,"debuff_duration":4},"06.basic":{"id":"06.basic","owner":"06","code":"basic","label":"基本攻撃","type":"damage","uses":999,"power":100,"kind":"physical","elem":"neutral"},"06.01":{"id":"06.01","owner":"06","code":"01","label":"強撃","type":"damage","uses":1,"power":145,"kind":"physical","elem":"wood"},"06.02":{"id":"06.02","owner":"06","code":"02","label":"連撃","type":"damage","uses":1,"power":95,"hits":2,"kind":"physical","elem":"neutral"},"06.03":{"id":"06.03","owner":"06","code":"03","label":"破甲","type":"debuff","uses":1,"stats":["pdef"],"pct":-0.25,"duration":3},"06.04":{"id":"06.04","owner":"06","code":"04","label":"闘志","type":"buff","uses":1,"scope":"self","stats":["patk"],"pct":0.3,"duration":3},"06.05":{"id":"06.05","owner":"06","code":"05","label":"貫撃","type":"damage","uses":1,"power":185,"kind":"physical","elem":"neutral","ignore":0.25},"06.06":{"id":"06.06","owner":"06","code":"06","label":"重撃","type":"damage","uses":1,"power":225,"kind":"physical","elem":"neutral"},"06.07":{"id":"06.07","owner":"06","code":"07","label":"追討","type":"damage","uses":1,"power":175,"kind":"physical","elem":"neutral","bonus_pdef_debuff":65},"06.08":{"id":"06.08","owner":"06","code":"08","label":"薙ぎ払い","type":"damage","uses":1,"power":130,"kind":"physical","elem":"wood","scope":"enemies"},"06.09":{"id":"06.09","owner":"06","code":"09","label":"決死","type":"damage","uses":1,"power":255,"kind":"physical","elem":"neutral","selfcost":0.2},"06.10":{"id":"06.10","owner":"06","code":"10","label":"断甲","type":"damage","uses":1,"power":180,"kind":"physical","elem":"neutral","ignore":0.35},"06.ult":{"id":"06.ult","owner":"06","code":"ult","label":"断界の一閃","type":"damage","uses":1,"power":315,"kind":"physical","elem":"neutral","ignore":0.3},"07.basic":{"id":"07.basic","owner":"07","code":"basic","label":"基本攻撃","type":"damage","uses":999,"power":100,"kind":"magic","elem":"neutral"},"07.01":{"id":"07.01","owner":"07","code":"01","label":"魔法防壁","type":"buff","uses":1,"scope":"allies","stats":["mdef"],"pct":0.25,"duration":3},"07.02":{"id":"07.02","owner":"07","code":"02","label":"浄化","type":"cleanse","uses":1,"scope":"ally"},"07.03":{"id":"07.03","owner":"07","code":"03","label":"精神障壁","type":"immune_control","uses":1,"scope":"ally","duration":3},"07.04":{"id":"07.04","owner":"07","code":"04","label":"水の矢","type":"damage","uses":1,"power":140,"kind":"magic","elem":"water"},"07.05":{"id":"07.05","owner":"07","code":"05","label":"聖域","type":"barrier","uses":1,"scope":"allies","value":120,"duration":3},"07.06":{"id":"07.06","owner":"07","code":"06","label":"治癒","type":"heal","uses":1,"scope":"ally","value":145},"07.07":{"id":"07.07","owner":"07","code":"07","label":"魔力封殺","type":"debuff","uses":1,"stats":["matk"],"pct":-0.25,"duration":3},"07.08":{"id":"07.08","owner":"07","code":"08","label":"全体浄化","type":"cleanse","uses":1,"scope":"allies"},"07.09":{"id":"07.09","owner":"07","code":"09","label":"結界強化","type":"barrier","uses":1,"scope":"self","value":180,"duration":3},"07.10":{"id":"07.10","owner":"07","code":"10","label":"守護の祈り","type":"immune_control","uses":1,"scope":"allies","duration":3},"07.ult":{"id":"07.ult","owner":"07","code":"ult","label":"絶対結界","type":"barrier","uses":1,"scope":"allies","value":200,"duration":3},"02.11":{"id":"02.11","owner":"02","code":"11","label":"攻防一体","type":"damage","power":105,"kind":"physical","elem":"neutral","scope":"enemy","self_buff_pdef":0.15,"duration":3,"uses":1},"02.12":{"id":"02.12","owner":"02","code":"12","label":"広域護衛","type":"cover_aoe","scope":"ally","duration":2,"uses":1}},"unlockedSkills":{"H:balanced":["H.basic","H.01","H.03","H.04","H.06","H.ult"],"H:flame":["H.basic","H.f01","H.f02","H.f03","H.f04","H.fult"],"H:tide":["H.basic","H.t01","H.t02","H.t03","H.t04","H.tult"],"02:any":["02.basic","02.01","02.02","02.03","02.04","02.ult","02.11","02.12"],"03:any":["03.basic","03.01","03.02","03.03","03.04","03.ult"],"04:any":["04.basic","04.01","04.02","04.03","04.04","04.ult"],"05:any":["05.basic","05.01","05.02","05.03","05.04","05.ult"],"06:any":["06.basic","06.01","06.02","06.03","06.04","06.ult"],"07:any":["07.basic","07.01","07.02","07.03","07.04","07.ult"]},"equipment":{"W01":{"id":"W01","slot":"W","name":"鋼の剣","stats":{"patk":25},"levelMin":1,"specialEffect":null},"W02":{"id":"W02","slot":"W","name":"魔導杖","stats":{"matk":25},"levelMin":1,"specialEffect":null},"W03":{"id":"W03","slot":"W","name":"双刃","stats":{"patk":15,"spd":15},"levelMin":1,"specialEffect":null},"W04":{"id":"W04","slot":"W","name":"破城槌","stats":{"patk":40,"spd":-20},"levelMin":1,"specialEffect":null},"W05":{"id":"W05","slot":"W","name":"護衛槍","stats":{"patk":10,"pdef":20},"levelMin":1,"specialEffect":null},"W06":{"id":"W06","slot":"W","name":"霊樹の杖","stats":{"matk":15,"mdef":20},"levelMin":1,"specialEffect":null},"W07":{"id":"W07","slot":"W","name":"疾風短剣","stats":{"spd":30,"patk":5},"levelMin":1,"specialEffect":null},"W08":{"id":"W08","slot":"W","name":"守護の大剣","stats":{"patk":15,"pdef":30,"spd":-15},"levelMin":1,"specialEffect":null},"W09":{"id":"W09","slot":"W","name":"呪術書","stats":{"matk":20,"hp":-30},"levelMin":1,"specialEffect":null},"W10":{"id":"W10","slot":"W","name":"均衡の剣","stats":{"patk":12,"matk":12},"levelMin":1,"specialEffect":null},"A01":{"id":"A01","slot":"A","name":"鉄鎧","stats":{"hp":60,"pdef":30,"spd":-15},"levelMin":1,"specialEffect":null},"A02":{"id":"A02","slot":"A","name":"魔導衣","stats":{"hp":40,"mdef":35},"levelMin":1,"specialEffect":null},"A03":{"id":"A03","slot":"A","name":"軽装鎧","stats":{"hp":35,"pdef":15,"spd":10},"levelMin":1,"specialEffect":null},"A04":{"id":"A04","slot":"A","name":"重装甲","stats":{"hp":100,"pdef":45,"spd":-30},"levelMin":1,"specialEffect":null},"A05":{"id":"A05","slot":"A","name":"守護服","stats":{"hp":60,"pdef":15,"mdef":15},"levelMin":1,"specialEffect":null},"A06":{"id":"A06","slot":"A","name":"疾風衣","stats":{"hp":15,"spd":25},"levelMin":1,"specialEffect":null},"A07":{"id":"A07","slot":"A","name":"霊装衣","stats":{"hp":30,"mdef":25,"matk":10},"levelMin":1,"specialEffect":null},"A08":{"id":"A08","slot":"A","name":"戦闘服","stats":{"hp":35,"patk":10,"pdef":10},"levelMin":1,"specialEffect":null},"A09":{"id":"A09","slot":"A","name":"護符鎧","stats":{"hp":50,"mdef":20,"pdef":10},"levelMin":1,"specialEffect":null},"A10":{"id":"A10","slot":"A","name":"均衡装甲","stats":{"hp":50,"pdef":20,"mdef":20,"spd":-10},"levelMin":1,"specialEffect":null},"X01":{"id":"X01","slot":"X","name":"生命の指輪","stats":{"hp":80},"levelMin":1,"specialEffect":null},"X02":{"id":"X02","slot":"X","name":"剛力の指輪","stats":{"patk":20},"levelMin":1,"specialEffect":null},"X03":{"id":"X03","slot":"X","name":"魔力の指輪","stats":{"matk":20},"levelMin":1,"specialEffect":null},"X04":{"id":"X04","slot":"X","name":"迅速の指輪","stats":{"spd":20},"levelMin":1,"specialEffect":null},"X05":{"id":"X05","slot":"X","name":"堅守の指輪","stats":{"pdef":25},"levelMin":1,"specialEffect":null},"X06":{"id":"X06","slot":"X","name":"精神の指輪","stats":{"mdef":25},"levelMin":1,"specialEffect":null},"X07":{"id":"X07","slot":"X","name":"守護の首飾り","stats":{"hp":40,"pdef":10},"levelMin":1,"specialEffect":null},"X08":{"id":"X08","slot":"X","name":"霊護の首飾り","stats":{"hp":40,"mdef":10},"levelMin":1,"specialEffect":null},"X09":{"id":"X09","slot":"X","name":"均衡の指輪","stats":{"patk":8,"matk":8,"pdef":8,"mdef":8},"levelMin":1,"specialEffect":null},"X10":{"id":"X10","slot":"X","name":"俊敏の護符","stats":{"spd":15,"hp":20},"levelMin":1,"specialEffect":null}},"gearsByFamily":{"none":{"physical":[],"magic":[]},"offense":{"physical":["W04","A08","X02"],"magic":["W02","A07","X03"]},"defense":{"physical":["W08","A04","X01"],"magic":["W06","A02","X01"]},"speed":{"physical":["W07","A06","X04"],"magic":["W07","A06","X04"]},"mixed":{"physical":["W03","A03","X09"],"magic":["W06","A05","X09"]},"anti_magic":{"physical":["W05","A02","X06"],"magic":["W06","A09","X06"]}},"encounters":[{"id":"E01","name":"序盤・無属性重装兵","suggestedLevel":1,"objective":"defeat","enemies":[{"id":"knight","name":"重装兵","hp":455,"patk":155,"matk":40,"pdef":120,"mdef":95,"spd":98,"element":"neutral","script":[["P",120,"priority"],["P",155,"lowest"],["P",150,"lowest"],["P",115,"priority",2],["PA",135]],"statusImmune":false,"debuffImmune":false}],"partySize":4},{"id":"E02","name":"群れ・狂奔する猟犬6体","suggestedLevel":12,"objective":"defeat","enemies":[{"id":"dog1","name":"猟犬1","hp":165,"patk":112,"matk":20,"pdef":35,"mdef":35,"spd":108,"element":"neutral","script":[["P",90,"priority"],["P",105,"priority"],["P",105,"priority"],["P",105,"lowest"],["P",125,"priority"]],"statusImmune":false,"debuffImmune":false},{"id":"dog2","name":"猟犬2","hp":165,"patk":112,"matk":20,"pdef":35,"mdef":35,"spd":114,"element":"neutral","script":[["P",90,"priority"],["P",105,"priority"],["P",105,"priority"],["P",105,"lowest"],["P",125,"priority"]],"statusImmune":false,"debuffImmune":false},{"id":"dog3","name":"猟犬3","hp":165,"patk":112,"matk":20,"pdef":35,"mdef":35,"spd":120,"element":"neutral","script":[["P",90,"priority"],["P",105,"priority"],["P",105,"priority"],["P",105,"lowest"],["P",125,"priority"]],"statusImmune":false,"debuffImmune":false},{"id":"dog4","name":"猟犬4","hp":165,"patk":112,"matk":20,"pdef":35,"mdef":35,"spd":126,"element":"neutral","script":[["P",90,"priority"],["P",105,"priority"],["P",105,"priority"],["P",105,"lowest"],["P",125,"priority"]],"statusImmune":false,"debuffImmune":false},{"id":"dog5","name":"猟犬5","hp":165,"patk":112,"matk":20,"pdef":35,"mdef":35,"spd":132,"element":"neutral","script":[["P",90,"priority"],["P",105,"priority"],["P",105,"priority"],["P",105,"lowest"],["P",125,"priority"]],"statusImmune":false,"debuffImmune":false},{"id":"dog6","name":"猟犬6","hp":165,"patk":112,"matk":20,"pdef":35,"mdef":35,"spd":138,"element":"neutral","script":[["P",90,"priority"],["P",105,"priority"],["P",105,"priority"],["P",105,"lowest"],["P",125,"priority"]],"statusImmune":false,"debuffImmune":false}],"partySize":4},{"id":"E03","name":"双壁・物理無効の挑発＋魔法無効の処刑","suggestedLevel":25,"objective":"defeat","enemies":[{"id":"wraith","name":"虚像の盾","hp":275,"patk":40,"matk":180,"pdef":80,"mdef":75,"spd":133,"element":"neutral","immuneKinds":["physical"],"script":[["TAUNT"],["M",125,"priority"],["TAUNT"],["M",140,"lowest"],["M",160,"priority"]],"statusImmune":false,"debuffImmune":false},{"id":"executioner","name":"無音の処刑者","hp":740,"patk":195,"matk":40,"pdef":90,"mdef":70,"spd":95,"element":"neutral","immuneKinds":["magic"],"script":[["P",120,"priority"],["P",135,"lowest"],["P",145,"priority"],["P",150,"lowest"],["FIXED_AOE",999]],"statusImmune":false,"debuffImmune":false},{"id":"e03_scout","name":"双壁の斥候","hp":185,"patk":125,"matk":20,"pdef":55,"mdef":60,"spd":145,"script":[["P",110,"lowest"],["P",115,"lowest"],["P",115,"lowest"],["P",120,"lowest"],["P",125,"lowest"]],"element":"neutral","statusImmune":false,"debuffImmune":false}],"partySize":4},{"id":"E04","name":"高速呪術師＋鈍足魔法破壊者","suggestedLevel":35,"objective":"defeat","enemies":[{"id":"hexer","name":"高速呪術師","hp":265,"patk":30,"matk":160,"pdef":75,"mdef":100,"spd":158,"element":"water","script":[["DEBUFF_ALL","mdef",-0.3],["POISON_ALL"],["MA",105],["POISON_ALL"],["M",135,"lowest"]],"statusImmune":false,"debuffImmune":false},{"id":"giant","name":"鈍足の魔法破壊者","hp":850,"patk":65,"matk":215,"pdef":120,"mdef":110,"spd":65,"element":"wood","script":[["M",140,"priority"],["MA",115],["MA",120],["MA",140],["M",170,"lowest"]],"statusImmune":false,"debuffImmune":false}],"partySize":4},{"id":"E05","name":"双極の覇王","suggestedLevel":50,"objective":"defeat","enemies":[{"id":"overlord","name":"双極の覇王","hp":1550,"patk":200,"matk":200,"pdef":145,"mdef":145,"spd":115,"element":"neutral","script":[[["P",90,"priority",2]],[["MA",100]],[["P",115,"lowest",2]],[["MA",120]],[["P",150,"lowest",2]]],"statusImmune":true,"debuffImmune":true,"_v9_typed_exception":"E05_ATTACK_REDUCTION"},{"id":"e05_sentinel","name":"覇王の槍兵","hp":235,"patk":120,"matk":20,"pdef":85,"mdef":70,"spd":134,"script":[["P",115,"lowest"],["P",120,"lowest"],["P",125,"lowest"],["P",130,"lowest"],["P",135,"lowest"]],"element":"neutral","statusImmune":false,"debuffImmune":false}],"partySize":4},{"id":"E06","name":"毒術師と鉄壁護衛","suggestedLevel":1,"enemies":[{"id":"toxic","name":"毒術師","hp":250,"patk":30,"matk":90,"pdef":65,"mdef":95,"spd":160,"script":["POISON12",["M",115,"priority"],"POISON12",["M",135,"lowest"],["MA",105]],"element":"neutral","statusImmune":true,"debuffImmune":false},{"id":"guard","name":"鉄壁護衛","hp":850,"patk":125,"matk":30,"pdef":230,"mdef":200,"spd":70,"script":[["GUARD","toxic"],["P",100,"priority"],["GUARD","toxic"],["P",120,"priority"],["P",130,"priority"]],"element":"neutral","statusImmune":true,"debuffImmune":false,"_v9_typed_exception":"E06_POISON"}],"partySize":4,"objective":"defeat"},{"id":"E07","name":"解除術師・吸収剣士・身代わり","suggestedLevel":1,"enemies":[{"id":"purger","name":"解除術師","hp":220,"patk":35,"matk":125,"pdef":65,"mdef":100,"spd":145,"script":["DISPEL_DEBUFF",["M",110,"priority"],"DISPEL_DEBUFF",["M",115,"priority"],"DISPEL_DEBUFF"],"element":"neutral","statusImmune":false,"debuffImmune":false},{"id":"drainer","name":"吸収剣士","hp":470,"patk":125,"matk":30,"pdef":95,"mdef":85,"spd":110,"script":[["DRAIN",110],["DRAIN",115],["DRAIN",120],["DRAIN",125],["DRAIN",130]],"element":"neutral","statusImmune":false,"debuffImmune":false},{"id":"decoy","name":"身代わり","hp":160,"patk":60,"matk":30,"pdef":45,"mdef":45,"spd":120,"script":["SACRIFICE","SACRIFICE","SACRIFICE","SACRIFICE","SACRIFICE"],"element":"neutral","statusImmune":false,"debuffImmune":false}],"partySize":4,"objective":"defeat"},{"id":"E08","name":"状態異常適応体","suggestedLevel":1,"enemies":[{"id":"adapt","name":"適応体","hp":825,"patk":140,"matk":100,"pdef":115,"mdef":115,"spd":205,"script":[["P",115,"priority"],["M",130,"priority"],["P",145,"priority"],["M",150,"priority"],["PA",110]],"element":"neutral","statusImmune":false,"debuffImmune":false},{"id":"e08_caller","name":"適応体の監視兵","hp":225,"patk":112,"matk":25,"pdef":55,"mdef":65,"spd":150,"script":[["P",105,"lowest"],["P",110,"lowest"],["P",115,"lowest"],["P",120,"lowest"],["P",125,"lowest"]],"element":"neutral","statusImmune":false,"debuffImmune":false}],"partySize":4,"objective":"defeat"},{"id":"E09","name":"防壁判定者・防壁貫通魔法使い","suggestedLevel":1,"enemies":[{"id":"judge","name":"防壁判定者","hp":430,"patk":60,"matk":100,"pdef":105,"mdef":115,"spd":95,"script":["CHECK300","CHECK300","CHECK300","CHECK300","CHECK300"],"element":"neutral","statusImmune":false,"debuffImmune":false},{"id":"piercer","name":"貫通魔法使い","hp":350,"patk":30,"matk":185,"pdef":75,"mdef":90,"spd":125,"script":[["PIERCE",105],["PIERCE",115],["PIERCE",125],["PIERCE",130],["PIERCE",140]],"element":"neutral","statusImmune":false,"debuffImmune":false}],"partySize":4,"objective":"defeat"},{"id":"E10","name":"能力反転の支配者","suggestedLevel":1,"enemies":[{"id":"invert","name":"反転の支配者","hp":820,"patk":145,"matk":145,"pdef":165,"mdef":165,"spd":110,"script":["REVERSE",["P",120,"priority"],["M",135,"priority"],["PA",110],["M",150,"priority"]],"element":"neutral","statusImmune":false,"debuffImmune":false}],"partySize":4,"objective":"defeat"},{"id":"E11","name":"低HP狙撃兵","rank":"normal","enemies":[{"id":"sniper","name":"狙撃兵","hp":520,"patk":160,"matk":25,"pdef":80,"mdef":70,"spd":155,"script":[["P",130,"lowest"],["P",145,"lowest"],["P",160,"lowest"],["P",175,"lowest"],["P",185,"lowest"]],"element":"neutral","statusImmune":false,"debuffImmune":false},{"id":"e11_soldier","name":"狙撃兵の突撃衛士","hp":440,"patk":10,"matk":360,"pdef":90,"mdef":75,"spd":140,"script":[["MA",90],["MA",95],["MA",100],["MA",105],["MA",115]],"element":"neutral","statusImmune":false,"debuffImmune":false}],"partySize":4,"objective":"defeat"},{"id":"E12","name":"連撃の騎士","rank":"elite","enemies":[{"id":"knight12","name":"連撃の騎士","hp":840,"patk":150,"matk":30,"pdef":125,"mdef":105,"spd":118,"script":[["MULTI",90,3],["MULTI",95,3],["MULTI",105,4],["MULTI",110,4],["MULTI",120,5]],"element":"neutral","statusImmune":false,"debuffImmune":false},{"id":"e12_sapper","name":"連撃騎士の工兵","hp":310,"patk":25,"matk":235,"pdef":75,"mdef":70,"spd":140,"script":[["MA",120],["MA",120],["MA",120],["MA",120],["MA",120]],"element":"neutral","statusImmune":false,"debuffImmune":false}],"partySize":4,"objective":"defeat"},{"id":"E13","name":"魔力暴走体","rank":"elite","enemies":[{"id":"arcane","name":"魔力暴走体","hp":835,"patk":30,"matk":300,"pdef":90,"mdef":145,"spd":120,"script":[["MA",80],["MA",115],["MA",140],["MA",165],["MA",190]],"element":"neutral","statusImmune":false,"debuffImmune":false},{"id":"e13_marauder","name":"暴走体の追撃者","hp":290,"patk":180,"matk":25,"pdef":70,"mdef":85,"spd":140,"script":[["P",110,"lowest"],["P",115,"lowest"],["P",120,"lowest"],["P",125,"lowest"],["P",130,"lowest"]],"element":"neutral","statusImmune":false,"debuffImmune":false}],"partySize":4,"objective":"defeat"},{"id":"E14","name":"蓄力の処刑者","rank":"boss","enemies":[{"id":"charger","name":"蓄力の処刑者","hp":1250,"patk":210,"matk":35,"pdef":130,"mdef":100,"spd":100,"script":["CHARGE","CHARGE",["P",380,"lowest"],["P",130,"priority"],["PA",120]],"element":"neutral","statusImmune":false,"debuffImmune":false},{"id":"e14_harrier","name":"処刑者の斥候","hp":235,"patk":108,"matk":20,"pdef":90,"mdef":85,"spd":140,"script":[["P",110,"lowest"],["P",115,"lowest"],["P",120,"lowest"],["P",125,"lowest"],["P",130,"lowest"]],"element":"neutral","statusImmune":false,"debuffImmune":false}],"partySize":4,"objective":"defeat"},{"id":"E15","name":"反射の守護者","rank":"elite","enemies":[{"id":"mirror","name":"反射の守護者","hp":905,"patk":125,"matk":150,"pdef":110,"mdef":125,"spd":112,"script":[["P",105,"priority"],["M",110,"priority"],["P",120,"priority"],["M",125,"priority"],["PA",90]],"element":"neutral","statusImmune":false,"debuffImmune":false},{"id":"e15_archer","name":"反射陣の弓兵","hp":250,"patk":70,"matk":205,"pdef":75,"mdef":85,"spd":135,"script":[["M",100,"lowest"],["MA",80],["M",110,"lowest"],["MA",95],["M",130,"lowest"]],"element":"neutral","statusImmune":false,"debuffImmune":false}],"partySize":4,"objective":"defeat"},{"id":"EP_A","name":"狙撃兵・連撃の騎士・蓄力の処刑者","enemies":[{"id":"sniper","name":"狙撃兵","hp":480,"patk":190,"matk":25,"pdef":80,"mdef":70,"spd":155,"script":[["P",130,"lowest"],["P",145,"lowest"],["P",160,"lowest"],["P",175,"lowest"],["P",185,"lowest"]],"element":"neutral","statusImmune":false,"debuffImmune":false},{"id":"knight12","name":"連撃の騎士","hp":840,"patk":165,"matk":30,"pdef":125,"mdef":105,"spd":118,"script":[["MULTI",90,3],["MULTI",95,3],["MULTI",105,4],["MULTI",110,4],["MULTI",120,5]],"element":"neutral","statusImmune":false,"debuffImmune":false},{"id":"charger","name":"蓄力の処刑者","hp":1000,"patk":210,"matk":35,"pdef":130,"mdef":100,"spd":100,"script":["CHARGE","CHARGE",["P",380,"lowest"],["P",130,"priority"],["PA",120]],"element":"neutral","statusImmune":false,"debuffImmune":false}],"partySize":4,"objective":"defeat"},{"id":"EP_B","name":"魔力暴走体・反射の守護者","enemies":[{"id":"arcane","name":"魔力暴走体","hp":780,"patk":30,"matk":210,"pdef":90,"mdef":145,"spd":120,"script":[["MA",80],["MA",115],["MA",140],["MA",165],["MA",190]],"element":"neutral","statusImmune":false,"debuffImmune":false},{"id":"mirror","name":"反射の守護者","hp":855,"patk":125,"matk":145,"pdef":110,"mdef":125,"spd":112,"script":[["P",105,"priority"],["M",110,"priority"],["P",120,"priority"],["M",125,"priority"],["PA",90]],"element":"neutral","statusImmune":false,"debuffImmune":false}],"partySize":4,"objective":"defeat"}],"designRules":{"partySize":4,"skillsOnce":true,"buffMultiplyDifferentGroups":true,"defensePriority":["02.01","02.02","02.12"],"poisonTick":"AFTER afflicted unit action","purificationBoon":{"pct":0.2,"actions":2},"epbGoal":"defeat only","enemyR4Only":["E03:S9","E04:C13"],"attackers130":true},"charactersDraft":[{"id":"H","name":"主人公","alias":"命珠の継承者","role":"命珠使い","look":"銀白のショートヘア。実用的な旅装、金色の編み飾りなし。","color":"#b6d0e5","symbol":"✦"},{"id":"02","name":"ガルド（仮）","alias":"盾を担ぐ熊獣人","role":"物理守護","look":"大柄な熊獣人。摩耗した無骨な盾と布の上着。","color":"#c7a57d","symbol":"◆"},{"id":"03","name":"リノ（仮）","alias":"小さな犬と旅する少女","role":"戦術支援","look":"犬を使役する少女。使役犬が魔法を担当。実用的な短いマント。","color":"#d2b6c5","symbol":"✳"},{"id":"04","name":"セラ（仮）","alias":"藤髪の魔術師","role":"魔法殲滅","look":"藤色の長い髪。飾りを抑えた旅の魔術服。","color":"#ab91c7","symbol":"✧"},{"id":"05","name":"ルクス（仮）","alias":"静かな術師","role":"状態制御","look":"細身の青年。薬瓶と簡素な手袋。","color":"#83b5a8","symbol":"⌁"},{"id":"06","name":"カイ（仮）","alias":"鋭い剣士","role":"物理突破","look":"鋭い短髪。軽装と片手の剣。","color":"#c99b84","symbol":"⌁"},{"id":"07","name":"エイル（仮）","alias":"淡金髪の守護術師","role":"魔法守護・浄化","look":"淡金色のミディアムヘア。装飾の少ない術衣。","color":"#d9c6a2","symbol":"✺"}]};
+
+</script><script>
+window.GAME_SAMPLES = {"E04":{"roster":["H","02","03","07"],"gem":"flame","plan":[{"H":{"skill":"H.f04","target":"giant"},"02":{"skill":"02.04","target":"hexer"},"03":{"skill":"03.03","target":"giant"},"07":{"skill":"07.03","target":"07"}},{"H":{"skill":"H.f01","target":"hexer"},"02":{"skill":"02.11","target":"giant"},"03":{"skill":"03.02","target":"02"},"07":{"skill":"07.02","target":"H"}},{"H":{"skill":"H.fult","target":null},"02":{"skill":"02.ult","target":null},"03":{"skill":"03.04","target":"H"},"07":{"skill":"07.basic","target":"giant"}},{"H":{"skill":"H.f02","target":"hexer"},"02":{"skill":"02.01","target":null},"03":{"skill":"03.basic","target":"giant"},"07":{"skill":"07.04","target":"giant"}},{"H":{"skill":"H.basic","target":"hexer"},"02":{"skill":"02.02","target":"03"},"03":{"skill":"03.basic","target":"giant"},"07":{"skill":"07.basic","target":"hexer"}}],"equipment":{"H":{"W":"W04","A":"A08","X":"X02"},"02":{"W":"W04","A":"A08","X":"X02"},"03":{"W":"W02","A":"A07","X":"X03"},"07":{"W":"W02","A":"A07","X":"X03"}},"gearFamily":"offense"},"E03":{"roster":["H","02","04","06"],"gem":"balanced","plan":[{"H":{"skill":"H.ult","target":null},"02":{"skill":"02.01","target":null},"04":{"skill":"04.01","target":"wraith"},"06":{"skill":"06.ult","target":"executioner"}},{"H":{"skill":"H.06","target":"wraith"},"02":{"skill":"02.basic","target":"wraith"},"04":{"skill":"04.ult","target":null},"06":{"skill":"06.04","target":null}},{"H":{"skill":"H.01","target":"executioner"},"02":{"skill":"02.02","target":"06"},"04":{"skill":"04.02","target":null},"06":{"skill":"06.02","target":"executioner"}},{"H":{"skill":"H.04","target":null},"02":{"skill":"02.basic","target":"executioner"},"04":{"skill":"04.04","target":"wraith"},"06":{"skill":"06.01","target":"executioner"}},{"H":{"skill":"H.basic","target":"executioner"},"02":{"skill":"02.04","target":"executioner"},"04":{"skill":"04.basic","target":"wraith"},"06":{"skill":"06.03","target":"executioner"}}],"equipment":{"H":{"W":"W04","A":"A08","X":"X02"},"02":{"W":"W04","A":"A08","X":"X02"},"04":{"W":"W02","A":"A07","X":"X03"},"06":{"W":"W04","A":"A08","X":"X02"}},"gearFamily":"offense"}};
+
+</script><script>
+/*
+ * Optional character illustrations. Replace a value with a relative path or HTTPS image.
+ * Example: H: 'assets/characters/hero.png'
+ * Leave empty to show the CSS placeholder characters.
+ * These keys match alternate character IDs and do not change gameplay rules.
+ */
+window.CHAR_ART = { H:'', '02':'', '03':'', '04':'', '05':'', '06':'', '07':'' };
+
+</script><script>
+/*
+ * Offline, deterministic 5-round RPG battle runner.
+ * Browser port of the v11/v13 Python trial specifications, not a byte-exact port.
+ * Data source: GAME_DATA (data.js). Approved: 4-party, S5/P1, buff stack,
+ * defensive priority, 07 purification, poison after owner action, E03 S9/E04 C13.
+ */
+(function(global){
+'use strict';
+const D=()=>global.GAME_DATA;
+const deep=x=>JSON.parse(JSON.stringify(x));
+const live=xs=>xs.filter(x=>x.hp>0);
+const cap=(n,mi,ma)=>Math.max(mi,Math.min(ma,n));
+const statkeys=['hp','patk','matk','pdef','mdef','spd'];
+const elemChart={fire:{wood:1.25,water:.8},water:{fire:1.25,wood:.8},wood:{water:1.25,fire:.8}};
+const byId=(arr,id)=>arr.find(x=>x.id===id);
+const nfmt=n=>Math.max(0,Math.round(n));
+function isStat(u,kind){return u.statuses.some(s=>s.kind===kind)}
+function stats(u,key){
+ let x=u.base[key]||0, groups=new Map();
+ for(const b of u.buffs){if(!b.stats.includes(key))continue;
+  let group=[...b.stats].sort().join('|');let g=groups.get(group)||{plus:0,minus:0};
+  // Enemy 10 reverses positive buff values while active.
+  const pct=u.reversed&&b.pct>0?-b.pct:b.pct;
+  if(pct>=0)g.plus=Math.max(g.plus,pct);else g.minus=Math.min(g.minus,pct);
+  groups.set(group,g);
+ }
+ for(const g of groups.values())x*=((1+g.plus)*(1+g.minus));
+ return Math.max(0,x);
+}
+function addBuff(u,attrs,pct,duration,source='',ctx){
+ if(pct<0&&u.debuffImmune){
+  // Adopted P1: E05 overlord accepts ONLY PATK/MATK reduction.
+  const exception=ctx?.encounterId==='E05'&&u.id==='overlord'&&attrs.every(k=>['patk','matk'].includes(k));
+  if(!exception){if(ctx)ctx.say(`${u.name}には弱体化が効かない。`,'status');return false;}
+ }
+ u.buffs.push({stats:[...attrs],pct,left:duration,source,skipExpireOnce:ctx?.currentActor===u.id});
+ if(ctx)ctx.say(`${u.name} ${pct>0?'強化':'弱体化'} ${attrs.join('/')} ${pct>0?'+':''}${Math.round(pct*100)}%`,'status');
+ return true;
+}
+function addStatus(u,kind,duration,ctx){
+ if(u.statusImmune&&['poison','mark','vulnerable'].includes(kind)&&!(ctx?.encounterId==='E06'&&u.id==='guard'&&kind==='poison')){
+  if(ctx)ctx.say(`${u.name}は${kind}を無効化。`,'status');return false;
+ }
+ u.statuses=u.statuses.filter(s=>s.kind!==kind);
+ u.statuses.push({kind,left:duration,skipExpireOnce:ctx?.currentActor===u.id});
+ if(ctx)ctx.say(`${u.name}に${{poison:'毒',mark:'刻印',vulnerable:'脆弱',control_immune:'阻害耐性'}[kind]||kind}。`,'status');
+ return true;
+}
+function unit(id,side,gem='balanced',equipment={}){
+ let row=side==='ally'?(id==='H'?D().heroGems[gem]:D().characters[id]):id;
+ const base=side==='ally'?deep(row):Object.fromEntries(statkeys.map(k=>[k,row[k]]));
+ const equip=side==='ally'?[equipment.W,equipment.A,equipment.X].filter(Boolean):[];
+ for(const eid of equip){const it=D().equipment[eid];if(it)for(const [k,v] of Object.entries(it.stats))base[k]=(base[k]||0)+v}
+ base.hp=Math.max(1,base.hp);
+ const desc=side==='ally'?D().charactersDraft.find(x=>x.id===id):null;
+ return {id:side==='ally'?id:row.id,side,name:side==='ally'?desc?.name||id:row.name,
+  base,hp:base.hp,maxhp:base.hp,element:side==='ally'?'neutral':row.element||'neutral',
+  buffs:[],statuses:[],shields:[],control:0,toxic_poison:0,cover:null,aoe_cover:null,taunt:0,
+  used:[],reversed:false,immuneKinds:row.immuneKinds||[],
+  statusImmune:!!row.statusImmune,debuffImmune:!!row.debuffImmune, equipment:equip};
+}
+function makeParty(ids,gem,equipment){return ids.map(id=>unit(id,'ally',gem,equipment[id]||{}))}
+function skillOptions(uid,gem){return D().unlockedSkills[uid+':'+(uid==='H'?gem:'any')].map(sid=>D().skills[sid])}
+function skill(sid){return D().skills[sid]}
+function targetMode(s){
+ if(['taunt'].includes(s.type)||['allies','enemies','self'].includes(s.scope))return 'none';
+ if(['buff','barrier','heal','cleanse','immune_control'].includes(s.type)&&s.scope==='ally')return 'ally';
+ if(['cover','cover_aoe'].includes(s.type))return 'ally';
+ return 'enemy';
+}
+function validate({encounterId,roster,gem,gear,plan}){
+ if(!D().encounters.some(e=>e.id===encounterId))throw new Error('遭遇IDが不正です');
+ if(!Array.isArray(roster)||roster.length!==4||roster[0]!=='H'||new Set(roster).size!==4)throw new Error('主人公＋仲間3人を選んでください');
+ if(!['balanced','flame','tide'].includes(gem))throw new Error('命珠が不正です');
+ if(!Array.isArray(plan)||plan.length!==5)throw new Error('5ラウンド分の行動予約が必要です');
+ const enemy=D().encounters.find(e=>e.id===encounterId);
+ for(const id of roster){
+  const used=new Set();
+  for(const [index,row] of plan.entries()){
+   const action=row[id];const s=action&&skill(action.skill);
+   if(!s||!skillOptions(id,gem).some(x=>x.id===s.id))throw new Error(`第${index+1}R：${id}に未解放の技能があります`);
+   if(s.uses===1&&used.has(s.id))throw new Error(`第${index+1}R：${s.label}は1戦で1回しか使えません`);
+   if(s.uses===1)used.add(s.id);
+   const mode=targetMode(s);
+   if(mode==='ally'&&(!roster.includes(action.target)||((s.type==='cover'||s.type==='cover_aoe')&&action.target===id)))throw new Error(`第${index+1}R：${s.label}の対象が不正です`);
+   if(mode==='enemy'&&!enemy.enemies.some(e=>e.id===action.target))throw new Error(`第${index+1}R：${s.label}の敵対象が不正です`);
+  }
+ }
+ return true;
+}
+function guardRedirect(ctx,target,aoe){
+ let recipient=target, guardian=null;
+ if(!aoe){
+  const taunts=live(ctx.sideOf(target)).filter(u=>u.taunt>0);
+  if(taunts.length)recipient=taunts.sort((a,b)=>a.id.localeCompare(b.id))[0];
+  const covers=live(ctx.sideOf(target)).filter(u=>u.cover&&u.cover.target===recipient.id&&u.id!==recipient.id);
+  if(covers.length){guardian=covers.sort((a,b)=>a.id.localeCompare(b.id))[0];recipient=guardian;ctx.metrics.cover++;}
+ }else{
+  const guardians=live(ctx.sideOf(target)).filter(u=>u.aoe_cover&&u.aoe_cover.target===recipient.id&&u.id!==recipient.id);
+  if(guardians.length){guardian=guardians[0];recipient=guardian;ctx.metrics.aoeCover++;}
+ }
+ return {recipient,guardian};
+}
+function damage(ctx,attacker,initialTarget,kind,power,{element='neutral',ignore=0,extra=0,aoe=false,pierce=false,reflect=true,redirect=true}={}){
+ if(!initialTarget||initialTarget.hp<=0||attacker.hp<=0)return 0;
+ // Guardian/decoy enemy-specific redirects are tested only for single-target hits.
+ let target=initialTarget,intercepted=false;
+ if(redirect&&attacker.side==='ally'&&!aoe){
+  const enemies=live(ctx.enemies);
+  const proxy=enemies.find(u=>(u.id==='guard'&&target.id==='toxic')||(u.id==='decoy'&&target.id==='purger'));
+  if(proxy)target=proxy;
+ }
+ if(redirect&&attacker.side==='enemy'){
+  const r=guardRedirect(ctx,target,aoe);target=r.recipient;
+  intercepted=!!(r.guardian&&target.id!==initialTarget.id&&target.id==='02'&&kind==='physical');
+ }
+ if(target.immuneKinds.includes(kind)){ctx.say(`${target.name}は${kind==='physical'?'物理':'魔法'}を無効化！`,'immune');return 0;}
+ let baseStat=stats(attacker,kind==='physical'?'patk':'matk');
+ let defStat=stats(target,kind==='physical'?'pdef':'mdef')*(1-ignore);
+ let elementMult=elemChart[element]?.[target.element]||1;
+ let vuln=isStat(target,'vulnerable')?1.2:1;
+ let raw=Math.max(1,Math.floor(baseStat*(power+extra)/100*100/(100+defStat)*elementMult*vuln+1e-9));
+ let residual=raw,shieldTaken=0;
+ if(!pierce){for(const sh of target.shields.sort((a,b)=>a.left-b.left)){let absorb=Math.min(residual,sh.value);sh.value-=absorb;residual-=absorb;shieldTaken+=absorb;if(!residual)break}}
+ let dealt=Math.min(target.hp,residual);target.hp-=dealt;
+ ctx.say(`${attacker.name} → ${target.name}　${nfmt(dealt)}ダメージ${shieldTaken?`（障壁${shieldTaken}吸収）`:''}`,'damage');
+ ctx.metrics.damage+=dealt;
+ if(intercepted&&target.hp>0&&!ctx.actionCounterTaken.has(target.id)){
+  ctx.actionCounterTaken.add(target.id);const retaliate=Math.min(attacker.hp,Math.max(1,Math.floor(stats(attacker,'patk')*power/100*.25)));
+  attacker.hp-=retaliate;ctx.metrics.counter++;ctx.say(`${target.name}の守護反撃！　${attacker.name}に${retaliate}`,'counter');
+ }
+ if(reflect&&attacker.side==='ally'&&target.id==='mirror'&&dealt>0){
+  const loss=Math.min(attacker.hp,Math.floor(dealt*.35));attacker.hp-=loss;
+  ctx.metrics.reflection+=loss;ctx.say(`鏡の反射が${attacker.name}へ${loss}ダメージ`,'status');
+ }
+ return dealt;
+}
+function directTargets(ctx,actor,s,target){
+ if(s.scope==='self')return [actor];
+ if(s.scope==='allies')return live(ctx.allies);
+ if(s.scope==='enemies')return live(ctx.enemies);
+ if(s.scope==='ally')return live(ctx.allies).filter(x=>x.id===target);
+ return live(ctx.enemies).filter(x=>x.id===target);
+}
+function playerAction(ctx,actor,action){
+ let s=skill(action.skill);if(!s)return;
+ if(actor.used.includes(s.id)){ctx.say(`${actor.name}の${s.label}は使用済み。`,'status');return;}
+ let tg=directTargets(ctx,actor,s,action.target);
+ if(!tg.length){ctx.say(`${actor.name}：${s.label}の対象不在`,'status');return;}
+ if(s.uses===1)actor.used.push(s.id);
+ ctx.say(`${actor.name}｜${s.label}`,'action');ctx.metrics.skills[s.id]=(ctx.metrics.skills[s.id]||0)+1;
+ if(s.type==='damage'){
+  if(s.selfcost)actor.hp=Math.max(1,actor.hp-Math.floor(actor.maxhp*s.selfcost));
+  for(const tgt of tg){
+   for(let h=0;h<(s.hits||1);h++){
+    if(tgt.hp<=0)break;
+    let bonus=(s.bonus_poison&&isStat(tgt,'poison')?s.bonus_poison:0)+(s.bonus_pdef_debuff&&tgt.buffs.some(x=>x.pct<0&&x.stats.includes('pdef'))?s.bonus_pdef_debuff:0);
+    let kind=s.kind;if(actor.id==='H'&&s.id==='H.basic'&&ctx.gem==='tide')kind='magic';
+    let dealt=damage(ctx,actor,tgt,kind,s.power,{element:s.elem,ignore:s.ignore||0,extra:bonus,aoe:s.scope==='enemies'});
+    if(s.lifesteal){let healed=Math.floor(dealt*s.lifesteal);actor.hp=Math.min(actor.maxhp,actor.hp+healed)}
+   }
+  }
+  if(s.self_buff_pdef)addBuff(actor,['pdef'],s.self_buff_pdef,3,s.id,ctx);
+  if(s.debuff_stats)tg.forEach(t=>addBuff(t,s.debuff_stats,s.debuff_pct,s.debuff_duration,s.id,ctx));
+ }else if(s.type==='buff'||s.type==='debuff'){
+  tg.forEach(t=>addBuff(t,s.stats,s.pct,s.duration,s.id,ctx));
+ }else if(s.type==='barrier'){
+  tg.forEach(t=>{t.shields.push({value:s.value,left:s.duration});ctx.say(`${t.name}に障壁${s.value}`,'status')});
+ }else if(s.type==='heal'){
+  tg.forEach(t=>{const heal=Math.min(t.maxhp-t.hp,s.value);t.hp+=heal;ctx.say(`${t.name}のHPを${heal}回復`,'heal')});
+ }else if(s.type==='status'){
+  tg.forEach(t=>addStatus(t,s.status,s.duration,ctx));
+ }else if(s.type==='interrupt'){
+  tg.forEach(t=>{if(!t.statusImmune&&!isStat(t,'control_immune')){t.control=1;ctx.say(`${t.name}の次の行動を阻害`,'status')}});
+ }else if(s.type==='taunt'){
+  actor.taunt=s.duration;actor.justTaunted=true;ctx.say(`${actor.name}が攻撃を引き受ける`,'guard');
+ }else if(s.type==='cover'||s.type==='cover_aoe'){
+  if(s.type==='cover')actor.cover={target:action.target,left:s.duration,skipExpireOnce:true};
+  else actor.aoe_cover={target:action.target,left:s.duration,skipExpireOnce:true};
+  ctx.say(`${actor.name}が${byId(ctx.allies,action.target)?.name}を${s.type==='cover'?'単体':'全体攻撃'}から守る`,'guard');
+ }else if(s.type==='immune_control'){
+  tg.forEach(t=>addStatus(t,'control_immune',s.duration,ctx));
+ }else if(s.type==='dispel'){
+  tg.forEach(t=>{if(t.shields.length)t.shields=[];else t.buffs=t.buffs.filter(b=>b.pct<0);ctx.say(`${t.name}の強化を解除`,'status')});
+ }else if(s.type==='cleanse'){
+  for(const t of tg){
+   let hasAilment=t.toxic_poison>0||t.statuses.some(q=>['poison','mark','vulnerable'].includes(q.kind))||t.buffs.some(b=>b.pct<0);
+   t.statuses=t.statuses.filter(q=>!['poison','mark','vulnerable'].includes(q.kind));
+   t.toxic_poison=0;t.buffs=t.buffs.filter(q=>q.pct>=0);
+   ctx.say(`${t.name}を浄化${hasAilment?'！':'（解除対象なし）'}`,'heal');
+   if(actor.id==='07'&&hasAilment){addBuff(t,['patk','matk'],.20,2,'07_boon',ctx);ctx.metrics.purification++;}
+  }
+ }
+}
+function commandArray(row,round){let cmd=row.script[Math.min(round-1,row.script.length-1)];
+ if(typeof cmd==='string')return [[cmd]];
+ if(!Array.isArray(cmd))return [['CHARGE']];
+ if(Array.isArray(cmd[0]))return cmd;
+ return [cmd];
+}
+function enemyAction(ctx,actor,row,round){
+ ctx.actionCounterTaken.clear(); // one counter per independent enemy action
+ for(const cmd of commandArray(row,round)){
+  if(actor.hp<=0||!live(ctx.allies).length)break;
+  const op=cmd[0];const choose=(who)=>{
+    let arr=live(ctx.allies);if(!arr.length)return null;
+    if(who==='lowest')return [...arr].sort((a,b)=>a.hp/a.maxhp-b.hp/b.maxhp||a.id.localeCompare(b.id))[0];
+    return arr.find(x=>x.id==='H')||arr[0];
+  };
+  if(op==='TAUNT'){actor.taunt=3;ctx.say(`${actor.name}が挑発を発動`,'status')}
+  else if(op==='GUARD'||op==='SACRIFICE'){ctx.say(`${actor.name}が護衛態勢`,'guard')}
+  else if(op==='CHARGE'){ctx.say(`${actor.name}は力を溜めている…`,'warning')}
+  else if(op==='POISON_ALL')live(ctx.allies).forEach(x=>addStatus(x,'poison',3,ctx));
+  else if(op==='POISON12'){live(ctx.allies).forEach(x=>{x.toxic_poison=3;ctx.say(`${x.name}は猛毒を受けた`,'warning')})}
+  else if(op==='DEBUFF_ALL')live(ctx.allies).forEach(x=>addBuff(x,[cmd[1]],cmd[2],3,actor.id,ctx));
+  else if(op==='FIXED_AOE')live(ctx.allies).forEach(x=>{x.hp=Math.max(0,x.hp-cmd[1]);ctx.say(`${x.name}へ防御無視 ${cmd[1]}ダメージ`,'warning')});
+  else if(op==='MULTI'){
+    const t=choose('priority');if(t)for(let i=0;i<cmd[2];i++)damage(ctx,actor,t,'physical',cmd[1]);
+  }else if(['P','M','PA','MA'].includes(op)){
+    const kind=op.startsWith('P')?'physical':'magic';const aoe=op.endsWith('A');
+    const targets=aoe?[...live(ctx.allies)]:[choose(cmd[2])];
+    for(const target of targets)if(target)for(let i=0;i<(cmd[3]||1);i++)damage(ctx,actor,target,kind,cmd[1],{aoe,element:kind==='magic'?actor.element:'neutral'});
+  }else if(op==='DISPEL_DEBUFF')live(ctx.allies).forEach(x=>{x.buffs=x.buffs.filter(b=>b.pct<0);addBuff(x,['patk','matk'],-.20,3,actor.id,ctx)});
+  else if(op==='DRAIN'){
+   const t=choose('priority');if(t){let hp=damage(ctx,actor,t,'physical',cmd[1]);let delta=Math.min(stats(t,'patk'),Math.floor(hp*.2));if(delta){addBuff(t,['patk'],-delta/Math.max(1,t.base.patk),3,actor.id,ctx);addBuff(actor,['patk'],delta/Math.max(1,actor.base.patk),3,actor.id,ctx)}}
+  }else if(op==='CHECK300')live(ctx.allies).forEach(x=>{if(!x.shields.some(q=>q.value>0)){x.hp=Math.max(0,x.hp-300);ctx.say(`${x.name}は障壁未展開！ 300固定ダメージ`,'warning')}});
+  else if(op==='PIERCE'){const t=choose('priority');if(t)damage(ctx,actor,t,'magic',cmd[1],{pierce:true})}
+  else if(op==='REVERSE')live(ctx.allies).forEach(x=>{x.reversed=true;ctx.say(`${x.name}の強化効果が反転！`,'warning')});
+ }
+}
+function expire(ctx,u){
+ // Poison ALWAYS applies after the target character's action opportunity (even if interrupted).
+ if(u.hp>0&&isStat(u,'poison')){
+  const loss=Math.min(u.hp,Math.max(1,Math.floor(u.maxhp*.06)));u.hp-=loss;ctx.metrics.poison+=loss;ctx.say(`${u.name}は行動後、毒で${loss}ダメージ`,'poison');
+ }
+ if(u.hp>0&&u.toxic_poison>0){const loss=Math.min(u.hp,Math.max(1,Math.floor(u.maxhp*.12)));u.hp-=loss;u.toxic_poison--;ctx.metrics.poison+=loss;ctx.say(`${u.name}は行動後、猛毒で${loss}ダメージ`,'poison');}
+ for(const name of ['buffs','statuses','shields']){
+  u[name].forEach(x=>{if(x.skipExpireOnce){x.skipExpireOnce=false;}else x.left--;});
+  u[name]=u[name].filter(x=>x.left>0&&(name!=='shields'||x.value>0));
+ }
+ if(u.taunt>0){if(u.justTaunted){u.justTaunted=false;}else u.taunt--;}
+ for(const name of ['cover','aoe_cover'])if(u[name]){if(u[name].skipExpireOnce){u[name].skipExpireOnce=false;}else u[name].left--;if(u[name].left<=0)u[name]=null;}
+}
+function snapshot(allies,enemies,round){
+ const out=u=>({id:u.id,name:u.name,hp:u.hp,maxhp:u.maxhp,shields:u.shields.reduce((a,x)=>a+x.value,0),poison:isStat(u,'poison')||u.toxic_poison>0,
+  buffs:u.buffs.filter(b=>b.pct>0).length,debuffs:u.buffs.filter(b=>b.pct<0).length,control:u.control});
+ return {round,allies:allies.map(out),enemies:enemies.map(out)};
+}
+function simulate({encounterId,roster,gem='balanced',gear={},plan}){
+ validate({encounterId,roster,gem,gear,plan});
+ const encounter=D().encounters.find(x=>x.id===encounterId);
+ const allies=makeParty(roster,gem,gear),enemies=encounter.enemies.map(x=>unit(x,'enemy'));
+ const ctx={allies,enemies,gem,encounterId,logs:[],round:0,currentActor:null,metrics:{cover:0,aoeCover:0,counter:0,poison:0,damage:0,reflection:0,purification:0,skills:{}},actionCounterTaken:new Set(),
+  sideOf:u=>u.side==='ally'?allies:enemies,
+  say:(message,type='info')=>ctx.logs.push({round:ctx.round,text:message,type})};
+ const states=[snapshot(allies,enemies,0)];let won=false,finishReason='round_limit';
+ for(let r=1;r<=5;r++){
+  ctx.round=r;ctx.say(`―― 第${r}ラウンド ――`,'round');
+  // Declared priority takes precedence over speed for exactly three defensive skills.
+  const order=live([...allies,...enemies]).sort((a,b)=>{
+    const high=u=>u.side==='ally'&&['02.01','02.02','02.12'].includes(plan[r-1][u.id]?.skill)?1:0;
+    return high(b)-high(a)||stats(b,'spd')-stats(a,'spd')||a.id.localeCompare(b.id);
+  });
+  for(const actor of order){
+   if(actor.hp<=0)continue;
+   ctx.currentActor=actor.id;
+   if(actor.control>0&&!isStat(actor,'control_immune')){
+    actor.control--;ctx.say(`${actor.name}は行動を阻害された`,'warning');
+   }else if(actor.side==='ally'){
+    playerAction(ctx,actor,plan[r-1][actor.id]);
+   }else{
+    enemyAction(ctx,actor,encounter.enemies.find(e=>e.id===actor.id),r);
+   }
+   expire(ctx,actor);
+   if(!live(enemies).length){won=true;finishReason='defeated';break;}
+   if(!live(allies).length){finishReason='annihilated';break;}
+  }
+  states.push(snapshot(allies,enemies,r));
+  if(won||!live(allies).length)break;
+ }
+ // No EP-B hybrid alternative (not adopted).
+ const out={encounterId,encounterName:encounter.name,won,finishReason,round:states[states.length-1].round,
+  allies:states[states.length-1].allies,enemies:states[states.length-1].enemies,states,logs:ctx.logs,metrics:ctx.metrics,
+  remainingEnemyHP:enemies.reduce((a,u)=>a+u.hp,0),remainingPartyHP:allies.reduce((a,u)=>a+u.hp,0),
+  engineVersion:'playable-browser-prototype-0.1',warning:'試作Pythonエンジンからの移植版。効果期限など完全な同値性は未検証'};
+ return out;
+}
+function autoPlan(roster,gem,encounter,style='mixed'){
+ const enemies=encounter.enemies;
+ const physicalTarget=enemies.find(x=>!(x.immuneKinds||[]).includes('physical'))?.id||enemies[0].id;
+ const magicalTarget=enemies.find(x=>!(x.immuneKinds||[]).includes('magic'))?.id||enemies[0].id;
+ const used={};roster.forEach(id=>used[id]=new Set());
+ const sequences={
+  H:gem==='flame'?['H.f03','H.f01','H.f04','H.fult','H.basic']:gem==='tide'?['H.t04','H.t01','H.t02','H.tult','H.basic']:['H.03','H.06','H.01','H.ult','H.basic'],
+  '02':style==='attack'?['02.11','02.04','02.01','02.ult','02.basic']:['02.02','02.12','02.11','02.ult','02.basic'],
+  '03':['03.ult','03.02','03.01','03.03','03.basic'],
+  '04':['04.03','04.01','04.02','04.ult','04.basic'],
+  '05':['05.02','05.ult','05.01','05.04','05.basic'],
+  '06':['06.04','06.01','06.02','06.ult','06.basic'],
+  '07':['07.01','07.ult','07.02','07.04','07.basic']};
+ const p=[];
+ for(let r=0;r<5;r++){
+  const row={};
+  for(const id of roster){
+   const pool=skillOptions(id,gem).map(s=>s.id);
+   const preference=style==='attack'?[...(pool.filter(s=>skill(s).type==='damage'&&s!==id+'.basic')), ...(sequences[id]||[])]:sequences[id]||[];
+   let sid=preference.find(s=>pool.includes(s)&&(skill(s).uses!==1||!used[id].has(s)))||id+'.basic';
+   if(style==='attack'&&r===0&&id==='02')sid='02.11';
+   if(skill(sid).uses===1)used[id].add(sid);
+   const s=skill(sid);let target=null,mode=targetMode(s);
+   if(mode==='enemy'){
+    const physical=s.kind==='physical'||(id==='H'&&gem==='flame'&&sid==='H.basic');
+    const preferred=(encounter.id==='E03'&&r>1)?(physical?physicalTarget:magicalTarget):(physical?physicalTarget:magicalTarget);
+    target=preferred;
+   }else if(mode==='ally'){
+    if(s.type==='cover'||s.type==='cover_aoe')target=roster.includes('04')?'04':roster.find(x=>x!==id)||'H';
+    else if(id==='03')target= s.stats?.includes('matk')&&roster.includes('04')?'04':roster.includes('06')?'06':roster.includes('04')?'04':'H';
+    else if(s.type==='cleanse')target='H';
+    else target='H';
+   }
+   row[id]={skill:sid,target};
+  }
+  p.push(row);
+ }
+ return p;
+}
+const exported={validate,simulate,autoPlan,skillOptions,targetMode,stats,makeParty,skill,addBuff,addStatus,unit,live};
+global.BattleEngine=exported;
+if(typeof module!=='undefined'&&module.exports)module.exports=exported;
+})(typeof window!=='undefined'?window:globalThis);
+
+</script><script>
+(function(){
+'use strict';
+const D=window.GAME_DATA, B=window.BattleEngine, $=s=>document.querySelector(s);
+const MAIN=$('#main-view');
+const CHAR=Object.fromEntries(D.charactersDraft.map(c=>[c.id,c]));
+const ENC=Object.fromEntries(D.encounters.map(e=>[e.id,e]));
+const escape=s=>String(s??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
+const attr=s=>escape(s);
+const FLAG='novel-rpg-port-proto-v01';
+const slotNames={W:'武器',A:'防具',X:'装飾'};
+const gemName={balanced:'均衡の命珠',flame:'焔撃の命珠',tide:'水律の命珠'};
+const encounterLine={E01:'港へ続く倉庫街',E02:'夜を駆ける群れ',E03:'双壁の間',E04:'潮霧の呪詛',E05:'双極の覇王',E06:'毒術師と護衛',E07:'忘却の三人衆',E08:'目覚める適応体',E09:'防壁判定者',E10:'逆転の監視者',E11:'長距離射手',E12:'連撃の騎士',E13:'暴走する命珠',E14:'蓄力の処刑者',E15:'反射する守護者',EP_A:'追憶・絶境',EP_B:'追憶・鏡海'};
+const allowedParty=['02','03','04','05','06','07'];
+const scenes=[
+ {id:'prologue',chapter:'序章 / THE HARBOR',speaker:'地の文',lines:'潮風が運んできたのは、海の匂いと、青白い光だった。\n\n灯港ルーメ。失われたはずの「命珠」が、今朝、港の倉庫で発見されたという。\nその知らせを聞いて、あなたは仲間とともに港へ向かう。',choices:[{label:'港の門をくぐる',next:1,flag:'quiet'},{label:'光の正体を確かめる',next:1,flag:'curious'}]},
+ {id:'crew',chapter:'序章 / THE FOUR',speaker:'リノ（03）',lines:'「……あっ、来た！　この子も何か感じてるんだって」\n\n少女の隣で、小さな犬が一度だけ吠える。\n盾を担いだ大柄な熊獣人が、ゆっくりと頷いた。',choices:[{label:'仲間を編成する',page:'party'},{label:'先へ進む',next:2}]},
+ {id:'warehouse',chapter:'第一幕 / WAREHOUSE',speaker:'ガルド（02）',lines:'「扉の向こう、足音がする。先に俺が行こう」\n\n封鎖された倉庫の前に、鎧の兵士が立っている。\n青い光は、どうやらその奥だ。',choices:[{label:'重装兵に挑む（E01）',battle:'E01'},{label:'別の編成を考える',page:'party'}]},
+ {id:'after-warehouse',chapter:'第二幕 / SEA FOG',speaker:'セラ（04）',lines:'「これが、噂の命珠……？」\n\n指先に浮かんだ光が、突然、霧になって散った。\n港の外れで、呪文を唱える声が聞こえる。',choices:[{label:'霧を追う',next:4},{label:'仲間を整える',page:'party'}]},
+ {id:'poison',chapter:'第二幕 / THE CURSE',speaker:'エイル（07）',lines:'「霧に触れた人が倒れている。毒だと思う」\n\n高速の呪術師と巨大な魔法破壊者が道を塞ぐ。\n毒を解除するタイミングと、魔法攻撃を防ぐ準備が試される。',choices:[{label:'呪いを断つ（E04・C13）',battle:'E04'},{label:'作戦を練り直す',page:'party'}]},
+ {id:'after-poison',chapter:'第三幕 / TWO WALLS',speaker:'ルクス（05）',lines:'「……奥へ続く道は、二つの壁で封じられている」\n\n光の盾は物理を通さず、影の処刑者は魔法を受けつけない。\n斥候がこちらを見つけた。',choices:[{label:'双壁の間へ',next:6},{label:'装備を見直す',page:'party'}]},
+ {id:'twowalls',chapter:'第三幕 / THE GATE',speaker:'カイ（06）',lines:'「一つずつ片付けりゃいい。……ただし順番を間違えるなよ」\n\n扉の中央に、命珠と同じ紋様が刻まれている。\nここを越えれば、海底の遺構へ続くはずだ。',choices:[{label:'双壁に挑む（E03・S9）',battle:'E03'},{label:'戦闘準備へ',page:'battle'}]},
+ {id:'ending',chapter:'終幕 / TO BE CONTINUED',speaker:'地の文',lines:'最後の盾が砕け、海へ続く扉が開いた。\n\nそこにあったのは、もう一つの命珠。\n誰が、何のために、港へ置いたのか。\n\n――本編は、ここから始まる。',choices:[{label:'敵図鑑で別の戦闘を試す',page:'library'},{label:'最初から物語を読む',resetStory:true}]}
+];
+function defaults(){const gear={};const none={W:'',A:'',X:''};for(const id of ['H',...allowedParty]){
+ const orient=id==='H'?'physical':['02','06'].includes(id)?'physical':'magic';const profile=D.gearsByFamily.mixed[orient];
+ gear[id]={W:profile.find(x=>x[0]==='W')||'',A:profile.find(x=>x[0]==='A')||'',X:profile.find(x=>x[0]==='X')||''};
+ }
+ return {page:'story',scene:0,roster:['H','02','04','07'],gem:'balanced',equipment:gear,encounter:'E01',plan:null,planEncounter:null,round:0,result:null,completed:[],storyFlag:'',libraryFilter:'all',logFilter:'all'};
+}
+let state=defaults();try{const s=JSON.parse(localStorage.getItem(FLAG)||'null');if(s&&Array.isArray(s.roster)&&s.roster.length===4&&s.roster[0]==='H'&&Array.isArray(s.completed)){state={...defaults(),...s,page:'story',result:null}}}catch{}
+function persist(){try{const {result,...safe}=state;localStorage.setItem(FLAG,JSON.stringify({...safe,page:'story'}))}catch{}}
+function toast(str){const el=$('#toast');el.textContent=str;el.classList.add('show');clearTimeout(window._toastTimer);window._toastTimer=setTimeout(()=>el.classList.remove('show'),3000)}
+function btn(label,action,kind='ghost',extra=''){return `<button class="btn ${kind}" data-action="${attr(action)}" ${extra}>${escape(label)}</button>`}
+function portrait(id,mini=false){const c=CHAR[id],classes=['portrait',id==='H'?'hero-portrait':'',id==='02'?'bear':'',id==='04'?'long-hair':''].join(' ');
+ const hair={'H':'#d6e3ee','02':'#8b6853','03':'#a47f71','04':'#ae9bd2','05':'#556e78','06':'#624f49','07':'#dfd5ad'}[id];
+ return `<div class="${classes}" style="--character-haze:${attr(c.color)};--character-hair:${hair};--character-coat:${attr(c.color)}"><span class="sigil">${escape(c.symbol)}</span><span class="orb"></span><span class="coat"></span><span class="head"></span><span class="hair"></span><span class="portrait-placeholder">仮ビジュアル</span>${window.CHAR_ART?.[id]?`<img alt="${escape(c.name)}の立ち絵" src="${attr(window.CHAR_ART[id])}" onerror="this.hidden=true">`:''}</div>`;
+}
+function chip(text,cls=''){return `<span class="chip ${cls}">${escape(text)}</span>`}
+function header(title,desc,right=''){return `<div class="section-head"><div><p class="eyebrow">SHIOZAKAI / PROTOTYPE</p><h1 class="section-title">${title}</h1><p class="section-intro">${desc}</p></div>${right}</div>`}
+function updateNav(){document.querySelectorAll('.nav-link').forEach(x=>x.classList.toggle('active',x.dataset.nav===state.page));let title={story:'物語',party:'編成と装備',battle:'戦闘準備',library:'敵図鑑・試験',about:'制作ノート',result:'戦闘結果'}[state.page]||'物語';$('#topbar-title').textContent=title;}
+function goto(page){state.page=page;persist();render();window.scrollTo(0,0)}
+function render(){updateNav();const view={story:renderStory,party:renderParty,battle:renderBattle,library:renderLibrary,about:renderAbout,result:renderResult}[state.page]||renderStory;MAIN.innerHTML=view();}
+function nextStory(){if(state.scene<scenes.length-1)state.scene++;goto('story')}
+function renderStory(){const scene=scenes[state.scene]||scenes[0];const intro=state.scene<=1;
+ const quests=[['E01','封鎖された倉庫'],['E04','港に残る呪い'],['E03','鏡の双壁']];
+ const steps=quests.map(([id,name],i)=>`<div class="quest-item ${state.completed.includes(id)?'done':i===0||state.completed.includes(quests[i-1]?.[0])?'active':''}"><span class="quest-index">${state.completed.includes(id)?'✓':String(i+1).padStart(2,'0')}</span><div><strong>${name}</strong><p>${escape(encounterLine[id])} · ${id==='E03'?'S9実装':id==='E04'?'C13実装':'基準敵'}</p></div></div>`).join('');
+ const text=scene.lines+(state.storyFlag==='curious'&&state.scene===2?'\n\nあなたの命珠は、扉の奥に近づくほど淡く脈打った。':'');
+ return `<div class="hero"><div class="hero-ornament">◈</div><div class="hero-content"><p class="eyebrow">A SMALL TALE BY THE SEA</p><h1>潮境の命珠</h1><p>失われた光を追う、港の小さな冒険。<br>仮ストーリー × 実際に動く5ラウンド戦闘。</p><div class="actions">${chip('STORY DEMO', 'goldchip')}${chip('4人パーティ')}${chip('Lv1')}</div></div></div>
+ <div class="story-layout"><section class="card story-panel"><span class="story-voice">${escape(scene.chapter)} / ${escape(scene.speaker)}</span><div class="story-text">${escape(text)}</div><div class="story-choices">${scene.choices.map((c,i)=>`<button class="story-choice" data-story-choice="${i}"><span>${escape(c.label)}</span><span class="gold">→</span></button>`).join('')}</div></section>
+ <aside class="card story-panel"><p class="eyebrow">JOURNEY LOG</p><h3 style="font-size:21px;margin:12px 0 14px">港の探索記録</h3>${steps}<p class="section-intro" style="margin-top:14px">戦闘に敗北しても編成と予約行動を変更して再挑戦できる。<br><br>現在の仲間：${state.roster.slice(1).map(id=>escape(CHAR[id].name)).join(' / ')}</p></aside></div>`;
+}
+function selectionCard(c){const picked=state.roster.includes(c.id);return `<div class="character-card ${picked?'selected':''}">${portrait(c.id)}<h3>${escape(c.name)}</h3><div class="ch-meta">${escape(c.role)} / ${escape(c.id)}</div><p>${escape(c.look)}</p><button data-pick="${c.id}" class="btn tiny ${picked?'primary':'ghost'} pick">${picked?'✓ 編成中':'＋ 編成する'}</button></div>`}
+function selectOption(value,label,sel){return `<option value="${attr(value)}" ${String(value)===String(sel)?'selected':''}>${escape(label)}</option>`}
+function renderParty(){const companions=D.charactersDraft.filter(x=>x.id!=='H');const h=CHAR.H;
+ const gearSummary=(id)=>{const equipment=state.equipment[id]||{},stats=B.makeParty([id],state.gem,state.equipment)[0].base;
+ const options=slot=>[selectOption('','装備なし',equipment[slot]),...Object.values(D.equipment).filter(x=>x.slot===slot).map(g=>selectOption(g.id,`${g.name} (${Object.entries(g.stats).map(([k,v])=>`${statLabel(k)}${v>=0?'+':''}${v}`).join('、')})`,equipment[slot]))].join('');
+ return `<article class="member-slot"><div class="member-head"><div style="width:77px">${portrait(id,true)}</div><div><h3>${escape(CHAR[id].name)}</h3><p class="muted small" style="margin-top:5px">${escape(CHAR[id].role)}</p></div></div><div class="stat-line">${['hp','patk','matk','pdef','mdef','spd'].map(s=>`<div class="stat-pill">${statLabel(s)}<strong>${stats[s]}</strong></div>`).join('')}</div><div class="equipment-row">${['W','A','X'].map(slot=>`<div class="field"><label>${slotNames[slot]}</label><select class="select" data-equipment="${id}:${slot}">${options(slot)}</select></div>`).join('')}</div></article>`}
+ return `${header('編成と装備','仲間6人から3人を選び、主人公と合わせて4人編成。装備は武器・防具・装飾の3枠。',chip('装備マスタ30種','goldchip'))}
+ <div class="card panel" style="margin-bottom:18px"><div class="role-banner"><div><h3 class="section-title" style="font-size:20px">主人公と命珠</h3><p class="section-intro">命珠によって主人公の能力・使用技能が変化する。</p></div>${chip('固定枠')}</div><div class="actions" style="margin-top:13px">${['balanced','flame','tide'].map(k=>`<button data-gem="${k}" class="btn ${state.gem===k?'primary':'ghost'} tiny">${gemName[k]}</button>`).join('')}</div></div>
+ <div class="section-head"><h2 class="section-title" style="font-size:20px">仲間を選ぶ</h2><span class="chip ${state.roster.length===4?'mintchip':''}">${state.roster.length-1} / 3 人を編成</span></div><div class="selection-grid">${companions.map(selectionCard).join('')}</div>
+ <div class="section-head" style="margin-top:28px"><div><h2 class="section-title" style="font-size:21px">装備とステータス</h2><p class="section-intro">装備による変化を即時反映。6つの一括方針も利用できる。</p></div></div>
+ <div class="actions" style="margin-bottom:14px">${Object.keys(D.gearsByFamily).map(k=>`<button class="btn tiny ghost" data-gear-preset="${k}">${{none:'装備なし',offense:'火力',defense:'守備',speed:'速度',mixed:'均衡',anti_magic:'対魔法'}[k]}</button>`).join('')}</div>
+ <div class="selection-grid" id="equipped-party">${state.roster.map(gearSummary).join('')}</div><div class="actions" style="justify-content:flex-end;margin-top:22px">${btn('この編成で戦闘準備へ →','go-battle','primary')}</div>`;
+}
+function statLabel(v){return {hp:'HP',patk:'物攻',matk:'魔攻',pdef:'物防',mdef:'魔防',spd:'速度'}[v]||v}
+function ensurePlan(){if(!state.plan||state.planEncounter!==state.encounter||state.plan.some(row=>state.roster.some(id=>!row[id]))){state.plan=B.autoPlan(state.roster,state.gem,ENC[state.encounter]);state.planEncounter=state.encounter;state.round=0}}
+function renderBattle(){ensurePlan();const enc=ENC[state.encounter],r=state.round,plan=state.plan[r];
+ const enemies=enc.enemies.map(e=>`<div class="enemy-mini"><div><strong>${escape(e.name)}</strong><br><small>HP ${e.hp} / 物攻 ${e.patk} / 魔攻 ${e.matk}</small></div><span class="chip">SPD ${e.spd}</span></div>`).join('');
+ const rows=state.roster.map(id=>{
+ const action=plan[id],pool=B.skillOptions(id,state.gem),chosen=B.skill(action.skill),mode=B.targetMode(chosen);
+ const options=mode==='ally'?state.roster.filter(x=>!['cover','cover_aoe'].includes(chosen.type)||x!==id).map(x=>[x,CHAR[x].name]):mode==='enemy'?enc.enemies.map(x=>[x.id,x.name]):[];
+ const targetSelect=mode==='none'?`<div class="field"><label>対象</label><div class="chip" style="padding:12px">${chosen.scope==='allies'?'味方全体':chosen.scope==='enemies'?'敵全体':chosen.scope==='self'?'自分':'指定なし'}</div></div>`:
+ `<div class="field"><label>${mode==='ally'?'守る／強化する味方':'攻撃／妨害する敵'}</label><select class="select" data-target="${id}">${options.map(([v,l])=>selectOption(v,l,action.target)).join('')}</select></div>`;
+ const description=describeSkill(chosen);
+ return `<div class="plan-row"><div class="plan-character"><div class="token">${escape(CHAR[id].symbol)}</div><div><strong>${escape(CHAR[id].name)}</strong><span>${escape(CHAR[id].role)}</span></div></div><div class="field"><label>使用技能 <span class="gold">${chosen.uses===1?'1戦1回':''}</span></label><select class="select" data-skill="${id}">${pool.map(s=>selectOption(s.id,`${s.label}${s.type==='damage'?` · ${s.power}%`:''}${['02.01','02.02','02.12'].includes(s.id)?' ⚡優先+1':''}`,action.skill)).join('')}</select><div class="skill-description">${escape(description)}</div></div>${targetSelect}</div>`;
+ }).join('');
+ const missionExtra=enc.id==='E03'?'S9：物理無効・魔法無効の2壁＋斥候。攻撃種を意識して対象を指定しよう。':enc.id==='E04'?'C13：第2・4Rに毒を付与。浄化タイミングに意味がある。':'敵の行動は5R固定。技能は原則1戦1回。';
+ return `${header('5ラウンド行動予約','4人全員の5ラウンド分を決めてから戦闘開始。各ラウンドは優先度 → 速度順で行動する。',chip(`${enc.id} · Lv1`,'goldchip'))}
+ <div class="battle-header"><div class="card panel"><p class="eyebrow">SELECT ENCOUNTER</p><div class="field" style="margin:12px 0"><label>挑戦する敵</label><select class="select" data-select-encounter>${D.encounters.map(e=>selectOption(e.id,`${e.id} · ${encounterLine[e.id]||e.name}`,state.encounter)).join('')}</select></div><h3 class="section-title" style="font-size:19px;margin-top:11px">${escape(encounterLine[enc.id]||enc.name)}</h3><p class="section-intro">${escape(missionExtra)}</p><div class="actions" style="margin-top:16px">${chip('全5Rで敵撃破')}${chip('4体編成')}</div></div><div class="card enemy-preview"><span class="eyebrow">ENEMY UNITS</span>${enemies}</div></div>
+ <div class="round-tabs">${[0,1,2,3,4].map(i=>`<button class="round-tab ${r===i?'active':''}" data-round="${i}">第${i+1}R</button>`).join('')}</div>
+ <section class="plan-grid">${rows}</section><div class="battle-actions"><div class="actions">${btn('標準の予約を自動作成','auto-mixed','ghost')}${btn('攻撃優先で予約','auto-attack','ghost')}${window.GAME_SAMPLES?.[enc.id]?btn('攻略例を読み込む','load-sample','ghost'):''}</div><div class="actions">${btn('編成を変更','go-party','ghost')}${btn('5Rを実行する ⚔','run-battle','primary')}</div></div>
+ <p class="section-intro" style="margin-top:18px">予約を変更すると自動保存。技能重複や対象不整合は開始時に検知する。戦闘中の乱数は使用しない。</p>`;
+}
+function describeSkill(s){const pct=n=>`${n>0?'+':''}${Math.round(n*100)}%`;
+ if(s.type==='damage'){let str=`${s.kind==='physical'?'物理':'魔法'}${s.power||100}%`;if(s.scope==='enemies')str+=' / 敵全体';if(s.hits)str+=` / ${s.hits}ヒット`;if(s.debuff_stats)str+=`＋攻撃低下${pct(s.debuff_pct)}`;if(s.self_buff_pdef)str+=`＋自身物防${pct(s.self_buff_pdef)}`;return str}
+ if(['buff','debuff'].includes(s.type))return `${s.stats.map(statLabel).join(' / ')} ${pct(s.pct)} ・ ${s.duration}行動`;
+ return {barrier:`障壁${s.value}付与`,cleanse:'状態異常・弱体化を解除。07の成功時は攻撃+20%×2行動',cover:'単体攻撃を指定味方から肩代わり',cover_aoe:'全体攻撃の指定味方1人分を肩代わり',taunt:'敵単体攻撃を引き付ける / 優先度+1',status:'状態異常を付与',interrupt:'敵の行動を1回阻害',heal:`HP ${s.value}回復`,dispel:'敵強化の解除',immune_control:'行動阻害を防ぐ'}[s.type]||s.type;
+}
+function renderLibrary(){const records=D.encounters.filter(e=>state.libraryFilter==='all'||(state.libraryFilter==='story'&&['E01','E03','E04'].includes(e.id))||(state.libraryFilter==='challenge'&&['E05','E09','E12','E13','EP_A','EP_B'].includes(e.id)));
+ return `${header('敵図鑑・戦闘試験','物語に登場する敵だけでなく、17遭遇すべてを自由に試せる。EP-Bは殲滅勝利のみで、防衛ルート案は未実装。',chip('17遭遇','goldchip'))}
+ <div class="actions" style="margin-bottom:20px">${[['all','すべて'],['story','物語に登場'],['challenge','高難度候補']].map(([k,v])=>`<button data-filter="${k}" class="btn tiny ${state.libraryFilter===k?'primary':'ghost'}">${v}</button>`).join('')}</div>
+ <div class="selection-grid">${records.map(e=>`<article class="card panel"><div class="role-banner"><span class="eyebrow">${e.id}</span>${chip(e.enemies.length+'体')}</div><h3 class="section-title" style="font-size:20px;margin:12px 0 8px">${escape(encounterLine[e.id]||e.name)}</h3><p class="section-intro" style="min-height:55px">${escape(e.enemies.map(x=>x.name).join('・'))}</p><div class="actions" style="margin:12px 0 14px">${e.id==='E03'?chip('S9採用','mintchip'):e.id==='E04'?chip('C13採用','mintchip'):e.id==='EP_B'?chip('敵撃破のみ'):chip('既存試験敵')}</div><button class="btn block ghost" data-encounter="${e.id}">この敵に挑む →</button></article>`).join('')}</div>`;
+}
+function renderResult(){const res=state.result;if(!res)return `<div class="card panel">戦闘結果はまだありません。${btn('戦闘準備へ','go-battle','primary')}</div>`;
+ const round=Math.min(state.round,res.states.length-1),snapshot=res.states[round];
+ const units=(arr,enemy=false)=>arr.map(x=>`<div class="hp-line"><div class="hp-top"><span>${escape(x.name)}</span><span>${x.hp}/${x.maxhp}${x.poison?' ☠':''}${x.shields?' 🛡'+x.shields:''}</span></div><div class="hp-meter ${enemy?'enemy':''}"><span style="width:${Math.max(0,Math.round(x.hp/x.maxhp*100))}%"></span></div></div>`).join('');
+ const logs=res.logs.filter(l=>state.logFilter==='all'||l.round===round).map(l=>`<div class="log-line ${l.type}">${escape(l.text)}</div>`).join('');
+ const isStoryGate=['E01','E04','E03'].includes(res.encounterId);
+ return `${header('戦闘結果','敵の固定行動と5ラウンドの予約を再現。ラウンドを選んでHP推移と戦闘ログを確認できる。',chip(res.encounterId))}
+ <div class="result-banner ${res.won?'':'lost'}"><p class="eyebrow">${res.won?'VICTORY':'DEFEAT'}</p><h2>${res.won?'勝 利':'敗 北'}</h2><p>${res.won?'5ラウンド以内に敵を全滅させた。':'敵を全滅させられなかった。編成・装備・行動順を変更できる。'}</p></div>
+ <div class="battle-stats"><div class="metric"><strong>${res.round} / 5</strong><span>終了ラウンド</span></div><div class="metric"><strong>${res.remainingPartyHP}</strong><span>味方残りHP</span></div><div class="metric"><strong>${res.remainingEnemyHP}</strong><span>敵残りHP</span></div><div class="metric"><strong>${res.metrics.counter}</strong><span>守護反撃回数</span></div></div>
+ <div class="actions" style="margin-bottom:17px">${btn('同じ予約で再戦','rerun','ghost')}${btn('行動を組み直す','go-battle','ghost')}${res.won&&isStoryGate?btn('物語の続きを読む →','continue-story','primary'):btn('敵図鑑へ','go-library','primary')}</div>
+ <div class="round-tabs">${res.states.map((x,i)=>`<button class="round-tab ${round===i?'active':''}" data-result-round="${i}">${i===0?'開始時':`第${x.round}R後`}</button>`).join('')}</div><div class="state-panes"><div class="card state-panel"><h3>味方HP</h3>${units(snapshot.allies)}</div><div class="card state-panel"><h3>敵HP</h3>${units(snapshot.enemies,true)}</div></div>
+ <div class="section-head" style="margin-top:27px;margin-bottom:10px"><h2 class="section-title" style="font-size:21px">戦闘ログ</h2><div class="actions"><button class="btn tiny ${state.logFilter==='all'?'primary':'ghost'}" data-log-filter="all">すべて</button><button class="btn tiny ${state.logFilter==='round'?'primary':'ghost'}" data-log-filter="round">選択Rのみ</button></div></div>
+ <div class="logs" id="combat-log" aria-label="戦闘ログ">${logs}</div><div class="notice" style="margin-top:17px">戦闘は試作Pythonモデルを参考にしたブラウザ移植版。イベントの順序・状態異常期間など、検証エンジンとの完全一致は今後の監査対象です。</div>`;
+}
+function renderAbout(){return `${header('この試作について','ゲーム全体を歩いて試すための叩き台。物語、キャラ名、グラフィックは仮。',chip('0.1.0 / OFFLINE READY','goldchip'))}
+ <div class="card panel"><h3 class="section-title" style="font-size:22px">実装されているもの</h3><div class="info-grid" style="margin-top:13px"><div>${[['物語','港を舞台にした仮の短編・3戦'],['パーティ','主人公＋仲間3人（20通り）'],['装備','武器・防具・装飾、30種'],['技能','Lv1初期技能＋奥義・1戦1回'],['戦闘','5R事前予約、速度・優先度で行動'],['敵','17遭遇／③S9・④C13のみ新規採用']].map(([l,v])=>`<div class="info-row"><span class="muted">${l}</span><strong>${v}</strong></div>`).join('')}</div><div>${[['攻撃役','04 MATK / 06 PATK = 130（v11試験基準）'],['バフ','対象能力群が異なれば乗算（例1.9575倍）'],['防御先制','庇護・全体庇護・挑発＝優先度＋1'],['毒','対象が行動した後にダメージ'],['浄化','07成功時、PATK/MATK＋20%'],['EP-B','従来の撃破条件のみ・二経路案なし']].map(([l,v])=>`<div class="info-row"><span class="muted">${l}</span><strong>${v}</strong></div>`).join('')}</div></div></div>
+ <div class="card panel" style="margin-top:15px"><h3 class="section-title" style="font-size:22px;margin-bottom:12px">差し替えと動作環境</h3><p class="section-intro">GitHub PagesなどのHTTPS静的ホスティング、またはindex.htmlを直接開いて遊べる。定刻処理は未実装で、テスト版は戦闘を即時実行する。外部ライブラリ・通信・アカウント不要。編成・装備・物語進捗はブラウザのlocalStorageに保存される。別端末との同期は未実装。</p><p class="section-intro">キャラは過去の別案を元にした属性・容姿メモを反映しているが、表示はCSSによる仮ビジュアル。正式な画像素材は未挿入。art.js のCHAR_ARTへ画像パスを設定すると差し替えできる。固有名もすべて仮名。</p><p class="section-intro">ブラウザ戦闘エンジンはPythonの実験用戦闘シミュレータを仕様参照した独立移植であり、Python試験結果と1件ずつ一致する保証はない。正式ゲーム実装の基盤とする前に差分テストが必要。</p><div class="actions" style="margin-top:21px">${btn('進捗と編成をJSONで保存','export-data','ghost')}${btn('はじめからやり直す','clear-data','danger')}</div></div>`;
+}
+function launchBattle(id){state.encounter=id;state.plan=null;state.planEncounter=null;state.round=0;goto('battle')}
+function runBattle(){try{ensurePlan();let result=B.simulate({encounterId:state.encounter,roster:state.roster,gem:state.gem,gear:state.equipment,plan:state.plan});state.result=result;state.round=result.states.length-1;state.logFilter='all';if(result.won&&!state.completed.includes(state.encounter))state.completed.push(state.encounter);goto('result');}catch(err){toast(`戦闘を開始できない：${err.message}`)}}
+function chooseStory(index){const choice=scenes[state.scene].choices[index];if(!choice)return;if(choice.flag)state.storyFlag=choice.flag;
+ if(choice.resetStory){state.scene=0;goto('story')}
+ else if(choice.page)goto(choice.page);
+ else if(choice.battle)launchBattle(choice.battle);
+ else if(typeof choice.next==='number'){state.scene=choice.next;goto('story')}
+}
+function setSkill(id,sid){const r=state.round;const s=B.skill(sid);const poolEnemies=ENC[state.encounter].enemies;
+ for(let i=0;i<5;i++){if(i!==r&&state.plan[i][id].skill===sid&&s.uses===1)state.plan[i][id]={skill:id+'.basic',target:poolEnemies[0].id};}
+ const mode=B.targetMode(s);let target=null;
+ if(mode==='enemy'){const physical=s.kind==='physical';target=poolEnemies.find(e=>!e.immuneKinds?.includes(physical?'physical':'magic'))?.id||poolEnemies[0].id}
+ else if(mode==='ally'){target=state.roster.find(x=>(s.type!=='cover'&&s.type!=='cover_aoe')||x!==id)||'H'}
+ state.plan[r][id]={skill:sid,target};persist();render();}
+function applyPreset(kind){for(const id of ['H',...allowedParty]){const ori=id==='H'?state.gem==='tide'?'magic':'physical':['02','06'].includes(id)?'physical':'magic';const ids=D.gearsByFamily[kind][ori];state.equipment[id]={W:ids.find(x=>x[0]==='W')||'',A:ids.find(x=>x[0]==='A')||'',X:ids.find(x=>x[0]==='X')||''}}persist();render();toast('装備方針を変更したよ')}
+function saveFile(filename,contents){const b=new Blob([contents],{type:'application/json;charset=utf-8'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(u),3000)}
+MAIN.addEventListener('click',e=>{
+ const storyButton=e.target.closest('[data-story-choice]');if(storyButton){chooseStory(+storyButton.dataset.storyChoice);return}
+ const pick=e.target.closest('[data-pick]');if(pick){let id=pick.dataset.pick;if(state.roster.includes(id)){state.roster=state.roster.filter(x=>x!==id)}else if(state.roster.length<4){state.roster.push(id);state.roster=['H',...state.roster.filter(x=>x!=='H').sort()]}else{toast('仲間は3人までだよ');return}state.plan=null;persist();render();return}
+ const gem=e.target.closest('[data-gem]');if(gem){state.gem=gem.dataset.gem;state.plan=null;persist();render();return}
+ const gp=e.target.closest('[data-gear-preset]');if(gp){applyPreset(gp.dataset.gearPreset);return}
+ const filter=e.target.closest('[data-filter]');if(filter){state.libraryFilter=filter.dataset.filter;render();return}
+ const book=e.target.closest('[data-encounter]');if(book){launchBattle(book.dataset.encounter);return}
+ const rt=e.target.closest('[data-round]');if(rt){state.round=+rt.dataset.round;render();return}
+ const rr=e.target.closest('[data-result-round]');if(rr){state.round=+rr.dataset.resultRound;render();return}
+ const lf=e.target.closest('[data-log-filter]');if(lf){state.logFilter=lf.dataset.logFilter;render();return}
+ const act=e.target.closest('[data-action]')?.dataset.action;if(!act)return;
+ if(act==='go-battle')goto('battle');else if(act==='go-party')goto('party');else if(act==='go-library')goto('library');else if(act==='run-battle'||act==='rerun')runBattle();
+ else if(act==='auto-mixed'||act==='auto-attack'){state.plan=B.autoPlan(state.roster,state.gem,ENC[state.encounter],act==='auto-attack'?'attack':'mixed');state.planEncounter=state.encounter;state.round=0;persist();render();toast('5ラウンドの予約を作ったよ')}
+ else if(act==='load-sample'){const sample=window.GAME_SAMPLES?.[state.encounter];if(sample){state.roster=[...sample.roster];state.gem=sample.gem;state.equipment={...state.equipment,...JSON.parse(JSON.stringify(sample.equipment))};state.plan=JSON.parse(JSON.stringify(sample.plan));state.planEncounter=state.encounter;state.round=0;persist();render();toast('勝利を確認した攻略例を読み込んだよ。自由に変更できる。')}}
+ else if(act==='continue-story'){if(state.result?.encounterId==='E01'&&state.scene<3)state.scene=3;else if(state.result?.encounterId==='E04'&&state.scene<5)state.scene=5;else if(state.result?.encounterId==='E03')state.scene=7;goto('story')}
+ else if(act==='export-data')saveFile('shiozakai-save.json',JSON.stringify({version:'0.1',saved:new Date().toISOString(),roster:state.roster,gem:state.gem,equipment:state.equipment,completed:state.completed,storyScene:state.scene},null,2));
+ else if(act==='clear-data'){if(confirm('編成・装備・物語進捗を初期化する？')){localStorage.removeItem(FLAG);state=defaults();render()}}
+});
+MAIN.addEventListener('change',e=>{
+ let v=e.target.value;if(e.target.matches('[data-select-encounter]')){launchBattle(v);return}
+ if(e.target.matches('[data-equipment]')){const [id,slot]=e.target.dataset.equipment.split(':');state.equipment[id][slot]=v;persist();render();return}
+ if(e.target.matches('[data-skill]')){setSkill(e.target.dataset.skill,v);return}
+ if(e.target.matches('[data-target]')){state.plan[state.round][e.target.dataset.target].target=v;persist();return}
+});
+document.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click',()=>goto(b.dataset.nav)));
+$('#reset-btn').addEventListener('click',()=>{if(confirm('進捗・編成・装備を初期化する？')){localStorage.removeItem(FLAG);state=defaults();render()}});
+render();
+window.GameAppDebug={getState:()=>state,story:scenes,render,launchBattle,runBattle};
+})();
+
+</script>
+</body></html>
