@@ -11,12 +11,12 @@
 <body>
 <div id="app" class="app-shell">
   <aside class="sidebar">
-    <div class="brand"><span class="brand-mark">◈</span><div><strong>潮境の命珠</strong><small>SHIOZAKAI · PROTOTYPE 01</small></div></div>
+    <div class="brand"><span class="brand-mark">◈</span><div><strong>潮境の命珠</strong><small>SHIOZAKAI · PROTOTYPE 02</small></div></div>
     <nav class="nav" aria-label="メインメニュー">
       <button data-nav="story" class="nav-link active"><span>◈</span> 物語を読む</button>
-      <button data-nav="party" class="nav-link"><span>♧</span> 編成と装備</button>
-      <button data-nav="battle" class="nav-link"><span>⚔</span> 戦闘準備</button>
-      <button data-nav="library" class="nav-link"><span>▤</span> 敵図鑑・試験</button>
+      <button data-nav="party" class="nav-link"><span>♧</span> 編成と戦闘準備</button>
+      <button data-nav="library" class="nav-link"><span>▤</span> 図鑑</button>
+      <button data-nav="recall" class="nav-link"><span>⌛</span> 追憶</button>
       <button data-nav="about" class="nav-link"><span>☷</span> この試作について</button>
     </nav>
     <div class="sidebar-note"><span class="dot"></span> 4体編成 / 最大5R<br><span class="subtle">物語は仮題・仮設定</span></div>
@@ -27,9 +27,10 @@
       <div class="topbar-right"><span class="tiny-tag">Lv. 1</span><span class="tiny-tag">R4：③S9 / ④C13</span><button id="reset-btn" class="icon-btn" title="データを初期化" aria-label="プレイデータを初期化">↺</button></div>
     </header>
     <main id="main-view" class="main-view" aria-live="polite"></main>
-    <footer class="footer">DEMO BUILD 0.1 · 物語・キャラ名・立ち絵は仮 / 戦闘ロジックは試作エンジンのブラウザ移植版</footer>
+    <footer class="footer">DEMO BUILD 0.2 · 物語・キャラ名・立ち絵は仮 / 戦闘ロジックは試作エンジンのブラウザ移植版</footer>
   </div>
 </div>
+<div id="overlay" class="overlay" hidden></div>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
-<script src="data.js"></script><script src="samples.js"></script><script src="art.js"></script><script src="battle.js"></script><script src="app.js"></script>
+<script src="data.js"></script><script src="art.js"></script><script src="battle.js"></script><script src="app.js"></script>
 </body></html>

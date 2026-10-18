@@ -1,5 +1,6 @@
 /*
  * Offline, deterministic 5-round RPG battle runner.
+ * Browser v0.2; actions contain SKILLS ONLY. Targets chosen at action resolution.
  * Browser port of the v11/v13 Python trial specifications, not a byte-exact port.
  * Data source: GAME_DATA (data.js). Approved: 4-party, S5/P1, buff stack,
  * defensive priority, 07 purification, poison after owner action, E03 S9/E04 C13.
@@ -70,24 +71,67 @@ function targetMode(s){
 }
 function validate({encounterId,roster,gem,gear,plan}){
  if(!D().encounters.some(e=>e.id===encounterId))throw new Error('遭遇IDが不正です');
- if(!Array.isArray(roster)||roster.length!==4||roster[0]!=='H'||new Set(roster).size!==4)throw new Error('主人公＋仲間3人を選んでください');
+ if(!Array.isArray(roster)||roster.length!==4||roster[0]!=='H'||new Set(roster).size!==4)throw new Error('主人公＋仲間3人を編成してください');
  if(!['balanced','flame','tide'].includes(gem))throw new Error('命珠が不正です');
- if(!Array.isArray(plan)||plan.length!==5)throw new Error('5ラウンド分の行動予約が必要です');
- const enemy=D().encounters.find(e=>e.id===encounterId);
+ if(!Array.isArray(plan)||plan.length!==5)throw new Error('5ラウンドの予約が必要です');
  for(const id of roster){
   const used=new Set();
   for(const [index,row] of plan.entries()){
-   const action=row[id];const s=action&&skill(action.skill);
-   if(!s||!skillOptions(id,gem).some(x=>x.id===s.id))throw new Error(`第${index+1}R：${id}に未解放の技能があります`);
-   if(s.uses===1&&used.has(s.id))throw new Error(`第${index+1}R：${s.label}は1戦で1回しか使えません`);
-   if(s.uses===1)used.add(s.id);
-   const mode=targetMode(s);
-   if(mode==='ally'&&(!roster.includes(action.target)||((s.type==='cover'||s.type==='cover_aoe')&&action.target===id)))throw new Error(`第${index+1}R：${s.label}の対象が不正です`);
-   if(mode==='enemy'&&!enemy.enemies.some(e=>e.id===action.target))throw new Error(`第${index+1}R：${s.label}の敵対象が不正です`);
+   const act=row?.[id],sid=typeof act==='string'?act:act?.skill;
+   const sk=skill(sid);
+   if(!sk||!skillOptions(id,gem).some(x=>x.id===sid))throw new Error(`第${index+1}R：${id}の技能が不正です`);
+   if(sk.uses===1&&used.has(sid))throw new Error(`第${index+1}R：${sk.label}は1戦で1回のみ`);
+   if(sk.uses===1)used.add(sid);
   }
  }
  return true;
 }
+// All targeting rules execute AFTER the battle has revealed the actual enemies.
+// They do not read any enemy ID from the player's 5-round reservation.
+function chooseTarget(ctx,actor,s){
+ const aliveAllies=live(ctx.allies),aliveEnemies=live(ctx.enemies);
+ const byHP=(a,b)=>a.hp/a.maxhp-b.hp/b.maxhp||a.hp-b.hp||a.id.localeCompare(b.id);
+ const byDanger=(a,b)=>(stats(b,'patk')+stats(b,'matk'))-(stats(a,'patk')+stats(a,'matk'))||byHP(a,b);
+ const type=s.type,scope=s.scope;
+ if(scope==='allies')return aliveAllies;
+ if(scope==='enemies')return aliveEnemies;
+ if(scope==='self')return [actor];
+ if(scope==='ally'||['cover','cover_aoe'].includes(type)){
+  let options=[...aliveAllies];
+  if(['cover','cover_aoe'].includes(type))options=options.filter(x=>x.id!==actor.id);
+  if(!options.length)return [];
+  if(type==='cleanse'){
+   options.sort((a,b)=>Number(hasCleanseable(b))-Number(hasCleanseable(a))||byHP(a,b));
+  } else if(type==='heal'||type==='barrier'||type==='immune_control'||['cover','cover_aoe'].includes(type)){
+   options.sort(byHP);
+  } else if(type==='buff'){
+   const powerStat=s.stats?.includes('matk')&&!s.stats.includes('patk')?'matk':s.stats?.includes('patk')&&!s.stats.includes('matk')?'patk':'matk';
+   options.sort((a,b)=>stats(b,powerStat)-stats(a,powerStat)||byHP(a,b));
+  } else options.sort(byHP);
+  return [options[0]];
+ }
+ if(!aliveEnemies.length)return [];
+ let possible=[...aliveEnemies];
+ if(type==='damage'){
+  let kind=s.kind;
+  if(actor.id==='H'&&s.id==='H.basic'&&ctx.gem==='tide')kind='magic';
+  const attackable=possible.filter(x=>!x.immuneKinds.includes(kind));
+  if(attackable.length)possible=attackable;
+  possible.sort(byHP);
+ } else if(type==='dispel'){
+  possible.sort((a,b)=>(b.buffs.filter(x=>x.pct>0).length+b.shields.length)-(a.buffs.filter(x=>x.pct>0).length+a.shields.length)||byDanger(a,b));
+ } else if(type==='debuff'||type==='interrupt'){
+  const affected=possible.filter(x=>!x.debuffImmune||ctx.encounterId==='E05'&&x.id==='overlord'&&s.stats?.every(k=>['patk','matk'].includes(k)));
+  if(affected.length)possible=affected;
+  possible.sort(byDanger);
+ } else if(type==='status'){
+  const affected=possible.filter(x=>!x.statusImmune||ctx.encounterId==='E06'&&x.id==='guard'&&s.status==='poison');
+  if(affected.length)possible=affected;
+  possible.sort(byDanger);
+ } else possible.sort(byHP);
+ return [possible[0]];
+}
+function hasCleanseable(u){return u.toxic_poison>0||u.statuses.some(q=>['poison','mark','vulnerable'].includes(q.kind))||u.buffs.some(b=>b.pct<0)}
 function guardRedirect(ctx,target,aoe){
  let recipient=target, guardian=null;
  if(!aoe){
@@ -135,20 +179,14 @@ function damage(ctx,attacker,initialTarget,kind,power,{element='neutral',ignore=
  }
  return dealt;
 }
-function directTargets(ctx,actor,s,target){
- if(s.scope==='self')return [actor];
- if(s.scope==='allies')return live(ctx.allies);
- if(s.scope==='enemies')return live(ctx.enemies);
- if(s.scope==='ally')return live(ctx.allies).filter(x=>x.id===target);
- return live(ctx.enemies).filter(x=>x.id===target);
-}
+function directTargets(ctx,actor,s){return chooseTarget(ctx,actor,s)}
 function playerAction(ctx,actor,action){
  let s=skill(action.skill);if(!s)return;
  if(actor.used.includes(s.id)){ctx.say(`${actor.name}の${s.label}は使用済み。`,'status');return;}
- let tg=directTargets(ctx,actor,s,action.target);
+ let tg=directTargets(ctx,actor,s);
  if(!tg.length){ctx.say(`${actor.name}：${s.label}の対象不在`,'status');return;}
  if(s.uses===1)actor.used.push(s.id);
- ctx.say(`${actor.name}｜${s.label}`,'action');ctx.metrics.skills[s.id]=(ctx.metrics.skills[s.id]||0)+1;
+ ctx.say(`${actor.name}｜${s.label}${s.scope==='enemies'||s.scope==='allies'?'':tg[0]&&tg[0]!==actor?' → '+tg[0].name:''}`,'action');ctx.metrics.skills[s.id]=(ctx.metrics.skills[s.id]||0)+1;
  if(s.type==='damage'){
   if(s.selfcost)actor.hp=Math.max(1,actor.hp-Math.floor(actor.maxhp*s.selfcost));
   for(const tgt of tg){
@@ -175,9 +213,9 @@ function playerAction(ctx,actor,action){
  }else if(s.type==='taunt'){
   actor.taunt=s.duration;actor.justTaunted=true;ctx.say(`${actor.name}が攻撃を引き受ける`,'guard');
  }else if(s.type==='cover'||s.type==='cover_aoe'){
-  if(s.type==='cover')actor.cover={target:action.target,left:s.duration,skipExpireOnce:true};
-  else actor.aoe_cover={target:action.target,left:s.duration,skipExpireOnce:true};
-  ctx.say(`${actor.name}が${byId(ctx.allies,action.target)?.name}を${s.type==='cover'?'単体':'全体攻撃'}から守る`,'guard');
+  if(s.type==='cover')actor.cover={target:tg[0]?.id,left:s.duration,skipExpireOnce:true};
+  else actor.aoe_cover={target:tg[0]?.id,left:s.duration,skipExpireOnce:true};
+  ctx.say(`${actor.name}が${tg[0]?.name}を${s.type==='cover'?'単体':'全体攻撃'}から守る`,'guard');
  }else if(s.type==='immune_control'){
   tg.forEach(t=>addStatus(t,'control_immune',s.duration,ctx));
  }else if(s.type==='dispel'){
@@ -198,11 +236,12 @@ function commandArray(row,round){let cmd=row.script[Math.min(round-1,row.script.
  if(Array.isArray(cmd[0]))return cmd;
  return [cmd];
 }
+function opDescription(op){return {P:'物理単体攻撃',M:'魔法単体攻撃',PA:'物理全体攻撃',MA:'魔法全体攻撃',MULTI:'物理連撃',POISON_ALL:'全体毒',POISON12:'猛毒',DEBUFF_ALL:'全体弱体化',DISPEL_DEBUFF:'強化解除',FIXED_AOE:'固定全体攻撃',PIERCE:'防壁貫通',CHECK300:'障壁判定',REVERSE:'能力反転',GUARD:'護衛',SACRIFICE:'身代わり',CHARGE:'蓄力',DRAIN:'吸収',TAUNT:'挑発'}[op]||'未分類行動'}
 function enemyAction(ctx,actor,row,round){
  ctx.actionCounterTaken.clear(); // one counter per independent enemy action
  for(const cmd of commandArray(row,round)){
   if(actor.hp<=0||!live(ctx.allies).length)break;
-  const op=cmd[0];const choose=(who)=>{
+  const op=cmd[0];ctx.observed.push({enemyId:actor.id,enemyName:actor.name,round,opcode:op,detail:opDescription(op)});const choose=(who)=>{
     let arr=live(ctx.allies);if(!arr.length)return null;
     if(who==='lowest')return [...arr].sort((a,b)=>a.hp/a.maxhp-b.hp/b.maxhp||a.id.localeCompare(b.id))[0];
     return arr.find(x=>x.id==='H')||arr[0];
@@ -250,9 +289,9 @@ function simulate({encounterId,roster,gem='balanced',gear={},plan}){
  validate({encounterId,roster,gem,gear,plan});
  const encounter=D().encounters.find(x=>x.id===encounterId);
  const allies=makeParty(roster,gem,gear),enemies=encounter.enemies.map(x=>unit(x,'enemy'));
- const ctx={allies,enemies,gem,encounterId,logs:[],round:0,currentActor:null,metrics:{cover:0,aoeCover:0,counter:0,poison:0,damage:0,reflection:0,purification:0,skills:{}},actionCounterTaken:new Set(),
+ const ctx={allies,enemies,gem,encounterId,logs:[],observed:[],round:0,currentActor:null,metrics:{cover:0,aoeCover:0,counter:0,poison:0,damage:0,reflection:0,purification:0,skills:{}},actionCounterTaken:new Set(),
   sideOf:u=>u.side==='ally'?allies:enemies,
-  say:(message,type='info')=>ctx.logs.push({round:ctx.round,text:message,type})};
+  say:(message,type='info')=>ctx.logs.push({round:ctx.round,text:message,type,actorId:ctx.currentActor})};
  const states=[snapshot(allies,enemies,0)];let won=false,finishReason='round_limit';
  for(let r=1;r<=5;r++){
   ctx.round=r;ctx.say(`―― 第${r}ラウンド ――`,'round');
@@ -280,16 +319,13 @@ function simulate({encounterId,roster,gem='balanced',gear={},plan}){
  }
  // No EP-B hybrid alternative (not adopted).
  const out={encounterId,encounterName:encounter.name,won,finishReason,round:states[states.length-1].round,
-  allies:states[states.length-1].allies,enemies:states[states.length-1].enemies,states,logs:ctx.logs,metrics:ctx.metrics,
+  allies:states[states.length-1].allies,enemies:states[states.length-1].enemies,states,logs:ctx.logs,observed:ctx.observed,metrics:ctx.metrics,
   remainingEnemyHP:enemies.reduce((a,u)=>a+u.hp,0),remainingPartyHP:allies.reduce((a,u)=>a+u.hp,0),
-  engineVersion:'playable-browser-prototype-0.1',warning:'試作Pythonエンジンからの移植版。効果期限など完全な同値性は未検証'};
+  engineVersion:'playable-browser-prototype-0.2',warning:'試作Pythonエンジンからの移植版。効果期限など完全な同値性は未検証'};
  return out;
 }
-function autoPlan(roster,gem,encounter,style='mixed'){
- const enemies=encounter.enemies;
- const physicalTarget=enemies.find(x=>!(x.immuneKinds||[]).includes('physical'))?.id||enemies[0].id;
- const magicalTarget=enemies.find(x=>!(x.immuneKinds||[]).includes('magic'))?.id||enemies[0].id;
- const used={};roster.forEach(id=>used[id]=new Set());
+function basicPlan(roster){return Array.from({length:5},()=>Object.fromEntries(roster.map(id=>[id,{skill:id+'.basic'}])))}
+function autoPlan(roster,gem,encounter=null,style='mixed'){
  const sequences={
   H:gem==='flame'?['H.f03','H.f01','H.f04','H.fult','H.basic']:gem==='tide'?['H.t04','H.t01','H.t02','H.tult','H.basic']:['H.03','H.06','H.01','H.ult','H.basic'],
   '02':style==='attack'?['02.11','02.04','02.01','02.ult','02.basic']:['02.02','02.12','02.11','02.ult','02.basic'],
@@ -298,33 +334,15 @@ function autoPlan(roster,gem,encounter,style='mixed'){
   '05':['05.02','05.ult','05.01','05.04','05.basic'],
   '06':['06.04','06.01','06.02','06.ult','06.basic'],
   '07':['07.01','07.ult','07.02','07.04','07.basic']};
- const p=[];
- for(let r=0;r<5;r++){
-  const row={};
-  for(const id of roster){
-   const pool=skillOptions(id,gem).map(s=>s.id);
-   const preference=style==='attack'?[...(pool.filter(s=>skill(s).type==='damage'&&s!==id+'.basic')), ...(sequences[id]||[])]:sequences[id]||[];
-   let sid=preference.find(s=>pool.includes(s)&&(skill(s).uses!==1||!used[id].has(s)))||id+'.basic';
-   if(style==='attack'&&r===0&&id==='02')sid='02.11';
-   if(skill(sid).uses===1)used[id].add(sid);
-   const s=skill(sid);let target=null,mode=targetMode(s);
-   if(mode==='enemy'){
-    const physical=s.kind==='physical'||(id==='H'&&gem==='flame'&&sid==='H.basic');
-    const preferred=(encounter.id==='E03'&&r>1)?(physical?physicalTarget:magicalTarget):(physical?physicalTarget:magicalTarget);
-    target=preferred;
-   }else if(mode==='ally'){
-    if(s.type==='cover'||s.type==='cover_aoe')target=roster.includes('04')?'04':roster.find(x=>x!==id)||'H';
-    else if(id==='03')target= s.stats?.includes('matk')&&roster.includes('04')?'04':roster.includes('06')?'06':roster.includes('04')?'04':'H';
-    else if(s.type==='cleanse')target='H';
-    else target='H';
-   }
-   row[id]={skill:sid,target};
-  }
-  p.push(row);
- }
- return p;
+ const used={};roster.forEach(id=>used[id]=new Set());
+ return Array.from({length:5},(_,r)=>Object.fromEntries(roster.map(id=>{
+  const pool=skillOptions(id,gem),preferred=style==='attack'?[...pool.filter(s=>s.type==='damage'&&s.id!==id+'.basic').map(s=>s.id),...(sequences[id]||[])]:sequences[id]||[];
+  const sid=preferred.find(x=>pool.some(s=>s.id===x)&&(!skill(x).uses||skill(x).uses!==1||!used[id].has(x)))||id+'.basic';
+  if(skill(sid).uses===1)used[id].add(sid);
+  return [id,{skill:sid}];
+ })));
 }
-const exported={validate,simulate,autoPlan,skillOptions,targetMode,stats,makeParty,skill,addBuff,addStatus,unit,live};
+const exported={validate,simulate,autoPlan,basicPlan,chooseTarget,skillOptions,targetMode,stats,makeParty,skill,addBuff,addStatus,unit,live};
 global.BattleEngine=exported;
 if(typeof module!=='undefined'&&module.exports)module.exports=exported;
 })(typeof window!=='undefined'?window:globalThis);
