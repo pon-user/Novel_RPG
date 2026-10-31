@@ -1,11 +1,13 @@
 {
   "name": "hill-road-prologue",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": true,
   "description": "丘の向こうの道 — 序章5更新・4戦の無料ノベルRPG",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "test": "node tests/test-story.cjs && node tests/test-state.cjs && node tests/test-battle.cjs",
+    "test": "node tests/test-story.cjs && node tests/test-state.cjs && node tests/test-battle.cjs && node tests/test-presentation.cjs && node tests/test-telemetry.cjs",
     "test:browser": "node tests/test-browser.cjs",
     "start": "python3 run.py --no-open"
   },
