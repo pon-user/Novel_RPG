@@ -2,6 +2,8 @@
 
 序章全5節・4戦を、1節ずつ手動更新で進める静的Webゲームです。このリポジトリのゲーム本体は `docs/` の **MVP v0.5だけ**です。旧v0.2は削除し、旧セーブの互換・引き継ぎは実装しません。
 
+今後のゲーム開発・修正はこの `pon-user/Novel_RPG` で行います。Obsidian側は既存仕様・正式本文の参照元として保持し、移行後のゲーム実装はここで管理します。開発時の共通手順は [AGENTS.md](AGENTS.md) を参照してください。
+
 ## 実装内容
 
 - 正式稿の序章5節、4か所の戦闘、読書ページの移動、読了済みの物語・戦闘記録の読み返し。
@@ -43,7 +45,7 @@ LANではスマートフォンから `http://PCのLAN内IP:8765/` を開きま�
 2. Branch: **main**、Folder: **/docs**（mainへマージした後）
 3. Save後、Pagesのデプロイ完了と画面表示を確認
 
-マージ前のブランチを公開対象にする場合も Folder は **/docs** を選びます。本移行ではmainへのマージ、Pages設定変更、公開デプロイは実行していません。旧版が既に公開されている場合、その公開内容はこのPRを作るだけでは切り替わりません。
+マージ前のブランチを公開対象にする場合も Folder は **/docs** を選びます。公開先は <https://pon-user.github.io/Novel_RPG/> です。実際の公開状態はSettings → Pagesとデプロイ結果で確認してください。旧版が既に公開されている場合、その公開内容はPR作成だけでは切り替わりません。
 
 GitHub Freeの公開リポジトリではGitHub Pagesを無料で利用できます。非公開リポジトリの場合は契約プランのPages対応を確認してください。ローカル起動はリポジトリの公開状態によらず無料です。
 
@@ -105,7 +107,9 @@ npm run test:browser
 
 [機械可読レポート](documentation/validation/browser-report.json) と [画面一覧](documentation/validation/README.md) をPR上で確認できます。検証環境はNode.js 24.19.0、Python 3.12.14、Playwright 1.62.1、Chromium 154.0.8037.57です。
 
-スマートフォンの試験はChromiumの表示幅・タッチエミュレーションです。iPhone Safari／Android実機、GitHub Actionsのリモート実行結果、GitHub Pages上の公開動作は、このローカル検証とは別です。第1章・サブストーリー・正式キャラクター画像・実時刻による定期更新は元のv0.5にも含まれていません。
+GitHub ActionsのPR試験もコミット `ea9232c` で成功しました（[実行結果](https://github.com/pon-user/Novel_RPG/actions/runs/41179131246)）。`npm ci`、ロジック試験、Pagesと同じパスでのブラウザ試験を含みます。最新コミットの結果はPRのChecksで確認してください。
+
+スマートフォンの試験はChromiumの表示幅・タッチエミュレーションです。iPhone Safari／Android実機とGitHub Pages上の公開動作は、この試験とは別です。第1章・サブストーリー・正式キャラクター画像・実時刻による定期更新は元のv0.5にも含まれていません。
 
 ## 移行元と保全
 
