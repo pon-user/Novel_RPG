@@ -1,0 +1,48 @@
+name: MVP v0.5 tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+      - name: Test under the GitHub Pages project path
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/pages"
+          ln -s "$GITHUB_WORKSPACE/docs" "$RUNNER_TEMP/pages/Novel_RPG"
+          python3 -m http.server 8765 --bind 127.0.0.1 --directory "$RUNNER_TEMP/pages" > "$RUNNER_TEMP/pages.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8765/Novel_RPG/ > /dev/null; then break; fi
+            sleep 1
+          done
+          npm run test:browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-results
+          path: artifacts/
+          if-no-files-found: ignore
+          retention-days: 14

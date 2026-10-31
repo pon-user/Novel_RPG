@@ -1,0 +1,53 @@
+{
+  "status": "PASS",
+  "executedAt": "2026-10-31T06:47:21.347Z",
+  "checks": 182,
+  "engine": "Chromium",
+  "browserVersion": "154.0.8037.57",
+  "baseURL": "http://127.0.0.1:8765/Novel_RPG/",
+  "desktop": {
+    "width": 1440,
+    "height": 1050
+  },
+  "mobile": {
+    "width": 390,
+    "height": 844,
+    "touch": true,
+    "additionalWidths": [
+      360,
+      320
+    ]
+  },
+  "completionRuns": [
+    {
+      "device": "desktop",
+      "sections": 5,
+      "battles": 4,
+      "victoryTurns": [
+        3,
+        3,
+        3,
+        4
+      ]
+    },
+    {
+      "device": "mobile",
+      "sections": 5,
+      "battles": 4,
+      "victoryTurns": [
+        3,
+        3,
+        3,
+        4
+      ]
+    }
+  ],
+  "sections": 5,
+  "battles": 4,
+  "uiSaveRoundtrip": true,
+  "invalidImportProtected": true,
+  "errors": [],
+  "externalRequests": [],
+  "httpErrors": [],
+  "failedRequests": []
+}
