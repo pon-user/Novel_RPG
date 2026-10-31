@@ -1,0 +1,46 @@
+{
+  "repository": "pon-user/obsidian-vault",
+  "ref": "2b54dd506b726b722e3af1008ad5da45e9191680",
+  "sources": [
+    {
+      "file": "progress-master.md",
+      "path": "10_定刻進行ノベルゲーム/02_検討資料/企画・草案/物語構想/序章_制作進行マスター_v0.1_2026-10-30.md",
+      "sha": "2c1b1ddac1dcd697d6242a61149671f964595b83"
+    },
+    {
+      "file": "section-1-approved-reference.md",
+      "path": "10_定刻進行ノベルゲーム/01_成果物/物語本文/序章_第一節_はじめての街道_正式確定稿_v1.0_2026-10-30.md",
+      "sha": "21ad2e9cd57ca4bc015890f6ca8b2021f79e5fba"
+    },
+    {
+      "file": "section-1-source.md",
+      "path": "10_定刻進行ノベルゲーム/02_検討資料/企画・草案/物語草稿/序章_第一節_はじめての街道_最終稿案_v0.3_2026-10-30.md",
+      "sha": "14f1ce97f2d9f8cb5f539bc98f46931a746d5caa"
+    },
+    {
+      "file": "section-2-source.md",
+      "path": "10_定刻進行ノベルゲーム/01_成果物/物語本文/序章_第二節_知らない街の音_正式確定稿_v1.0_2026-10-30.md",
+      "sha": "8be5f1698242669c6acbfc2893dfa0a108058775"
+    },
+    {
+      "file": "section-3-source.md",
+      "path": "10_定刻進行ノベルゲーム/01_成果物/物語本文/序章_第三節_帰る場所_正式確定稿_v1.0_2026-10-30.md",
+      "sha": "489eabfeb648415c28226a816f7c197edfc79022"
+    },
+    {
+      "file": "section-4-source.md",
+      "path": "10_定刻進行ノベルゲーム/01_成果物/物語本文/序章_第四節_道をつなぐ人_正式確定稿_v1.0_2026-10-30.md",
+      "sha": "f46f116e82c76d1cf074e5ef93e6e489d2cbf247"
+    },
+    {
+      "file": "section-5-source.md",
+      "path": "10_定刻進行ノベルゲーム/01_成果物/物語本文/序章_第五節_旅立ちを決める日_正式確定稿_v1.0_2026-10-30.md",
+      "sha": "ccc3cc2f0b7fc45e41d6014758165371bee731f4"
+    }
+  ],
+  "battleDesign": {
+    "file": "battle-design.md",
+    "path": "10_定刻進行ノベルゲーム/01_成果物/仕様・設計/20261031_序章4戦_戦闘設計核_v1.0.md",
+    "sha": "f9aad0ab1546b3cfb150eebc22c958e89addad3b"
+  }
+}
