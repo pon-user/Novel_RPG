@@ -1,0 +1,1137 @@
+{
+  "schema": "hill-road-v1",
+  "completedCount": 5,
+  "current": null,
+  "phase": "done",
+  "action": "hold",
+  "plan": null,
+  "result": null,
+  "page": 0,
+  "history": [
+    {
+      "section": 0,
+      "result": {
+        "encounterId": "BTL-0001",
+        "encounterName": "初めての実戦",
+        "won": true,
+        "finishReason": "defeated",
+        "round": 3,
+        "allies": [
+          {
+            "id": "aria",
+            "name": "アリア",
+            "hp": 300,
+            "maxhp": 300,
+            "dodge": 0,
+            "charging": false
+          }
+        ],
+        "enemies": [
+          {
+            "id": "e1",
+            "name": "林の小型魔獣",
+            "hp": 0,
+            "maxhp": 125,
+            "marked": false
+          }
+        ],
+        "states": [
+          {
+            "round": 1,
+            "allies": [
+              {
+                "id": "aria",
+                "name": "アリア",
+                "hp": 300,
+                "maxhp": 300,
+                "dodge": 1,
+                "charging": false
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e1",
+                "name": "林の小型魔獣",
+                "hp": 125,
+                "maxhp": 125,
+                "marked": false
+              }
+            ]
+          },
+          {
+            "round": 2,
+            "allies": [
+              {
+                "id": "aria",
+                "name": "アリア",
+                "hp": 300,
+                "maxhp": 300,
+                "dodge": 0,
+                "charging": false
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e1",
+                "name": "林の小型魔獣",
+                "hp": 61,
+                "maxhp": 125,
+                "marked": false
+              }
+            ]
+          },
+          {
+            "round": 3,
+            "allies": [
+              {
+                "id": "aria",
+                "name": "アリア",
+                "hp": 300,
+                "maxhp": 300,
+                "dodge": 0,
+                "charging": false
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e1",
+                "name": "林の小型魔獣",
+                "hp": 0,
+                "maxhp": 125,
+                "marked": false
+              }
+            ]
+          }
+        ],
+        "logs": [
+          {
+            "round": 1,
+            "actorId": "aria",
+            "type": "dodge_ready",
+            "text": "アリアは相手の動きを見た",
+            "charges": 2
+          },
+          {
+            "round": 1,
+            "actorId": "e1",
+            "type": "dodge",
+            "text": "アリアは攻撃を回避した",
+            "targetId": "aria"
+          },
+          {
+            "round": 2,
+            "actorId": "aria",
+            "type": "damage",
+            "text": "アリア → 林の小型魔獣 64ダメージ",
+            "targetId": "e1",
+            "damage": 64,
+            "source": "physical",
+            "redirected": false,
+            "charging": false
+          },
+          {
+            "round": 2,
+            "actorId": "e1",
+            "type": "dodge",
+            "text": "アリアは攻撃を回避した",
+            "targetId": "aria"
+          },
+          {
+            "round": 3,
+            "actorId": "aria",
+            "type": "damage",
+            "text": "アリア → 林の小型魔獣 61ダメージ",
+            "targetId": "e1",
+            "damage": 61,
+            "source": "physical",
+            "redirected": false,
+            "charging": false
+          }
+        ],
+        "metrics": {
+          "damage": 125,
+          "avoided": 2,
+          "redirected": 0,
+          "chargeExtra": 0,
+          "smallAttackRounds": 0
+        },
+        "remainingPartyHP": 300,
+        "remainingEnemyHP": 0,
+        "engineVersion": "v0.4-prologue-integrated",
+        "gem": null,
+        "roster": [
+          "aria"
+        ]
+      },
+      "completedAt": "2026-10-31T08:15:26.673Z"
+    },
+    {
+      "section": 1,
+      "result": {
+        "encounterId": "BTL-0002",
+        "encounterName": "行商人と荷車を守る",
+        "won": true,
+        "finishReason": "defeated",
+        "round": 3,
+        "allies": [
+          {
+            "id": "aria",
+            "name": "アリア",
+            "hp": 300,
+            "maxhp": 300,
+            "dodge": 0,
+            "charging": false
+          }
+        ],
+        "enemies": [
+          {
+            "id": "e2",
+            "name": "石橋の魔獣",
+            "hp": 0,
+            "maxhp": 125,
+            "marked": false
+          }
+        ],
+        "states": [
+          {
+            "round": 1,
+            "allies": [
+              {
+                "id": "aria",
+                "name": "アリア",
+                "hp": 300,
+                "maxhp": 300,
+                "dodge": 1,
+                "charging": false
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e2",
+                "name": "石橋の魔獣",
+                "hp": 125,
+                "maxhp": 125,
+                "marked": false
+              }
+            ]
+          },
+          {
+            "round": 2,
+            "allies": [
+              {
+                "id": "aria",
+                "name": "アリア",
+                "hp": 300,
+                "maxhp": 300,
+                "dodge": 0,
+                "charging": false
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e2",
+                "name": "石橋の魔獣",
+                "hp": 55,
+                "maxhp": 125,
+                "marked": false
+              }
+            ]
+          },
+          {
+            "round": 3,
+            "allies": [
+              {
+                "id": "aria",
+                "name": "アリア",
+                "hp": 300,
+                "maxhp": 300,
+                "dodge": 0,
+                "charging": false
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e2",
+                "name": "石橋の魔獣",
+                "hp": 0,
+                "maxhp": 125,
+                "marked": false
+              }
+            ]
+          }
+        ],
+        "logs": [
+          {
+            "round": 1,
+            "actorId": "aria",
+            "type": "dodge_ready",
+            "text": "アリアは相手の動きを見た",
+            "charges": 2
+          },
+          {
+            "round": 1,
+            "actorId": "e2",
+            "type": "dodge",
+            "text": "アリアは攻撃を回避した",
+            "targetId": "aria"
+          },
+          {
+            "round": 2,
+            "actorId": "aria",
+            "type": "damage",
+            "text": "アリア → 石橋の魔獣 70ダメージ",
+            "targetId": "e2",
+            "damage": 70,
+            "source": "physical",
+            "redirected": false,
+            "charging": false
+          },
+          {
+            "round": 2,
+            "actorId": "e2",
+            "type": "dodge",
+            "text": "アリアは攻撃を回避した",
+            "targetId": "aria"
+          },
+          {
+            "round": 3,
+            "actorId": "aria",
+            "type": "damage",
+            "text": "アリア → 石橋の魔獣 55ダメージ",
+            "targetId": "e2",
+            "damage": 55,
+            "source": "physical",
+            "redirected": false,
+            "charging": false
+          }
+        ],
+        "metrics": {
+          "damage": 125,
+          "avoided": 2,
+          "redirected": 0,
+          "chargeExtra": 0,
+          "smallAttackRounds": 0
+        },
+        "remainingPartyHP": 300,
+        "remainingEnemyHP": 0,
+        "engineVersion": "v0.4-prologue-integrated",
+        "gem": null,
+        "roster": [
+          "aria"
+        ]
+      },
+      "completedAt": "2026-10-31T08:15:26.674Z"
+    },
+    {
+      "section": 2,
+      "result": {
+        "encounterId": "BTL-0003",
+        "encounterName": "畑の防衛",
+        "won": true,
+        "finishReason": "defeated",
+        "round": 3,
+        "allies": [
+          {
+            "id": "aria",
+            "name": "アリア",
+            "hp": 300,
+            "maxhp": 300,
+            "dodge": 2,
+            "charging": false
+          },
+          {
+            "id": "captain",
+            "name": "自警団長",
+            "hp": 332,
+            "maxhp": 400,
+            "dodge": 0,
+            "charging": false
+          },
+          {
+            "id": "memberA",
+            "name": "自警団員A",
+            "hp": 280,
+            "maxhp": 280,
+            "dodge": 0,
+            "charging": false
+          }
+        ],
+        "enemies": [
+          {
+            "id": "e3",
+            "name": "畑の硬い魔獣",
+            "hp": 0,
+            "maxhp": 310,
+            "marked": false
+          }
+        ],
+        "states": [
+          {
+            "round": 1,
+            "allies": [
+              {
+                "id": "aria",
+                "name": "アリア",
+                "hp": 300,
+                "maxhp": 300,
+                "dodge": 2,
+                "charging": false
+              },
+              {
+                "id": "captain",
+                "name": "自警団長",
+                "hp": 366,
+                "maxhp": 400,
+                "dodge": 0,
+                "charging": false
+              },
+              {
+                "id": "memberA",
+                "name": "自警団員A",
+                "hp": 280,
+                "maxhp": 280,
+                "dodge": 0,
+                "charging": false
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e3",
+                "name": "畑の硬い魔獣",
+                "hp": 310,
+                "maxhp": 310,
+                "marked": false
+              }
+            ]
+          },
+          {
+            "round": 2,
+            "allies": [
+              {
+                "id": "aria",
+                "name": "アリア",
+                "hp": 300,
+                "maxhp": 300,
+                "dodge": 2,
+                "charging": false
+              },
+              {
+                "id": "captain",
+                "name": "自警団長",
+                "hp": 332,
+                "maxhp": 400,
+                "dodge": 0,
+                "charging": false
+              },
+              {
+                "id": "memberA",
+                "name": "自警団員A",
+                "hp": 280,
+                "maxhp": 280,
+                "dodge": 0,
+                "charging": true
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e3",
+                "name": "畑の硬い魔獣",
+                "hp": 289,
+                "maxhp": 310,
+                "marked": false
+              }
+            ]
+          },
+          {
+            "round": 3,
+            "allies": [
+              {
+                "id": "aria",
+                "name": "アリア",
+                "hp": 300,
+                "maxhp": 300,
+                "dodge": 2,
+                "charging": false
+              },
+              {
+                "id": "captain",
+                "name": "自警団長",
+                "hp": 332,
+                "maxhp": 400,
+                "dodge": 0,
+                "charging": false
+              },
+              {
+                "id": "memberA",
+                "name": "自警団員A",
+                "hp": 280,
+                "maxhp": 280,
+                "dodge": 0,
+                "charging": false
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e3",
+                "name": "畑の硬い魔獣",
+                "hp": 0,
+                "maxhp": 310,
+                "marked": false
+              }
+            ]
+          }
+        ],
+        "logs": [
+          {
+            "round": 1,
+            "actorId": "captain",
+            "type": "cover",
+            "text": "自警団長はアリアを庇う",
+            "targetId": "aria"
+          },
+          {
+            "round": 1,
+            "actorId": "aria",
+            "type": "dodge_ready",
+            "text": "アリアは相手の動きを見た",
+            "charges": 2
+          },
+          {
+            "round": 1,
+            "actorId": "memberA",
+            "type": "buff",
+            "text": "自警団員Aは防御上昇を使った",
+            "skill": "defUp",
+            "targets": [
+              "aria",
+              "captain",
+              "memberA"
+            ]
+          },
+          {
+            "round": 1,
+            "actorId": "e3",
+            "type": "damage",
+            "text": "畑の硬い魔獣 → 自警団長 34ダメージ",
+            "targetId": "captain",
+            "damage": 34,
+            "source": "physical",
+            "redirected": true,
+            "charging": false
+          },
+          {
+            "round": 2,
+            "actorId": "captain",
+            "type": "taunt",
+            "text": "自警団長は敵を挑発した"
+          },
+          {
+            "round": 2,
+            "actorId": "aria",
+            "type": "damage",
+            "text": "アリア → 畑の硬い魔獣 21ダメージ",
+            "targetId": "e3",
+            "damage": 21,
+            "source": "physical",
+            "redirected": false,
+            "charging": false
+          },
+          {
+            "round": 2,
+            "actorId": "memberA",
+            "type": "charge",
+            "text": "自警団員Aは水魔法の準備を始めた",
+            "skill": "water",
+            "readyAt": 3
+          },
+          {
+            "round": 2,
+            "actorId": "e3",
+            "type": "damage",
+            "text": "畑の硬い魔獣 → 自警団長 34ダメージ",
+            "targetId": "captain",
+            "damage": 34,
+            "source": "physical",
+            "redirected": true,
+            "charging": false
+          },
+          {
+            "round": 3,
+            "actorId": "aria",
+            "type": "damage",
+            "text": "アリア → 畑の硬い魔獣 81ダメージ",
+            "targetId": "e3",
+            "damage": 81,
+            "source": "magic",
+            "redirected": false,
+            "charging": false
+          },
+          {
+            "round": 3,
+            "actorId": "memberA",
+            "type": "damage",
+            "text": "自警団員A → 畑の硬い魔獣 176ダメージ",
+            "targetId": "e3",
+            "damage": 176,
+            "source": "magic",
+            "redirected": false,
+            "charging": false
+          },
+          {
+            "round": 3,
+            "actorId": "memberA",
+            "type": "release",
+            "text": "自警団員Aの水魔法が発動した",
+            "skill": "water",
+            "damage": 176
+          },
+          {
+            "round": 3,
+            "actorId": "captain",
+            "type": "damage",
+            "text": "自警団長 → 畑の硬い魔獣 32ダメージ",
+            "targetId": "e3",
+            "damage": 32,
+            "source": "physical",
+            "redirected": false,
+            "charging": false
+          }
+        ],
+        "metrics": {
+          "damage": 310,
+          "avoided": 0,
+          "redirected": 2,
+          "chargeExtra": 0,
+          "smallAttackRounds": 0
+        },
+        "remainingPartyHP": 912,
+        "remainingEnemyHP": 0,
+        "engineVersion": "v0.4-prologue-integrated",
+        "gem": null,
+        "roster": [
+          "aria",
+          "captain",
+          "memberA"
+        ]
+      },
+      "completedAt": "2026-10-31T08:15:26.677Z"
+    },
+    {
+      "section": 3,
+      "result": {
+        "encounterId": "BTL-0004",
+        "encounterName": "北街道の防衛",
+        "won": true,
+        "finishReason": "defeated",
+        "round": 4,
+        "allies": [
+          {
+            "id": "aria",
+            "name": "アリア",
+            "hp": 210,
+            "maxhp": 300,
+            "dodge": 0,
+            "charging": false
+          },
+          {
+            "id": "captain",
+            "name": "自警団長",
+            "hp": 369,
+            "maxhp": 400,
+            "dodge": 0,
+            "charging": false
+          },
+          {
+            "id": "memberA",
+            "name": "自警団員A",
+            "hp": 280,
+            "maxhp": 280,
+            "dodge": 0,
+            "charging": false
+          },
+          {
+            "id": "traveler",
+            "name": "旅人",
+            "hp": 290,
+            "maxhp": 290,
+            "dodge": 0,
+            "charging": false
+          }
+        ],
+        "enemies": [
+          {
+            "id": "big",
+            "name": "大型魔獣",
+            "hp": 0,
+            "maxhp": 465,
+            "marked": false
+          },
+          {
+            "id": "small",
+            "name": "小型魔獣",
+            "hp": 0,
+            "maxhp": 205,
+            "marked": false
+          }
+        ],
+        "states": [
+          {
+            "round": 1,
+            "allies": [
+              {
+                "id": "aria",
+                "name": "アリア",
+                "hp": 250,
+                "maxhp": 300,
+                "dodge": 0,
+                "charging": false
+              },
+              {
+                "id": "captain",
+                "name": "自警団長",
+                "hp": 400,
+                "maxhp": 400,
+                "dodge": 0,
+                "charging": false
+              },
+              {
+                "id": "memberA",
+                "name": "自警団員A",
+                "hp": 280,
+                "maxhp": 280,
+                "dodge": 0,
+                "charging": false
+              },
+              {
+                "id": "traveler",
+                "name": "旅人",
+                "hp": 290,
+                "maxhp": 290,
+                "dodge": 0,
+                "charging": false
+              }
+            ],
+            "enemies": [
+              {
+                "id": "big",
+                "name": "大型魔獣",
+                "hp": 465,
+                "maxhp": 465,
+                "marked": false
+              },
+              {
+                "id": "small",
+                "name": "小型魔獣",
+                "hp": 0,
+                "maxhp": 205,
+                "marked": false
+              }
+            ]
+          },
+          {
+            "round": 2,
+            "allies": [
+              {
+                "id": "aria",
+                "name": "アリア",
+                "hp": 210,
+                "maxhp": 300,
+                "dodge": 0,
+                "charging": false
+              },
+              {
+                "id": "captain",
+                "name": "自警団長",
+                "hp": 400,
+                "maxhp": 400,
+                "dodge": 0,
+                "charging": false
+              },
+              {
+                "id": "memberA",
+                "name": "自警団員A",
+                "hp": 280,
+                "maxhp": 280,
+                "dodge": 0,
+                "charging": true
+              },
+              {
+                "id": "traveler",
+                "name": "旅人",
+                "hp": 290,
+                "maxhp": 290,
+                "dodge": 0,
+                "charging": false
+              }
+            ],
+            "enemies": [
+              {
+                "id": "big",
+                "name": "大型魔獣",
+                "hp": 318,
+                "maxhp": 465,
+                "marked": false
+              },
+              {
+                "id": "small",
+                "name": "小型魔獣",
+                "hp": 0,
+                "maxhp": 205,
+                "marked": false
+              }
+            ]
+          },
+          {
+            "round": 3,
+            "allies": [
+              {
+                "id": "aria",
+                "name": "アリア",
+                "hp": 210,
+                "maxhp": 300,
+                "dodge": 0,
+                "charging": false
+              },
+              {
+                "id": "captain",
+                "name": "自警団長",
+                "hp": 369,
+                "maxhp": 400,
+                "dodge": 0,
+                "charging": false
+              },
+              {
+                "id": "memberA",
+                "name": "自警団員A",
+                "hp": 280,
+                "maxhp": 280,
+                "dodge": 0,
+                "charging": false
+              },
+              {
+                "id": "traveler",
+                "name": "旅人",
+                "hp": 290,
+                "maxhp": 290,
+                "dodge": 0,
+                "charging": false
+              }
+            ],
+            "enemies": [
+              {
+                "id": "big",
+                "name": "大型魔獣",
+                "hp": 86,
+                "maxhp": 465,
+                "marked": false
+              },
+              {
+                "id": "small",
+                "name": "小型魔獣",
+                "hp": 0,
+                "maxhp": 205,
+                "marked": false
+              }
+            ]
+          },
+          {
+            "round": 4,
+            "allies": [
+              {
+                "id": "aria",
+                "name": "アリア",
+                "hp": 210,
+                "maxhp": 300,
+                "dodge": 0,
+                "charging": false
+              },
+              {
+                "id": "captain",
+                "name": "自警団長",
+                "hp": 369,
+                "maxhp": 400,
+                "dodge": 0,
+                "charging": false
+              },
+              {
+                "id": "memberA",
+                "name": "自警団員A",
+                "hp": 280,
+                "maxhp": 280,
+                "dodge": 0,
+                "charging": false
+              },
+              {
+                "id": "traveler",
+                "name": "旅人",
+                "hp": 290,
+                "maxhp": 290,
+                "dodge": 0,
+                "charging": false
+              }
+            ],
+            "enemies": [
+              {
+                "id": "big",
+                "name": "大型魔獣",
+                "hp": 0,
+                "maxhp": 465,
+                "marked": false
+              },
+              {
+                "id": "small",
+                "name": "小型魔獣",
+                "hp": 0,
+                "maxhp": 205,
+                "marked": false
+              }
+            ]
+          }
+        ],
+        "logs": [
+          {
+            "round": 1,
+            "actorId": "aria",
+            "type": "damage",
+            "text": "アリア → 小型魔獣 50ダメージ",
+            "targetId": "small",
+            "damage": 50,
+            "source": "physical",
+            "redirected": false,
+            "charging": false
+          },
+          {
+            "round": 1,
+            "actorId": "aria",
+            "type": "mark",
+            "text": "小型魔獣に標的を付与",
+            "targetId": "small",
+            "until": 3
+          },
+          {
+            "round": 1,
+            "actorId": "traveler",
+            "type": "damage",
+            "text": "旅人 → 小型魔獣 59ダメージ",
+            "targetId": "small",
+            "damage": 59,
+            "source": "physical",
+            "redirected": false,
+            "charging": false
+          },
+          {
+            "round": 1,
+            "actorId": "memberA",
+            "type": "buff",
+            "text": "自警団員Aは防御上昇を使った",
+            "skill": "defUp",
+            "targets": [
+              "aria",
+              "captain",
+              "memberA",
+              "traveler"
+            ]
+          },
+          {
+            "round": 1,
+            "actorId": "captain",
+            "type": "damage",
+            "text": "自警団長 → 小型魔獣 96ダメージ",
+            "targetId": "small",
+            "damage": 96,
+            "source": "physical",
+            "redirected": false,
+            "charging": false
+          },
+          {
+            "round": 1,
+            "actorId": "big",
+            "type": "damage",
+            "text": "大型魔獣 → アリア 50ダメージ",
+            "targetId": "aria",
+            "damage": 50,
+            "source": "physical",
+            "redirected": false,
+            "charging": false
+          },
+          {
+            "round": 2,
+            "actorId": "aria",
+            "type": "damage",
+            "text": "アリア → 大型魔獣 54ダメージ",
+            "targetId": "big",
+            "damage": 54,
+            "source": "physical",
+            "redirected": false,
+            "charging": false
+          },
+          {
+            "round": 2,
+            "actorId": "traveler",
+            "type": "damage",
+            "text": "旅人 → 大型魔獣 43ダメージ",
+            "targetId": "big",
+            "damage": 43,
+            "source": "physical",
+            "redirected": false,
+            "charging": false
+          },
+          {
+            "round": 2,
+            "actorId": "traveler",
+            "type": "weaken",
+            "text": "大型魔獣の攻撃力が低下",
+            "targetId": "big"
+          },
+          {
+            "round": 2,
+            "actorId": "memberA",
+            "type": "charge",
+            "text": "自警団員Aは水魔法の準備を始めた",
+            "skill": "water",
+            "readyAt": 3
+          },
+          {
+            "round": 2,
+            "actorId": "captain",
+            "type": "damage",
+            "text": "自警団長 → 大型魔獣 50ダメージ",
+            "targetId": "big",
+            "damage": 50,
+            "source": "physical",
+            "redirected": false,
+            "charging": false
+          },
+          {
+            "round": 2,
+            "actorId": "big",
+            "type": "damage",
+            "text": "大型魔獣 → アリア 40ダメージ",
+            "targetId": "aria",
+            "damage": 40,
+            "source": "physical",
+            "redirected": false,
+            "charging": false
+          },
+          {
+            "round": 3,
+            "actorId": "captain",
+            "type": "cover",
+            "text": "自警団長はアリアを庇う",
+            "targetId": "aria"
+          },
+          {
+            "round": 3,
+            "actorId": "aria",
+            "type": "damage",
+            "text": "アリア → 大型魔獣 53ダメージ",
+            "targetId": "big",
+            "damage": 53,
+            "source": "magic",
+            "redirected": false,
+            "charging": false
+          },
+          {
+            "round": 3,
+            "actorId": "traveler",
+            "type": "damage",
+            "text": "旅人 → 大型魔獣 64ダメージ",
+            "targetId": "big",
+            "damage": 64,
+            "source": "physical",
+            "redirected": false,
+            "charging": false
+          },
+          {
+            "round": 3,
+            "actorId": "memberA",
+            "type": "damage",
+            "text": "自警団員A → 大型魔獣 115ダメージ",
+            "targetId": "big",
+            "damage": 115,
+            "source": "magic",
+            "redirected": false,
+            "charging": false
+          },
+          {
+            "round": 3,
+            "actorId": "memberA",
+            "type": "release",
+            "text": "自警団員Aの水魔法が発動した",
+            "skill": "water",
+            "damage": 115
+          },
+          {
+            "round": 3,
+            "actorId": "big",
+            "type": "damage",
+            "text": "大型魔獣 → 自警団長 31ダメージ",
+            "targetId": "captain",
+            "damage": 31,
+            "source": "physical",
+            "redirected": true,
+            "charging": false
+          },
+          {
+            "round": 4,
+            "actorId": "aria",
+            "type": "damage",
+            "text": "アリア → 大型魔獣 45ダメージ",
+            "targetId": "big",
+            "damage": 45,
+            "source": "physical",
+            "redirected": false,
+            "charging": false
+          },
+          {
+            "round": 4,
+            "actorId": "traveler",
+            "type": "damage",
+            "text": "旅人 → 大型魔獣 41ダメージ",
+            "targetId": "big",
+            "damage": 41,
+            "source": "physical",
+            "redirected": false,
+            "charging": false
+          }
+        ],
+        "metrics": {
+          "damage": 670,
+          "avoided": 0,
+          "redirected": 1,
+          "chargeExtra": 0,
+          "smallAttackRounds": 0
+        },
+        "remainingPartyHP": 1149,
+        "remainingEnemyHP": 0,
+        "engineVersion": "v0.4-prologue-integrated",
+        "gem": null,
+        "roster": [
+          "aria",
+          "captain",
+          "memberA",
+          "traveler"
+        ]
+      },
+      "completedAt": "2026-10-31T08:15:26.681Z"
+    },
+    {
+      "section": 4,
+      "result": null,
+      "completedAt": "2026-10-31T08:15:26.683Z"
+    }
+  ],
+  "items": {
+    "staff": "携行中",
+    "order": "使用済み",
+    "money": "支払い済み",
+    "medicine": "配達済み",
+    "vial": "携行中",
+    "map": "携行中",
+    "sword": "未取得",
+    "gem": "未取得"
+  },
+  "cheerUnlocked": true,
+  "readingSize": "normal",
+  "updatedAt": "2026-10-31T08:15:26.683Z"
+}

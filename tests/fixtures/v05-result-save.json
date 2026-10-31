@@ -1,0 +1,182 @@
+{
+  "schema": "hill-road-v1",
+  "completedCount": 0,
+  "current": 0,
+  "phase": "result",
+  "action": "main",
+  "plan": [
+    "survive",
+    "basic",
+    "basic",
+    "basic",
+    "basic"
+  ],
+  "result": {
+    "encounterId": "BTL-0001",
+    "encounterName": "初めての実戦",
+    "won": true,
+    "finishReason": "defeated",
+    "round": 3,
+    "allies": [
+      {
+        "id": "aria",
+        "name": "アリア",
+        "hp": 300,
+        "maxhp": 300,
+        "dodge": 0,
+        "charging": false
+      }
+    ],
+    "enemies": [
+      {
+        "id": "e1",
+        "name": "林の小型魔獣",
+        "hp": 0,
+        "maxhp": 125,
+        "marked": false
+      }
+    ],
+    "states": [
+      {
+        "round": 1,
+        "allies": [
+          {
+            "id": "aria",
+            "name": "アリア",
+            "hp": 300,
+            "maxhp": 300,
+            "dodge": 1,
+            "charging": false
+          }
+        ],
+        "enemies": [
+          {
+            "id": "e1",
+            "name": "林の小型魔獣",
+            "hp": 125,
+            "maxhp": 125,
+            "marked": false
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "allies": [
+          {
+            "id": "aria",
+            "name": "アリア",
+            "hp": 300,
+            "maxhp": 300,
+            "dodge": 0,
+            "charging": false
+          }
+        ],
+        "enemies": [
+          {
+            "id": "e1",
+            "name": "林の小型魔獣",
+            "hp": 61,
+            "maxhp": 125,
+            "marked": false
+          }
+        ]
+      },
+      {
+        "round": 3,
+        "allies": [
+          {
+            "id": "aria",
+            "name": "アリア",
+            "hp": 300,
+            "maxhp": 300,
+            "dodge": 0,
+            "charging": false
+          }
+        ],
+        "enemies": [
+          {
+            "id": "e1",
+            "name": "林の小型魔獣",
+            "hp": 0,
+            "maxhp": 125,
+            "marked": false
+          }
+        ]
+      }
+    ],
+    "logs": [
+      {
+        "round": 1,
+        "actorId": "aria",
+        "type": "dodge_ready",
+        "text": "アリアは相手の動きを見た",
+        "charges": 2
+      },
+      {
+        "round": 1,
+        "actorId": "e1",
+        "type": "dodge",
+        "text": "アリアは攻撃を回避した",
+        "targetId": "aria"
+      },
+      {
+        "round": 2,
+        "actorId": "aria",
+        "type": "damage",
+        "text": "アリア → 林の小型魔獣 64ダメージ",
+        "targetId": "e1",
+        "damage": 64,
+        "source": "physical",
+        "redirected": false,
+        "charging": false
+      },
+      {
+        "round": 2,
+        "actorId": "e1",
+        "type": "dodge",
+        "text": "アリアは攻撃を回避した",
+        "targetId": "aria"
+      },
+      {
+        "round": 3,
+        "actorId": "aria",
+        "type": "damage",
+        "text": "アリア → 林の小型魔獣 61ダメージ",
+        "targetId": "e1",
+        "damage": 61,
+        "source": "physical",
+        "redirected": false,
+        "charging": false
+      }
+    ],
+    "metrics": {
+      "damage": 125,
+      "avoided": 2,
+      "redirected": 0,
+      "chargeExtra": 0,
+      "smallAttackRounds": 0
+    },
+    "remainingPartyHP": 300,
+    "remainingEnemyHP": 0,
+    "engineVersion": "v0.4-prologue-integrated",
+    "gem": null,
+    "roster": [
+      "aria"
+    ]
+  },
+  "page": 0,
+  "history": [],
+  "items": {
+    "staff": "自宅",
+    "order": "未受領",
+    "money": "未受領",
+    "medicine": "未取得",
+    "vial": "未取得",
+    "map": "未取得",
+    "sword": "未取得",
+    "gem": "未取得"
+  },
+  "cheerUnlocked": false,
+  "readingSize": "normal",
+  "updatedAt": "2026-10-31T08:15:26.672Z"
+}
