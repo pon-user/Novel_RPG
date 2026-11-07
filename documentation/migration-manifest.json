@@ -1,0 +1,54 @@
+{
+  "repository": "pon-user/obsidian-vault",
+  "pull_request": 1,
+  "branch": "codex/prologue-manual-update-v05-20261031",
+  "commit": "af9b5e331c4940824869f251c730a3defe6d1fd0",
+  "path": "10_定刻進行ノベルゲーム/01_成果物/実装・配布/builds/HillRoad_v0.5_manual_update",
+  "files": [
+    {
+      "source": "dist/app.js",
+      "destination": "docs/app.js",
+      "sha256": "24895f4ce9b741a898668bf9b7224568098ec8823bdb3628534d28f456950ca7"
+    },
+    {
+      "source": "dist/battle-c1.js",
+      "destination": "docs/battle-c1.js",
+      "sha256": "6a0a7728bc19a8f8a457a0e13ee349a4896a427f91f3f436ae87b6defb10e34e"
+    },
+    {
+      "source": "dist/data.js",
+      "destination": "docs/data.js",
+      "sha256": "a5388f3dd473deb2ffae7e9e3cabec1819a4c10d361aff0a6c6cbe6eba4fbd27"
+    },
+    {
+      "source": "dist/icon.svg",
+      "destination": "docs/icon.svg",
+      "sha256": "edca20a56cb34a3e076f37c6e55c5380ff9eb2bcb792b836158a63782935d7d9"
+    },
+    {
+      "source": "dist/index.html",
+      "destination": "docs/index.html",
+      "sha256": "55f745d218d672180c197e6ae75fff343b46e9c73bd5f53d9608fb7c5c8a926e"
+    },
+    {
+      "source": "dist/prologue-battle-v04.js",
+      "destination": "docs/prologue-battle-v04.js",
+      "sha256": "0bee4d6805f1ce7d675eab763f230af4bdc6af8217bf9c3e64625c9b1c2e412a"
+    },
+    {
+      "source": "dist/prologue-state.js",
+      "destination": "docs/prologue-state.js",
+      "sha256": "ed7a0b33e9e16f9a4d11dbf95daa6bfde9d1f697170e756e505ab07d9ccccbf8"
+    },
+    {
+      "source": "dist/prologue-story-v04.js",
+      "destination": "docs/prologue-story-v04.js",
+      "sha256": "5b05a4de318fea38fd73cbfc9b69cab397e3ee110fe36b6588619dbb1cdc8bc4"
+    },
+    {
+      "source": "dist/styles.css",
+      "destination": "docs/styles.css",
+      "sha256": "345fcb5074e2e2e52b461a40ac027adf0f90a62df7de86340f73ece28a941dd8"
+    }
+  ]
+}

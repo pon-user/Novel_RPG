@@ -1,0 +1,30 @@
+{
+  "schema": "hill-road-v1",
+  "completedCount": 0,
+  "current": 0,
+  "phase": "pre",
+  "action": "main",
+  "plan": [
+    "basic",
+    "basic",
+    "basic",
+    "basic",
+    "basic"
+  ],
+  "result": null,
+  "page": 2,
+  "history": [],
+  "items": {
+    "staff": "自宅",
+    "order": "未受領",
+    "money": "未受領",
+    "medicine": "未取得",
+    "vial": "未取得",
+    "map": "未取得",
+    "sword": "未取得",
+    "gem": "未取得"
+  },
+  "cheerUnlocked": false,
+  "readingSize": "normal",
+  "updatedAt": "2026-10-31T08:15:26.670Z"
+}

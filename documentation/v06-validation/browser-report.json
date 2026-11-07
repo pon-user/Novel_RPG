@@ -1,0 +1,87 @@
+{
+  "status": "PASS",
+  "version": "0.6",
+  "executedAt": "2026-10-31T14:09:35.584Z",
+  "checks": 468,
+  "engine": "Chromium",
+  "browserVersion": "154.0.8037.57",
+  "baseURL": "http://127.0.0.1:8765/Novel_RPG/",
+  "desktop": {
+    "width": 1440,
+    "height": 1050
+  },
+  "mobile": {
+    "width": 390,
+    "height": 844,
+    "touch": true,
+    "additionalWidths": [
+      360,
+      320
+    ]
+  },
+  "completionRuns": [
+    {
+      "device": "desktop",
+      "sections": 5,
+      "battles": 4,
+      "victoryTurns": [
+        3,
+        3,
+        3,
+        4
+      ]
+    },
+    {
+      "device": "mobile",
+      "sections": 5,
+      "battles": 4,
+      "victoryTurns": [
+        3,
+        3,
+        3,
+        4
+      ]
+    }
+  ],
+  "sections": 5,
+  "battles": 4,
+  "initialAllTurnsExpanded": true,
+  "outcomeExplicitlyRevealed": true,
+  "uiSaveRoundtrip": true,
+  "legacySaveFixtures": {
+    "sourceCommit": "9ea01e7cb7ffa36589e48bf5343b100e698e88ce",
+    "phases": [
+      "pre",
+      "result",
+      "done"
+    ],
+    "widths": [
+      360,
+      320
+    ]
+  },
+  "contrast": [
+    {
+      "label": "desktop",
+      "minimum": 14.407840858984644
+    },
+    {
+      "label": "mobile",
+      "minimum": 14.407840858984644
+    },
+    {
+      "label": "360px legacy reading",
+      "minimum": 14.407840858984644
+    },
+    {
+      "label": "320px legacy reading",
+      "minimum": 14.407840858984644
+    }
+  ],
+  "invalidImportProtected": true,
+  "untrustedTelemetryReconstructed": true,
+  "errors": [],
+  "externalRequests": [],
+  "httpErrors": [],
+  "failedRequests": []
+}
